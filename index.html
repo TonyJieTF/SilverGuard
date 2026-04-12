@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UnitedHealthcare - 医疗保险计划</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 引入FontAwesome图标用于搜索、登录等图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="main-header">
+        <div class="container header-container">
+            <div class="logo">
+                <h1>UnitedHealthcare</h1>
+            </div>
+            
+            <div class="header-actions">
+                <!-- 搜索栏 (对应图片4) -->
+                <div class="search-bar">
+                    <input type="text" placeholder="搜索">
+                    <button type="button"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <!-- 登录按钮 (对应图片5) -->
+                <div class="login-button">
+                    <i class="far fa-user-circle"></i>
+                    <span>登录</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主体内容区 -->
+    <main>
+        <div class="container">
+            <!-- 问卷与会员入口版块 -->
+            <section class="banner-section">
+                <!-- 问卷入口 (对应图片1) -->
+                <div class="card questionnaire-card">
+                    <div class="card-icon">
+                        <i class="far fa-compass"></i>
+                    </div>
+                    <div class="card-content">
+                        <h2>需要帮助找到合适的计划吗？</h2>
+                        <p>通过回答几个问题，找到符合您需求的UnitedHealthcare医疗保险计划。</p>
+                        <a href="#" class="btn btn-outline-primary">获得推荐</a>
+                    </div>
+                </div>
+
+                <!-- 会员入口 (对应图片2) -->
+                <div class="card member-card">
+                    <h2>已经是会员了吗？</h2>
+                    <p>登录会员网站或注册账户</p>
+                    <a href="#" class="btn btn-link">会员登录 <i class="fas fa-external-link-alt"></i></a>
+                </div>
+            </section>
+
+            <!-- 险种分类页面 (修改后) -->
+            <section class="plans-section">
+                <div class="plan-grid">
+                    <!-- 卡片 1 -->
+                    <div class="plan-card" onclick="openModal('modal-million')">
+                        <div class="plan-image" style="background-image: url('picture/P1.png')"></div>
+                        <div class="plan-content">
+                            <h3>百万医疗险</h3>
+                            <p>高保额、高免赔额的商业医疗保险。主要用于报销大病住院、手术等高额医疗费用，是社保的有力补充，能大幅减轻大病带来的家庭财务压力。</p>
+                        </div>
+                    </div>
+                    <!-- 卡片 2 -->
+                    <div class="plan-card" onclick="openModal('modal-accident')">
+                        <div class="plan-image" style="background-image: url('picture/P2.png')"></div>
+                        <div class="plan-content">
+                            <h3>意外险</h3>
+                            <p>以被保险人因遭受意外伤害造成死亡、残废为给付保险金条件的人身保险。特点是保费低、杠杆高，覆盖日常突发意外风险（如跌倒、车祸等），通常包含意外身故/伤残和意外医疗责任。</p>
+                        </div>
+                    </div>
+                    <!-- 卡片 3 -->
+                    <div class="plan-card" onclick="openModal('modal-nursing')">
+                        <div class="plan-image" style="background-image: url('picture/P3.png')"></div>
+                        <div class="plan-content">
+                            <h3>护理险 (长期护理险)</h3>
+                            <p>为因年老、疾病或伤残而丧失日常生活自理能力，需要长期照护的人群提供护理费用或护理服务补偿的健康保险，旨在缓解家庭护理负担。</p>
+                        </div>
+                    </div>
+                    <!-- 卡片 4 -->
+                    <div class="plan-card" onclick="openModal('modal-critical')">
+                        <div class="plan-image" style="background-image: url('picture/P4.png')"></div>
+                        <div class="plan-content">
+                            <h3>重疾险 (重大疾病保险)</h3>
+                            <p>当被保险人患有保险合同约定的重大疾病（如恶性肿瘤、心肌梗死等）时，由保险公司定额给付保险金的商业保险行为。给付的资金可自由支配，常用于弥补康复期收入损失。</p>
+                        </div>
+                    </div>
+                    <!-- 卡片 5 -->
+                    <div class="plan-card" onclick="openModal('modal-life')">
+                        <div class="plan-image" style="background-image: url('picture/P5.png')"></div>
+                        <div class="plan-content">
+                            <h3>寿险 (定期/终身寿险)</h3>
+                            <p>以被保险人的寿命为保险标的，以被保险人的死亡为给付条件的人寿保险。主要作用是防范家庭经济支柱身故带来的财务风险，保障家人（如配偶、子女、父母）的基本生活。</p>
+                        </div>
+                    </div>
+                    <!-- 卡片 6 -->
+                    <div class="plan-card" onclick="openModal('modal-cancer')">
+                        <div class="plan-image" style="background-image: url('picture/P6.png')"></div>
+                        <div class="plan-content">
+                            <h3>防癌险/防癌医疗险</h3>
+                            <p>专门针对恶性肿瘤（癌症）提供保障的保险。防癌险是确诊即赔付（类似重疾险中单列出癌症），防癌医疗险是报销癌症治疗费用（类似百万医疗险的癌症缩小版），特点是健康告知相对宽松，适合老人及带病体。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 模态框模块 (Modal) 隐藏初始状态 -->
+    <div id="modal-container" class="modal-overlay">
+        <div class="modal-box">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title">详细保险内容</h2>
+            <div id="modal-desc" class="modal-desc">
+                这里是详细的内联保险内容说明。
+            </div>
+        </div>
+    </div>
+
+    <!-- 控制弹窗逻辑的JS部分 -->
+    <script>
+        const modalData = {
+            'modal-million': {
+                title: '百万医疗险 - 详情',
+                desc: '百万医疗险的核心在于“杠杆高”，通过设定免赔额（一般一万到两万元）对高额住院费用（重病住院）予以全额或大比例报销。一般具备保证续保期的产品能够确保持续的医疗保护网，不限社保内外用药。'
+            },
+            'modal-accident': {
+                title: '意外险 - 详情',
+                desc: '主要理赔两类责任：1. 意外身故/伤残（依据伤残等级，给予一笔一次性的赔偿资金）。2. 意外医疗（因意外如猫抓狗咬、骨折等造成的医疗费用，按比例进行报销）。由于不带储蓄功能或投资属性，保费极为低廉，是人人必备的底座保障。'
+            },
+            'modal-nursing': {
+                title: '护理险 - 详情',
+                desc: '通常针对失能状态（如无法独立进食、洗澡、穿衣等），提供固定的护理金额津贴或者专门的护工上门服务。应对老龄化社会中子女精力不足、居家养老风险大的情况。'
+            },
+            'modal-critical': {
+                title: '重疾险 - 详情',
+                desc: '重疾险的主要作用不是“报销医疗费”，而是“收入补偿”。确诊即可获赔一笔约定保额。这笔钱可以用来寻求更好的康复治疗，也可以用来应对因重病导致的停工期间家庭生活开支、房贷车贷偿还。'
+            },
+            'modal-life': {
+                title: '寿险 - 详情',
+                desc: '寿险只判断一条标准：被保险人是否身故或全残。它是一份“留给家人的爱”，主要用于抵冲自身离世后，给整个家庭带来的债务风险（如未还清的房贷）以及赡养父母、抚养子女的财务断层。'
+            },
+            'modal-cancer': {
+                title: '防癌险/防癌医疗险 - 详情',
+                desc: '针对预算有限、或者身体由于“三高”、糖尿病等指标无法通过重疾险/百万医疗险严格健康告知的人群。只保癌症相关的花费，虽然保障范围窄，但极易核保通过，是年龄大、特定慢病人群的最后防线。'
+            }
+        };
+
+        const modalContainer = document.getElementById('modal-container');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+
+        function openModal(modalId) {
+            const data = modalData[modalId];
+            if(data) {
+                modalTitle.textContent = data.title;
+                modalDesc.textContent = data.desc;
+                modalContainer.style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            modalContainer.style.display = 'none';
+        }
+        
+        // 点击外部遮罩区也可关闭
+        window.onclick = function(event) {
+            if (event.target == modalContainer) {
+                closeModal();
+            }
+        }
+    </script>
+</body>
+</html>
