@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>问卷调查 - 寻找最适合您的保险计划</title>
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
+        .header-bar { background-color: #002677; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .step { display: none; }
+        .step.active { display: block; }
+        h2 { color: #002677; border-bottom: 2px solid #e1e4e8; padding-bottom: 15px; margin-bottom: 30px; }
+        .question { margin-bottom: 25px; background: #fbfbfb; padding: 20px; border-radius: 8px; border-left: 4px solid #002677; }
+        .question label.title { display: block; margin-bottom: 12px; font-weight: bold; font-size: 16px; color: #2c3e50; }
+        .options { margin-left: 10px; }
+        .options label { display: block; margin-bottom: 10px; font-size: 15px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s; }
+        .options label:hover { background: #eef2fb; }
+        .options input[type="radio"], .options input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 40px; border-top: 1px solid #e1e4e8; padding-top: 20px; }
+        button { padding: 12px 30px; border: none; background-color: #002677; color: white; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #001a55; }
+        button:disabled { background-color: #b0b8c6; cursor: not-allowed; }
+        button.btn-prev { background-color: #6c757d; }
+        button.btn-prev:hover { background-color: #5a6268; }
+        .result-box { background: #eef2fb; padding: 30px; border-radius: 10px; border: 1px solid #cdd6ea; margin-top: 20px; }
+        .result-title { font-size: 22px; color: #002677; font-weight: bold; margin-bottom: 15px; }
+        .result-content p { font-size: 16px; line-height: 1.6; margin-bottom: 10px; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+        .score-info { margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px dashed #c0c8db; }
+        .recommendation { font-size: 18px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="header-bar">
+        UnitedHealthcare 保险评估
+    </div>
+    <div class="container">
+        <form id="insuranceForm">
+            <!-- Part 1: Basic Info -->
+            <div class="step active" id="step1">
+                <h2>第一部分：基础信息评估 (1/3)</h2>
+                
+                <div class="question">
+                    <label class="title">1. 您的年龄</label>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="0" required> 45岁及以下</label>
+                        <label><input type="radio" name="q1" value="1"> 46–50岁</label>
+                        <label><input type="radio" name="q1" value="2"> 51–59岁</label>
+                        <label><input type="radio" name="q1" value="3"> 60–69岁</label>
+                        <label><input type="radio" name="q1" value="4"> 70–74岁</label>
+                        <label><input type="radio" name="q1" value="5"> 75岁及以上</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">2. 是否有社保/医保</label>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="0" required> 有职工医保</label>
+                        <label><input type="radio" name="q2" value="1"> 有城乡居民医保（新农合）</label>
+                        <label><input type="radio" name="q2" value="5"> 无任何医保</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">3. 所在地区医疗资源水平</label>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="0" required> 一线城市（北上广深）</label>
+                        <label><input type="radio" name="q3" value="1"> 新一线城市 / 省会城市</label>
+                        <label><input type="radio" name="q3" value="2"> 普通地级市</label>
+                        <label><input type="radio" name="q3" value="3"> 县城 / 乡镇</label>
+                        <label><input type="radio" name="q3" value="4"> 偏远地区（如西藏、青海、新疆部分县域）</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">4. 是否可赴港线下投保</label>
+                    <div class="options">
+                        <label><input type="radio" name="q4" value="0" required> 是</label>
+                        <label><input type="radio" name="q4" value="2"> 否</label>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" style="visibility: hidden;">上一步</button>
+                    <button type="button" onclick="nextStep(1)">下一步 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Part 2: Financial Info -->
+            <div class="step" id="step2">
+                <h2>第二部分：财务与家庭支持 (2/3)</h2>
+                
+                <div class="question">
+                    <label class="title">5. 综合财务状况（可支配资产、家庭年收入、负债）</label>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="0" required> A. 优秀 (资产30万+，收入10万+，无负债)</label>
+                        <label><input type="radio" name="q5" value="1"> B. 良好 (资产15-30万，收入5-10万，少负债)</label>
+                        <label><input type="radio" name="q5" value="3"> C. 一般 (资产5-15万，收入3-5万，中负债)</label>
+                        <label><input type="radio" name="q5" value="4"> D. 较弱 (资产1-5万，收入1-3万，重负债)</label>
+                        <label><input type="radio" name="q5" value="5"> E. 较差 (资产<1万，收入<1万，高额负债)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">6. 婚姻/家庭支持情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="0" required> A. 已婚/有长期伴侣，共同承担家庭支出</label>
+                        <label><input type="radio" name="q6" value="1"> B. 已婚/有长期伴侣，对方承担能力一般</label>
+                        <label><input type="radio" name="q6" value="2"> C. 独居，有稳定子女/家属经济支持</label>
+                        <label><input type="radio" name="q6" value="4"> D. 丧偶/离异/独居，家属支持不稳定</label>
+                        <label><input type="radio" name="q6" value="5"> E. 丧偶/离异/独居，基本无家属支持</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">7. 抚养压力情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="0" required> A. 无需要抚养的家人，无抚养支出</label>
+                        <label><input type="radio" name="q7" value="1"> B. 1人需要抚养，支出占收入≤20%</label>
+                        <label><input type="radio" name="q7" value="3"> C. 2人需要抚养，或支出占收入20%-30%</label>
+                        <label><input type="radio" name="q7" value="4"> D. 3人需要抚养，或支出占收入30%-50%</label>
+                        <label><input type="radio" name="q7" value="5"> E. 4人及以上需要抚养，或支出占收入＞50%</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">8. 家庭风险兜底与分摊能力</label>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="0" required> A. 非家庭主要收入来源，有稳定分摊者</label>
+                        <label><input type="radio" name="q8" value="1"> B. 非主要收入来源，有基本分摊者</label>
+                        <label><input type="radio" name="q8" value="3"> C. 家庭重要收入来源，分摊能力一般</label>
+                        <label><input type="radio" name="q8" value="4"> D. 家庭主要收入来源，基本靠自己承担</label>
+                        <label><input type="radio" name="q8" value="5"> E. 家庭唯一收入来源，完全靠自己</label>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep(2)">上一步</button>
+                    <button type="button" onclick="nextStep(2)">下一步</button>
+                </div>
+            </div>
+
+            <!-- Part 3: Health Info -->
+            <div class="step" id="step3">
+                <h2>第三部分：健康评估 (3/3)</h2>
+                
+                <div class="question">
+                    <label class="title">9. 疾病情况 (可多选)</label>
+                    <div class="options">
+                        <label><input type="checkbox" name="q9" value="1"> A. 高血压</label>
+                        <label><input type="checkbox" name="q9" value="1"> B. 糖尿病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> C. 心脏病 (严重)</label>
+                        <label><input type="checkbox" name="q9" value="severe"> D. 中风/脑血管病</label>
+                        <label><input type="checkbox" name="q9" value="1"> E. 慢性肺病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> F. 肾病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> G. 癌症</label>
+                        <label><input type="checkbox" name="q9_none" value="0" onchange="handleNoneCheckbox('q9', this)"> H. 没有以上疾病 (或不清楚)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">10. 过去一年医疗情况 (住院)</label>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="0" required> A. 没有</label>
+                        <label><input type="radio" name="q10" value="3"> B. 住院过一次</label>
+                        <label><input type="radio" name="q10" value="5"> C. 住院过两次及以上</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">11. 用药情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="0" required> A. 不需要长期吃药</label>
+                        <label><input type="radio" name="q11" value="2"> B. 每天需吃 1-2 种药</label>
+                        <label><input type="radio" name="q11" value="4"> C. 每天需吃 3 种及以上药</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">12. 行动能力</label>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="0" required> A. 完全可以自己活动</label>
+                        <label><input type="radio" name="q12" value="2"> B. 需要拐杖或助行器</label>
+                        <label><input type="radio" name="q12" value="4"> C. 需要别人帮助</label>
+                        <label><input type="radio" name="q12" value="5"> D. 主要坐轮椅</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">13. 自理能力 (是否需要别人帮助 - 可多选)</label>
+                    <div class="options">
+                        <label><input type="checkbox" name="q13_none" value="0" onchange="handleNoneCheckbox('q13', this)"> A. 几乎不需要帮助</label>
+                        <label><input type="checkbox" name="q13" value="light"> B. 买菜/购物 (轻度)</label>
+                        <label><input type="checkbox" name="q13" value="light"> C. 做饭 (轻度)</label>
+                        <label><input type="checkbox" name="q13" value="medium"> D. 穿衣 (中度)</label>
+                        <label><input type="checkbox" name="q13" value="heavy"> E. 洗澡 (重度)</label>
+                        <label><input type="checkbox" name="q13" value="heavy"> F. 管理/提醒按时吃药 (重度)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">14. 记忆问题</label>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="0" required> A. 没有明显下降</label>
+                        <label><input type="radio" name="q14" value="1"> B. 偶尔下降</label>
+                        <label><input type="radio" name="q14" value="3"> C. 经常下降</label>
+                        <label><input type="radio" name="q14" value="5"> D. 医生诊断过记忆问题 / 痴呆</label>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep(3)">上一步</button>
+                    <button type="button" onclick="calculateResult()">提交评估</button>
+                </div>
+            </div>
+            
+            <!-- Result Step -->
+            <div class="step" id="resultStep">
+                <div class="result-box">
+                    <div class="result-title">为您推荐的保险方案</div>
+                    <div class="score-info" id="scoreInfo">
+                        <!-- Score and Risk Level render here -->
+                    </div>
+                    <div class="result-content" id="resultContent">
+                        <!-- Exclusions and recommendations render here -->
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button type="button" onclick="location.reload()" style="margin-top: 30px;">重新评估</button>
+                    <a href="index.html" style="display:inline-block; margin-left:15px; text-decoration:none;"><button type="button" class="btn-prev">返回主页</button></a>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function handleNoneCheckbox(groupName, checkbox) {
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][name="${groupName}"]`);
+            if (checkbox.checked) {
+                checkboxes.forEach(cb => { cb.checked = false; });
+                checkbox.checked = true;
+            }
+        }
+
+        function validateStep(stepNum) {
+            let valid = true;
+            const stepGroup = document.getElementById("step" + stepNum);
+            
+            // Check all radio groups in this step
+            const groups = new Set();
+            stepGroup.querySelectorAll('input[type="radio"][required]').forEach(el => groups.add(el.name));
+            
+            groups.forEach(name => {
+                const checked = stepGroup.querySelector(`input[name="${name}"]:checked`);
+                if (!checked) {
+                    valid = false;
+                }
+            });
+            
+            if (stepNum === 3) {
+                // Check multiple choices
+                const q9Checked = document.querySelectorAll('input[name="q9"]:checked').length > 0 || document.querySelector('input[name="q9_none"]').checked;
+                const q13Checked = document.querySelectorAll('input[name="q13"]:checked').length > 0 || document.querySelector('input[name="q13_none"]').checked;
+                if (!q9Checked || !q13Checked) valid = false;
+            }
+
+            if (!valid) alert("请完整回答当前页面的所有问题后再继续！");
+            return valid;
+        }
+
+        function nextStep(currentStep) {
+            if (!validateStep(currentStep)) return;
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep + 1)).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function prevStep(currentStep) {
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep - 1)).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function getRadioValue(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? parseInt(el.value, 10) : 0;
+        }
+
+        function calculateResult() {
+            if (!validateStep(3)) return;
+
+            // Gathering values for scoring
+            const age = getRadioValue('q1');
+            const medicalIns = getRadioValue('q2');
+            const region = getRadioValue('q3');
+            const hk = getRadioValue('q4');
+            const q5 = getRadioValue('q5');
+            const q6 = getRadioValue('q6');
+            const q7 = getRadioValue('q7');
+            const q8 = getRadioValue('q8');
+            const q10 = getRadioValue('q10');
+            const q11 = getRadioValue('q11');
+            const q12 = getRadioValue('q12');
+            const q14 = getRadioValue('q14');
+
+            // Q9 Logic
+            let q9Score = 0;
+            let severeCount = 0;
+            let lightCount = 0;
+            const q9Els = document.querySelectorAll('input[name="q9"]:checked');
+            q9Els.forEach(el => {
+                if(el.value === 'severe') severeCount++;
+                if(el.value === '1') lightCount++;
+            });
+            if (severeCount > 0) q9Score = 4;
+            else if (lightCount === 1) q9Score = 2; // approximation (1-2)
+            else if (lightCount === 2) q9Score = 3;
+            else if (lightCount >= 3) q9Score = 4;
+            if (severeCount + lightCount > 1 && severeCount > 0) q9Score = 5; // multiple diseases with a severe one
+
+            // Q13 Logic
+            let q13Score = 0;
+            let hCount = 0, mCount = 0, lCount = 0;
+            const q13Els = document.querySelectorAll('input[name="q13"]:checked');
+            q13Els.forEach(el => {
+                if(el.value === 'heavy') hCount++;
+                if(el.value === 'medium') mCount++;
+                if(el.value === 'light') lCount++;
+            });
+            if (lCount === 1 && mCount===0 && hCount===0) q13Score = 1;
+            else if ((lCount >= 2 && hCount===0) || (mCount === 1 && hCount===0)) q13Score = 2;
+            else if (hCount === 1) q13Score = 3;
+            else if (hCount >= 2) q13Score = 5;
+            else if (lCount+mCount+hCount >= 3) q13Score = 4;
+
+            // Base score summation (simplified for demonstration, using the exact rules in txt)
+            let totalScore = age + medicalIns + region + hk + q5 + q6 + q7 + q8 + q9Score + q10 + q11 + q12 + q13Score + q14;
+            let riskLevel = 0;
+            if (totalScore >= 25) riskLevel = 5;
+            else if (totalScore >= 20) riskLevel = 4;
+            else if (totalScore >= 15) riskLevel = 3;
+            else if (totalScore >= 10) riskLevel = 2;
+            else if (totalScore >= 5) riskLevel = 1;
+
+            const riskDesc = ["极低风险", "低风险", "中低风险", "中风险", "中高风险", "高风险"][riskLevel];
+
+            // Veto Rules
+            let exclusions = [];
+            // Rules
+            if (age >= 4) exclusions.push("重疾险", "定期寿险"); // >= 70
+            if (age >= 5) exclusions.push("长期护理险", "常规百万医疗险"); // >= 75
+            if (medicalIns === 5) exclusions.push("要求社保身份的百万医疗险");
+            if (hk === 2) exclusions.push("所有香港保险");
+            if (severeCount > 0 || (severeCount+lightCount >= 3)) exclusions.push("重疾险", "定期寿险(大概率)", "部分百万医疗险");
+            if (q12 >= 4) exclusions.push("重疾险", "定期寿险", "大部分百万医疗险");
+            if (hCount >= 2 || q13Score === 5) exclusions.push("重疾险", "定期寿险", "百万医疗险");
+            if (q14 === 5) exclusions.push("重疾险", "定期寿险", "百万医疗险");
+            if (q10 >= 5) exclusions.push("百万医疗险(大概率拒保)", "重疾险(大概率拒保)");
+            if (q11 >= 4 || (lightCount+severeCount) >= 2) exclusions.push("部分医疗险", "部分重疾");
+            if (q5 === 5) exclusions.push("长期护理险", "分红型/储蓄型保险", "高端医疗险");
+            if (q6 === 5 && q13Score > 0) exclusions.push("普通医疗险");
+            if (q7 === 5) exclusions.push("长期缴费类保险(寿险、储蓄险)");
+            
+            // Deduplicate exclusions
+            exclusions = [...new Set(exclusions)];
+
+            // Recommendation combination based on Risk Level (A1-A5)
+            let recommendationStr = "";
+            let reasonStr = "";
+            
+            if (riskLevel <= 1) { // 极低/低风险 -> score 0-9 approx
+                recommendationStr = "百万医疗险 + 意外险 + 护理险 + 可选重疾险/寿险";
+                reasonStr = "年龄、医保、地区约束较少，可做相对完整配置；医疗险打底，意外险覆盖高频跌倒骨折风险。";
+            } else if (riskLevel === 2) {
+                recommendationStr = "医疗险 + 意外险 + 防癌险/护理险 (择优)";
+                reasonStr = "以“医疗报销 + 意外”作为核心，防癌/护理作为补充；预算等允许时再考虑重疾险或寿险。";
+            } else if (riskLevel === 3) {
+                recommendationStr = "老年医疗险/防癌医疗险 + 意外险 + 惠民保 + 可选防癌险";
+                reasonStr = "进入高龄/慢病阶段后，常规长期险性价比下降，改用更容易投保的老年医疗、防癌医疗和惠民保兜底。";
+            } else if (riskLevel === 4) {
+                recommendationStr = "意外险 + 惠民保 + 防癌医疗险";
+                reasonStr = "核心目标变成“保得上、买得起、能理赔”；主推低门槛的险种。";
+            } else if (riskLevel === 5) {
+                recommendationStr = "仅意外险（能投则投） + 当地惠民保";
+                reasonStr = "高龄、慢病重、预算紧时，仅保留最低门槛保障。";
+            }
+
+            // Display results
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('resultStep').classList.add('active');
+            window.scrollTo(0, 0);
+
+            document.getElementById('scoreInfo').innerHTML = `
+                <p><strong>综合评分：</strong> <span style="font-size:24px; color:#002677;">${totalScore}</span></p>
+                <p><strong>健康风险等级：</strong> <span style="font-weight:bold; color:${riskLevel >= 3 ? '#e74c3c' : '#27ae60'}">${riskDesc}</span></p>
+            `;
+
+            let exclusionHTML = "";
+            if (exclusions.length > 0) {
+                exclusionHTML = `<p class="highlight"><i class="fas fa-exclamation-triangle"></i> <strong>智能风控拦截提示：</strong><br> 根据您的填写，系统已排除以下不适合您的险种：<br>
+                ${exclusions.join("、 ")}</p>`;
+            }
+
+            document.getElementById('resultContent').innerHTML = `
+                ${exclusionHTML}
+                <div class="recommendation">
+                    <p style="color:#002677; font-weight:bold;"><i class="fas fa-clipboard-check"></i> 推荐保险组合：</p>
+                    <p style="padding:10px; background:#fff; border-left:4px solid #fff3cd;">${recommendationStr}</p>
+                </div>
+                <p><strong>推荐理由：</strong><br>${reasonStr}</p>
+            `;
+        }
+    </script>
+</body>
+</html>
