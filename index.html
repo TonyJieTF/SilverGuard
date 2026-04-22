@@ -74,57 +74,45 @@
                 </div>
             </section>
 
-            <!-- 险种分类页面 (修改后) -->
-            <section class="plans-section">
-                <div class="plan-grid">
-                    <!-- 卡片 1 -->
-                    <div class="plan-card" onclick="openModal('modal-million')">
-                        <div class="plan-image" style="background-image: url('picture/P1.png')"></div>
-                        <div class="plan-content">
-                            <h3>百万医疗险</h3>
-                            <p>高保额、高免赔额的商业医疗保险。主要用于报销大病住院、手术等高额医疗费用，是社保的有力补充，能大幅减轻大病带来的家庭财务压力。</p>
-                        </div>
-                    </div>
-                    <!-- 卡片 2 -->
-                    <div class="plan-card" onclick="openModal('modal-accident')">
-                        <div class="plan-image" style="background-image: url('picture/P2.png')"></div>
-                        <div class="plan-content">
-                            <h3>意外险</h3>
-                            <p>以被保险人因遭受意外伤害造成死亡、残废为给付保险金条件的人身保险。特点是保费低、杠杆高，覆盖日常突发意外风险（如跌倒、车祸等），通常包含意外身故/伤残和意外医疗责任。</p>
-                        </div>
-                    </div>
-                    <!-- 卡片 3 -->
-                    <div class="plan-card" onclick="openModal('modal-nursing')">
-                        <div class="plan-image" style="background-image: url('picture/P3.png')"></div>
-                        <div class="plan-content">
-                            <h3>护理险 (长期护理险)</h3>
-                            <p>为因年老、疾病或伤残而丧失日常生活自理能力，需要长期照护的人群提供护理费用或护理服务补偿的健康保险，旨在缓解家庭护理负担。</p>
-                        </div>
-                    </div>
-                    <!-- 卡片 4 -->
-                    <div class="plan-card" onclick="openModal('modal-critical')">
-                        <div class="plan-image" style="background-image: url('picture/P4.png')"></div>
-                        <div class="plan-content">
-                            <h3>重疾险 (重大疾病保险)</h3>
-                            <p>当被保险人患有保险合同约定的重大疾病（如恶性肿瘤、心肌梗死等）时，由保险公司定额给付保险金的商业保险行为。给付的资金可自由支配，常用于弥补康复期收入损失。</p>
-                        </div>
-                    </div>
-                    <!-- 卡片 5 -->
-                    <div class="plan-card" onclick="openModal('modal-life')">
-                        <div class="plan-image" style="background-image: url('picture/P5.png')"></div>
-                        <div class="plan-content">
-                            <h3>寿险 (定期/终身寿险)</h3>
-                            <p>以被保险人的寿命为保险标的，以被保险人的死亡为给付条件的人寿保险。主要作用是防范家庭经济支柱身故带来的财务风险，保障家人（如配偶、子女、父母）的基本生活。</p>
-                        </div>
-                    </div>
-                    <!-- 卡片 6 -->
-                    <div class="plan-card" onclick="openModal('modal-cancer')">
-                        <div class="plan-image" style="background-image: url('picture/P6.png')"></div>
-                        <div class="plan-content">
-                            <h3>防癌险/防癌医疗险</h3>
-                            <p>专门针对恶性肿瘤（癌症）提供保障的保险。防癌险是确诊即赔付（类似重疾险中单列出癌症），防癌医疗险是报销癌症治疗费用（类似百万医疗险的癌症缩小版），特点是健康告知相对宽松，适合老人及带病体。</p>
-                        </div>
-                    </div>
+            <!-- 保险产品列表区域 -->
+            <section class="products-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-shield-alt"></i> 精选保险产品</h2>
+                    <p>为您推荐真实在售的优质保险产品，点击即可查看详情</p>
+                </div>
+                
+                <!-- 险种分类标签切换 -->
+                <div class="category-tabs">
+                    <button class="category-tab active" data-category="all" onclick="switchCategory('all')">
+                        <i class="fas fa-th-large"></i> 全部
+                    </button>
+                    <button class="category-tab" data-category="百万医疗险" onclick="switchCategory('百万医疗险')">
+                        <i class="fas fa-file-medical"></i> 百万医疗险
+                    </button>
+                    <button class="category-tab" data-category="意外险" onclick="switchCategory('意外险')">
+                        <i class="fas fa-exclamation-circle"></i> 意外险
+                    </button>
+                    <button class="category-tab" data-category="护理险" onclick="switchCategory('护理险')">
+                        <i class="fas fa-hands-helping"></i> 护理险
+                    </button>
+                    <button class="category-tab" data-category="重疾险" onclick="switchCategory('重疾险')">
+                        <i class="fas fa-heartbeat"></i> 重疾险
+                    </button>
+                    <button class="category-tab" data-category="防癌险" onclick="switchCategory('防癌险')">
+                        <i class="fas fa-ribbon"></i> 防癌险
+                    </button>
+                </div>
+                
+                <!-- 产品列表容器 -->
+                <div class="products-grid" id="products-grid">
+                    <!-- 产品卡片将通过 JavaScript 动态渲染 -->
+                </div>
+                
+                <!-- 加载更多按钮 -->
+                <div class="load-more-container" id="load-more-container">
+                    <button class="load-more-btn" id="load-more-btn" onclick="loadMoreProducts()">
+                        <i class="fas fa-plus-circle"></i> 加载更多产品
+                    </button>
                 </div>
             </section>
         </div>
@@ -1304,6 +1292,611 @@
             if (e.key === 'Escape' && searchModal.style.display === 'flex') {
                 closeSearchModal();
             }
+        });
+    </script>
+
+    <!-- 产品列表 JavaScript -->
+    <script>
+        // =============================================
+        // 产品真实 URL 映射数据 - 保险公司官网主页
+        // =============================================
+        const productRealUrls = {
+            // ==================== 内地保险 - 百万医疗险 ====================
+            'e生保·百万医疗险': {
+                url: 'https://health.pingan.com',
+                platform: '平安健康保险官网'
+            },
+            '好医保·长期医疗险': {
+                url: 'https://haoyibao.alipay.com/',
+                platform: '蚂蚁保险(支付宝)'
+            },
+            '尊享e生·百万医疗险': {
+                url: 'https://www.zhongan.com/channel/zhonghe/zhuanxiangesheng',
+                platform: '众安保险官网'
+            },
+
+            // ==================== 内地保险 - 意外险 ====================
+            '小蜜蜂2号超越版': {
+                url: 'https://www.sinosig.com',
+                platform: '鼎和保险官网'
+            },
+            '大护甲5号成人意外险': {
+                url: 'https://www.cpic.com.cn',
+                platform: '太平洋保险官网'
+            },
+            '孝心安·老年人意外险': {
+                url: 'https://baoxian.pingan.com',
+                platform: '平安财险官网'
+            },
+
+            // ==================== 内地保险 - 防癌险 ====================
+            '孝亲宝·中老年防癌险': {
+                url: 'https://www.dehuafullife.com',
+                platform: '德华安顾官网'
+            },
+            '平安终身防癌险': {
+                url: 'https://health.pingan.com',
+                platform: '平安健康保险官网'
+            },
+
+            // ==================== 内地保险 - 重疾险 ====================
+            '尊享e生重疾险': {
+                url: 'https://www.zhongan.com',
+                platform: '众安保险官网'
+            },
+            '众民保·重疾险(免健告)': {
+                url: 'https://www.zhongan.com',
+                platform: '众安保险官网'
+            },
+            '易生守护': {
+                url: 'https://www.dehuafullife.com',
+                platform: '德华安顾官网'
+            },
+            'i无忧（易核版）-不含身故': {
+                url: 'https://www.picc.com',
+                platform: '人保寿险官网'
+            },
+            '康乐一生易核版2.0': {
+                url: 'https://www.fosun.com',
+                platform: '复星联合健康官网'
+            },
+            '喜乐保重大疾病保险': {
+                url: 'https://www.hexiehealth.com',
+                platform: '和谐健康官网'
+            },
+
+            // ==================== 内地保险 - 护理险 ====================
+            '增多多3号护理险': {
+                url: 'https://www.kunlunhealth.com',
+                platform: '昆仑健康官网'
+            },
+            '福瑞百岁护理险': {
+                url: 'https://www.fosun.com',
+                platform: '复星联合健康官网'
+            },
+
+            // ==================== 香港保险 - Bupa 保柏 ====================
+            'Bupa Hero VHIS 灵活计划': {
+                url: 'https://www.bupa.com.hk/zh',
+                platform: '保柏香港官网'
+            },
+            'Bupa 自愿医保标准计划': {
+                url: 'https://www.bupa.com.hk/zh',
+                platform: '保柏香港官网'
+            },
+            'Bupa 癌症支援保障计划': {
+                url: 'https://www.bupa.com.hk/zh',
+                platform: '保柏香港官网'
+            },
+            'Bupa 个人意外保障计划': {
+                url: 'https://www.bupa.com.hk/zh',
+                platform: '保柏香港官网'
+            },
+
+            // ==================== 香港保险 - AIA 友邦 ====================
+            'AIA 自愿医保标准计划': {
+                url: 'https://www.aia.com.hk/zh-hk',
+                platform: '友邦香港官网'
+            },
+            'AIA 灵活医疗保障计划': {
+                url: 'https://www.aia.com.hk/zh-hk',
+                platform: '友邦香港官网'
+            },
+            'AIA 癌症保障计划': {
+                url: 'https://www.aia.com.hk/zh-hk',
+                platform: '友邦香港官网'
+            },
+            'AIA 癌症医疗补充计划': {
+                url: 'https://www.aia.com.hk/zh-hk',
+                platform: '友邦香港官网'
+            },
+            'AIA 个人意外保障计划': {
+                url: 'https://www.aia.com.hk/zh-hk',
+                platform: '友邦香港官网'
+            },
+
+            // ==================== 香港保险 - AXA 安盛 ====================
+            'AXA 安盛医疗保障计划': {
+                url: 'https://www.axa.com.hk/cn',
+                platform: '安盛香港官网'
+            },
+            'AXA 防癌保障计划': {
+                url: 'https://www.axa.com.hk/cn',
+                platform: '安盛香港官网'
+            },
+            'AXA 癌症医疗补充计划': {
+                url: 'https://www.axa.com.hk/cn',
+                platform: '安盛香港官网'
+            },
+            'AXA 安盛意外保障计划': {
+                url: 'https://www.axa.com.hk/cn',
+                platform: '安盛香港官网'
+            },
+            'AXA 长者意外医疗保障计划': {
+                url: 'https://www.axa.com.hk/cn',
+                platform: '安盛香港官网'
+            },
+
+            // ==================== 香港保险 - Prudential 保诚 ====================
+            'PRUHealth VHIS EasyChoice': {
+                url: 'https://www.prudential.com.hk',
+                platform: '保诚香港官网'
+            },
+            'Prudential 住院医疗补充计划': {
+                url: 'https://www.prudential.com.hk',
+                platform: '保诚香港官网'
+            },
+            'Prudential 癌症保障计划': {
+                url: 'https://www.prudential.com.hk',
+                platform: '保诚香港官网'
+            },
+            'Prudential 个人意外保障计划': {
+                url: 'https://www.prudential.com.hk',
+                platform: '保诚香港官网'
+            },
+
+            // ==================== 香港保险 - FWD 富卫 ====================
+            'FWD 自愿医保灵活计划': {
+                url: 'https://www.fwd.com.hk/zh',
+                platform: '富卫香港官网'
+            },
+            'FWD 全方位意外保障计划': {
+                url: 'https://www.fwd.com.hk/zh',
+                platform: '富卫香港官网'
+            },
+            'FWD 癌症保障计划': {
+                url: 'https://www.fwd.com.hk/zh',
+                platform: '富卫香港官网'
+            },
+
+            // ==================== 香港保险 - Blue Cross 蓝十字 ====================
+            'Blue Cross 蓝十字住院医疗计划': {
+                url: 'https://www.bluecross.com.hk/zh',
+                platform: '蓝十字保险官网'
+            },
+            'Blue Cross 癌症医疗保障': {
+                url: 'https://www.bluecross.com.hk/zh',
+                platform: '蓝十字保险官网'
+            },
+            'Blue Cross 个人意外保障计划': {
+                url: 'https://www.bluecross.com.hk/zh',
+                platform: '蓝十字保险官网'
+            },
+
+            // ==================== 香港保险 - Manulife 宏利 ====================
+            'Manulife 宏利自愿医保标准计划': {
+                url: 'https://www.manulife.com.hk/zh-hk',
+                platform: '宏利香港官网'
+            },
+            'Manulife 宏利癌症保障计划': {
+                url: 'https://www.manulife.com.hk/zh-hk',
+                platform: '宏利香港官网'
+            },
+            'Manulife 宏利意外保障计划': {
+                url: 'https://www.manulife.com.hk/zh-hk',
+                platform: '宏利香港官网'
+            },
+
+            // ==================== 香港保险 - Cigna 信诺 ====================
+            'Cigna 自愿医保灵活计划': {
+                url: 'https://www.cigna.com.hk/zh',
+                platform: '信诺香港官网'
+            },
+            'Cigna 癌症医疗保障计划': {
+                url: 'https://www.cigna.com.hk/zh',
+                platform: '信诺香港官网'
+            },
+            'Cigna 个人意外保障计划': {
+                url: 'https://www.cigna.com.hk/zh',
+                platform: '信诺香港官网'
+            },
+
+            // ==================== 香港保险 - Allianz 安联 ====================
+            'Allianz 安联住院医疗计划': {
+                url: 'https://www.allianz.com.hk/zh',
+                platform: '安联香港官网'
+            },
+            'Allianz 癌症保障计划': {
+                url: 'https://www.allianz.com.hk/zh',
+                platform: '安联香港官网'
+            },
+            'Allianz 安联个人意外保障计划': {
+                url: 'https://www.allianz.com.hk/zh',
+                platform: '安联香港官网'
+            },
+
+            // ==================== 香港保险 - Bowtie ====================
+            'Bowtie 自愿医保灵活计划': {
+                url: 'https://www.bowtie.com.hk/zh',
+                platform: 'Bowtie官网'
+            },
+
+            // ==================== 香港保险 - 汇丰 HSBC Life ====================
+            'HSBC Life 住院医疗保障计划': {
+                url: 'https://www.hsbc.com.hk/zh-cn',
+                platform: '汇丰保险官网'
+            },
+            'HSBC Life 癌症保障计划': {
+                url: 'https://www.hsbc.com.hk/zh-cn',
+                platform: '汇丰保险官网'
+            },
+            'HSBC Life 意外保障计划': {
+                url: 'https://www.hsbc.com.hk/zh-cn',
+                platform: '汇丰保险官网'
+            },
+
+            // ==================== 香港保险 - 中银人寿 BOC Life ====================
+            'BOC Life 自愿医保标准计划': {
+                url: 'https://www.boclife.com.hk',
+                platform: '中银人寿官网'
+            },
+            'BOC Life 自愿医保灵活计划': {
+                url: 'https://www.boclife.com.hk',
+                platform: '中银人寿官网'
+            },
+            'BOC Life 癌症保障计划': {
+                url: 'https://www.boclife.com.hk',
+                platform: '中银人寿官网'
+            },
+            'BOC Life 癌症医疗补充计划': {
+                url: 'https://www.boclife.com.hk',
+                platform: '中银人寿官网'
+            },
+            'BOC Life 长者意外保障计划': {
+                url: 'https://www.boclife.com.hk',
+                platform: '中银人寿官网'
+            },
+
+            // ==================== 香港保险 - 周大福人寿 CTF Life ====================
+            'CTF Life 自愿医保灵活计划': {
+                url: 'https://www.ctflife.com.hk/zh',
+                platform: '周大福人寿官网'
+            },
+            'CTF Life 标准住院医疗保障计划': {
+                url: 'https://www.ctflife.com.hk/zh',
+                platform: '周大福人寿官网'
+            },
+            'CTF Life 防癌保障计划': {
+                url: 'https://www.ctflife.com.hk/zh',
+                platform: '周大福人寿官网'
+            },
+            'CTF Life 个人意外保障计划': {
+                url: 'https://www.ctflife.com.hk/zh',
+                platform: '周大福人寿官网'
+            },
+
+            // ==================== 香港保险 - Avo ====================
+            'Avo 自愿医保计划': {
+                url: 'https://www.avo.hk/zh',
+                platform: 'Avo保险官网'
+            },
+
+            // ==================== 香港保险 - 万通 YF Life ====================
+            'YF Life 住院医疗保障计划': {
+                url: 'https://www.yflife.com/sc',
+                platform: '万通保险官网'
+            },
+            'YF Life 癌症保障计划': {
+                url: 'https://www.yflife.com/sc',
+                platform: '万通保险官网'
+            },
+            'YF Life 意外保障计划': {
+                url: 'https://www.yflife.com/sc',
+                platform: '万通保险官网'
+            },
+
+            // ==================== 香港保险 - 忠意 Generali ====================
+            'Generali 忠意住院医疗保障': {
+                url: 'https://www.generali.com.hk',
+                platform: '忠意香港官网'
+            },
+            'Generali 忠意癌症保障计划': {
+                url: 'https://www.generali.com.hk',
+                platform: '忠意香港官网'
+            },
+            'Generali 忠意个人意外保障': {
+                url: 'https://www.generali.com.hk',
+                platform: '忠意香港官网'
+            },
+            'Generali 长者意外支援计划': {
+                url: 'https://www.generali.com.hk',
+                platform: '忠意香港官网'
+            },
+
+            // ==================== 香港保险 - 安达 Chubb ====================
+            'Chubb 医疗保障计划': {
+                url: 'https://www.chubb.com/hk-zh',
+                platform: '安达保险官网'
+            },
+            'Chubb 癌症保障计划': {
+                url: 'https://www.chubb.com/hk-zh',
+                platform: '安达保险官网'
+            },
+            'Chubb 个人意外保障计划': {
+                url: 'https://www.chubb.com/hk-zh',
+                platform: '安达保险官网'
+            },
+            'Chubb 银龄意外保障计划': {
+                url: 'https://www.chubb.com/hk-zh',
+                platform: '安达保险官网'
+            },
+
+            // ==================== 香港保险 - 泰康 Taikang Life ====================
+            'Taikang Life 泰康香港住院医疗计划': {
+                url: 'https://www.taikang.com.hk',
+                platform: '泰康人寿香港官网'
+            },
+            'Taikang Life 防癌保障计划': {
+                url: 'https://www.taikang.com.hk',
+                platform: '泰康人寿香港官网'
+            },
+            'Taikang Life 长者意外保障计划': {
+                url: 'https://www.taikang.com.hk',
+                platform: '泰康人寿香港官网'
+            },
+
+            // ==================== 香港保险 - 永明 Sun Life ====================
+            'Sun Life 住院医疗保障计划': {
+                url: 'https://www.sunlife.com.hk',
+                platform: '永明香港官网'
+            },
+            'Sun Life 癌症医疗保障计划': {
+                url: 'https://www.sunlife.com.hk',
+                platform: '永明香港官网'
+            },
+            'Sun Life 癌症关爱保障计划': {
+                url: 'https://www.sunlife.com.hk',
+                platform: '永明香港官网'
+            },
+            'Sun Life 个人意外保障计划': {
+                url: 'https://www.sunlife.com.hk',
+                platform: '永明香港官网'
+            },
+            'Sun Life 长者意外支援计划': {
+                url: 'https://www.sunlife.com.hk',
+                platform: '永明香港官网'
+            },
+
+            // ==================== 香港保险 - 苏黎世 Zurich ====================
+            'Zurich 住院医疗保障计划': {
+                url: 'https://www.zurich.com.hk/zh',
+                platform: '苏黎世香港官网'
+            },
+            'Zurich 癌症保障计划': {
+                url: 'https://www.zurich.com.hk/zh',
+                platform: '苏黎世香港官网'
+            },
+            'Zurich 个人意外保险': {
+                url: 'https://www.zurich.com.hk/zh',
+                platform: '苏黎世香港官网'
+            },
+            'Zurich 长者意外支援计划': {
+                url: 'https://www.zurich.com.hk/zh',
+                platform: '苏黎世香港官网'
+            },
+
+            // ==================== 香港保险 - 中国太平 ====================
+            '中国太平住院医疗保障计划': {
+                url: 'https://hk.ctp.com.hk',
+                platform: '中国太平香港官网'
+            },
+            '中国太平防癌医疗保障': {
+                url: 'https://hk.ctp.com.hk',
+                platform: '中国太平香港官网'
+            },
+            '中国太平意外保障计划': {
+                url: 'https://hk.ctp.com.hk',
+                platform: '中国太平香港官网'
+            },
+            '中国太平长者意外支援计划': {
+                url: 'https://hk.ctp.com.hk',
+                platform: '中国太平香港官网'
+            },
+
+            // ==================== 香港保险 - 中国人寿（海外）====================
+            '中国人寿（海外）自愿医保计划': {
+                url: 'https://www.chinalife.com.hk/zh',
+                platform: '中国人寿海外官网'
+            },
+            '中国人寿（海外）防癌保障计划': {
+                url: 'https://www.chinalife.com.hk/zh',
+                platform: '中国人寿海外官网'
+            },
+            '中国人寿（海外）个人意外保障计划': {
+                url: 'https://www.chinalife.com.hk/zh',
+                platform: '中国人寿海外官网'
+            },
+
+            // ==================== 香港保险 - 富邦 Fubon ====================
+            'Fubon 富邦香港住院医疗计划': {
+                url: 'https://www.fubonlife.com.hk',
+                platform: '富邦人寿香港官网'
+            },
+            'Fubon 富邦香港癌症保障计划': {
+                url: 'https://www.fubonlife.com.hk',
+                platform: '富邦人寿香港官网'
+            },
+            'Fubon 富邦香港个人意外保障': {
+                url: 'https://www.fubonlife.com.hk',
+                platform: '富邦人寿香港官网'
+            },
+
+            // ==================== 香港保险 - 平安（香港）====================
+            '中国平安（香港）住院医疗保障计划': {
+                url: 'https://www.pingan.com.hk',
+                platform: '中国平安香港官网'
+            },
+            '中国平安（香港）癌症保障计划': {
+                url: 'https://www.pingan.com.hk',
+                platform: '中国平安香港官网'
+            },
+
+            // ==================== 香港保险 - 中银保险 BOC Insurance ====================
+            'BOC Insurance 个人意外保障计划': {
+                url: 'https://www.bocinsure.com.hk',
+                platform: '中银保险官网'
+            },
+            'BOC Insurance 银龄意外保障计划': {
+                url: 'https://www.bocinsure.com.hk',
+                platform: '中银保险官网'
+            }
+        };
+
+        // =============================================
+        // 获取产品真实链接
+        // =============================================
+        function getProductUrl(productName) {
+            const product = productRealUrls[productName];
+            if (product) {
+                return {
+                    url: product.url,
+                    platform: product.platform
+                };
+            }
+            // 如果没有特定链接，返回默认搜索链接
+            return {
+                url: `https://www.baidu.com/s?wd=${encodeURIComponent(productName + ' 保险')}`,
+                platform: '百度搜索'
+            };
+        }
+
+        // =============================================
+        // 产品列表状态管理
+        // =============================================
+        let currentCategory = 'all';
+        let displayedProducts = [];
+        const productsPerPage = 9;
+        let currentPage = 1;
+
+        // 获取所有精选产品（从 allInsuranceProducts 中筛选）
+        function getFeaturedProducts() {
+            // 从数据库中筛选代表性产品
+            const featuredCategories = ['百万医疗险', '意外险', '护理险', '重疾险', '防癌险'];
+            const featured = [];
+            
+            featuredCategories.forEach(category => {
+                const products = allInsuranceProducts.filter(p => p.category === category);
+                // 每个分类最多取3个产品
+                featured.push(...products.slice(0, 3));
+            });
+            
+            return featured;
+        }
+
+        // 根据分类筛选产品
+        function filterProducts(products, category) {
+            if (category === 'all') return products;
+            return products.filter(p => p.category === category);
+        }
+
+        // 渲染产品卡片
+        function renderProductCard(product) {
+            const linkInfo = getProductUrl(product.name);
+            const tagsHtml = product.tags.slice(0, 3).map(tag => 
+                `<span class="product-tag">${escapeHtml(tag)}</span>`
+            ).join('');
+            
+            return `
+                <div class="product-card">
+                    <div class="product-header">
+                        <div class="product-title-row">
+                            <h3 class="product-name">${escapeHtml(product.name)}</h3>
+                            <div class="product-badges">
+                                <span class="product-badge badge-region">${product.region}</span>
+                                <span class="product-badge badge-category">${escapeHtml(product.category)}</span>
+                            </div>
+                        </div>
+                        <div class="product-company">
+                            <i class="fas fa-building"></i> ${escapeHtml(product.company)}
+                        </div>
+                    </div>
+                    <div class="product-body">
+                        <p class="product-desc">${escapeHtml(product.description)}</p>
+                        <div class="product-tags">
+                            ${tagsHtml}
+                        </div>
+                    </div>
+                    <div class="product-footer">
+                        <span class="product-platform">
+                            <i class="fas fa-external-link-alt"></i> ${linkInfo.platform}
+                        </span>
+                        <a href="${linkInfo.url}" target="_blank" rel="noopener noreferrer" class="product-link-btn" onclick="event.stopPropagation()">
+                            <i class="fas fa-external-link-square-alt"></i> 查看详情
+                        </a>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 渲染产品列表
+        function renderProducts(products) {
+            const container = document.getElementById('products-grid');
+            if (!container) return;
+            
+            container.innerHTML = products.map(renderProductCard).join('');
+            
+            // 更新加载更多按钮状态
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            if (displayedProducts.length >= getFeaturedProducts().length) {
+                loadMoreContainer.style.display = 'none';
+            } else {
+                loadMoreContainer.style.display = 'block';
+                loadMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> 加载更多产品';
+            }
+        }
+
+        // 切换分类
+        function switchCategory(category) {
+            currentCategory = category;
+            currentPage = 1;
+            
+            // 更新标签样式
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.category === category) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // 筛选并显示产品
+            const allProducts = getFeaturedProducts();
+            displayedProducts = filterProducts(allProducts, category).slice(0, productsPerPage * currentPage);
+            renderProducts(displayedProducts);
+        }
+
+        // 加载更多产品
+        function loadMoreProducts() {
+            currentPage++;
+            const allProducts = getFeaturedProducts();
+            const filteredProducts = filterProducts(allProducts, currentCategory);
+            displayedProducts = filteredProducts.slice(0, productsPerPage * currentPage);
+            renderProducts(displayedProducts);
+        }
+
+        // 页面加载时初始化产品列表
+        document.addEventListener('DOMContentLoaded', function() {
+            switchCategory('all');
         });
     </script>
 
