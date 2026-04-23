@@ -3,120 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SilverGuard - 长者保险推荐系统</title>
-
+    <title>SilverGuard - 保险产品分类</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <!-- 引入FontAwesome图标用于搜索、登录等图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- 顶部导航 -->
-    <header class="main-header">
-        <div class="container header-container">
-            <div class="logo">
-                <h1>SilverGuard</h1>
-
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>SilverGuard</span>
             </div>
-            
-            <div class="header-actions">
-                <!-- 搜索栏 (对应图片4) -->
-                <div class="search-bar" onclick="openSearchModal()" style="cursor: pointer;">
-                    <input type="text" placeholder="搜索" readonly>
-                    <button type="button"><i class="fas fa-search"></i></button>
-                </div>
-                
-                <!-- 登录按钮 (对应图片5) -->
-                <div class="login-button" id="loginBtn" onclick="openAuthModal()">
-                    <i class="far fa-user-circle"></i>
-                    <span id="loginText">登录</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                
-                <!-- 用户已登录状态 -->
-                <div class="user-menu" id="userMenu" style="display: none;">
-                    <div class="user-avatar" id="userAvatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <span class="user-name" id="userName">用户名</span>
-                    <i class="fas fa-chevron-down"></i>
-                    <div class="user-dropdown">
-                        <a href="#" onclick="showUserProfile()"><i class="fas fa-user-circle"></i> 个人中心</a>
-                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> 退出登录</a>
-                    </div>
-                </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-th-large"></i> <span>保险分类</span>
+                </a>
+                <a href="questionnaire.html" class="nav-link nav-link-highlight">
+                    <i class="fas fa-clipboard-list"></i> <span>保险推荐</span>
+                </a>
+            </div>
+            <!-- 搜索栏 -->
+            <div class="search-bar" onclick="openSearchModal()" style="cursor: pointer;">
+                <input type="text" placeholder="搜索" readonly>
+                <button type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-login" onclick="openLoginModal()">
+                    <i class="fas fa-user"></i> <span>登录</span>
+                </button>
             </div>
         </div>
-    </header>
-
-    <!-- 主体内容区 -->
-    <main>
-        <div class="container">
-            <!-- 问卷与会员入口版块 -->
-            <section class="banner-section">
-                <!-- 问卷入口 (对应图片1) -->
-                <div class="card questionnaire-card">
-                    <div class="card-icon">
-                        <i class="far fa-compass"></i>
-                    </div>
-                    <div class="card-content">
-                        <h2>需要帮助找到合适的计划吗？</h2>
-                        <p>通过回答几个问题，找到符合您需求的 SilverGuard 长者保险保障方案。</p>
-
-                        <a href="questionnaire.html" class="btn btn-outline-primary">获得推荐</a>
-                    </div>
-                </div>
-
-                <!-- 会员入口 (对应图片2) -->
-                <div class="card member-card">
-                    <h2>已经是会员了吗？</h2>
-                    <p>登录会员网站或注册账户</p>
-                    <a href="#" class="btn btn-link">会员登录 <i class="fas fa-external-link-alt"></i></a>
-                </div>
-            </section>
-
-            <!-- 保险产品列表区域 -->
-            <section class="products-section">
-                <div class="section-header">
-                    <h2><i class="fas fa-shield-alt"></i> 精选保险产品</h2>
-                    <p>为您推荐真实在售的优质保险产品，点击即可查看详情</p>
-                </div>
-                
-                <!-- 险种分类标签切换 -->
-                <div class="category-tabs">
-                    <button class="category-tab active" data-category="all" onclick="switchCategory('all')">
-                        <i class="fas fa-th-large"></i> 全部
-                    </button>
-                    <button class="category-tab" data-category="百万医疗险" onclick="switchCategory('百万医疗险')">
-                        <i class="fas fa-file-medical"></i> 百万医疗险
-                    </button>
-                    <button class="category-tab" data-category="意外险" onclick="switchCategory('意外险')">
-                        <i class="fas fa-exclamation-circle"></i> 意外险
-                    </button>
-                    <button class="category-tab" data-category="护理险" onclick="switchCategory('护理险')">
-                        <i class="fas fa-hands-helping"></i> 护理险
-                    </button>
-                    <button class="category-tab" data-category="重疾险" onclick="switchCategory('重疾险')">
-                        <i class="fas fa-heartbeat"></i> 重疾险
-                    </button>
-                    <button class="category-tab" data-category="防癌险" onclick="switchCategory('防癌险')">
-                        <i class="fas fa-ribbon"></i> 防癌险
-                    </button>
-                </div>
-                
-                <!-- 产品列表容器 -->
-                <div class="products-grid" id="products-grid">
-                    <!-- 产品卡片将通过 JavaScript 动态渲染 -->
-                </div>
-                
-                <!-- 加载更多按钮 -->
-                <div class="load-more-container" id="load-more-container">
-                    <button class="load-more-btn" id="load-more-btn" onclick="loadMoreProducts()">
-                        <i class="fas fa-plus-circle"></i> 加载更多产品
-                    </button>
-                </div>
-            </section>
-        </div>
-    </main>
+    </nav>
 
     <!-- 搜索弹窗 -->
     <div id="search-modal" class="search-modal-overlay">
@@ -169,18 +88,452 @@
         </div>
     </div>
 
-    <!-- 模态框模块 (Modal) 隐藏初始状态 -->
-    <div id="modal-container" class="modal-overlay">
-        <div class="modal-box">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modal-title">详细保险内容</h2>
-            <div id="modal-desc" class="modal-desc">
-                这里是详细的内联保险内容说明。
+    <!-- 登录弹窗 -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-circle"></i> 用户登录</h3>
+                <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="login-tabs">
+                    <button class="login-tab active" onclick="switchLoginTab('password')">密码登录</button>
+                    <button class="login-tab" onclick="switchLoginTab('code')">验证码登录</button>
+                </div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> 手机号</label>
+                        <input type="tel" id="phone" placeholder="请输入手机号" required maxlength="11">
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label><i class="fas fa-lock"></i> 密码</label>
+                        <div class="password-input">
+                            <input type="password" id="password" placeholder="请输入密码" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="codeGroup" style="display: none;">
+                        <label><i class="fas fa-key"></i> 验证码</label>
+                        <div class="code-input">
+                            <input type="text" id="verifyCode" placeholder="请输入验证码" maxlength="6">
+                            <button type="button" class="btn-code" onclick="sendCode()">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" checked> 记住我
+                        </label>
+                        <a href="#" class="forgot-link">忘记密码？</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <p class="register-hint">
+                        还没有账号？<a href="#" onclick="showRegister()">立即注册</a>
+                    </p>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- 搜索功能 JS -->
+    <div class="container">
+        <!-- 顶部标题区 -->
+        <div class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shield-alt"></i> 保险产品分类</h1>
+                <p>为您和家人挑选最适合的保障方案</p>
+            </div>
+            <!-- 快速入口按钮 -->
+            <div class="quick-actions">
+                <a href="questionnaire.html" class="quick-btn primary">
+                    <i class="fas fa-magic"></i> 智能保险推荐
+                </a>
+                <span class="quick-hint">填写问卷，获取个性化保险方案</span>
+            </div>
+        </div>
+
+        <!-- 筛选标签 -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">全部</button>
+            <button class="filter-btn" data-filter="health">健康险</button>
+            <button class="filter-btn" data-filter="accident">意外险</button>
+            <button class="filter-btn" data-filter="protection">保障型</button>
+            <button class="filter-btn" data-filter="life">寿险</button>
+        </div>
+
+        <!-- 保险分类网格 -->
+        <div class="category-grid">
+            
+            <!-- 医疗险卡片 -->
+            <div class="category-card medical-card" onclick="expandCategory('medical')">
+                <div class="category-image">
+                    <img src="picture/P1.png" alt="医疗险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-hospital"></i>
+                </div>
+                <h3>医疗险</h3>
+                <p>覆盖住院、手术、门诊等医疗费用，商业医疗险可报销社保目录外费用</p>
+                <div class="category-tags">
+                    <span class="tag health-tag">健康险</span>
+                    <span class="tag hot-tag"><i class="fas fa-fire"></i> 热门</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="medical-list">
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'medical-list', event)">
+                        查看全部 6 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 意外险卡片 -->
+            <div class="category-card accident-card" onclick="expandCategory('accident')">
+                <div class="category-image">
+                    <img src="picture/P2.png" alt="意外险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>意外险</h3>
+                <p>涵盖意外身故、伤残、医疗费用，保障日常生活工作中的各类意外风险</p>
+                <div class="category-tags">
+                    <span class="tag accident-tag">意外险</span>
+                    <span class="tag hot-tag"><i class="fas fa-fire"></i> 热门</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="accident-list">
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.allianz.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">安</span>
+                            <span class="company-name">安联保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.axa.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003F87;">AX</span>
+                            <span class="company-name">AXA 法国安盛</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.generali.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00AEEF;">忠</span>
+                            <span class="company-name">忠利保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aig.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #2E7D32;">A</span>
+                            <span class="company-name">AIG 美亚保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.sunshine.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FFB800;">阳</span>
+                            <span class="company-name">阳光保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'accident-list', event)">
+                        查看全部 7 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 防癌险卡片 -->
+            <div class="category-card cancer-card" onclick="expandCategory('cancer')">
+                <div class="category-image">
+                    <img src="picture/P3.png" alt="防癌险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-ribbon"></i>
+                </div>
+                <h3>防癌险</h3>
+                <p>专为癌症提供保障，确诊即赔付，涵盖治疗费用、康复费用及收入补偿</p>
+                <div class="category-tags">
+                    <span class="tag health-tag">健康险</span>
+                    <span class="tag new-tag"><i class="fas fa-star"></i> 推荐</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="cancer-list">
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.bupa.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #007AC1;">保</span>
+                            <span class="company-name">保柏 Bupa</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.msh.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E91E63;">M</span>
+                            <span class="company-name">MSH 万欣和</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.figmahealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #9C27B0;">安</span>
+                            <span class="company-name">复星联合健康</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'cancer-list', event)">
+                        查看全部 5 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 重疾险卡片 -->
+            <div class="category-card critical-card" onclick="expandCategory('critical')">
+                <div class="category-image">
+                    <img src="picture/P4.png" alt="重疾险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h3>重疾险</h3>
+                <p>确诊约定重大疾病即可获赔，保障家庭经济安全，补充治疗康复费用</p>
+                <div class="category-tags">
+                    <span class="tag health-tag">健康险</span>
+                    <span class="tag protection-tag">保障型</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="critical-list">
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.huatai.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #1E88E5;">华</span>
+                            <span class="company-name">华泰保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.life.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00ACC1;">中</span>
+                            <span class="company-name">中意人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.nci.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #7CB342;">农</span>
+                            <span class="company-name">农银人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'critical-list', event)">
+                        查看全部 8 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 护理险卡片 -->
+            <div class="category-card nursing-card" onclick="expandCategory('nursing')">
+                <div class="category-image">
+                    <img src="picture/P5.png" alt="护理险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-hands-holding-child"></i>
+                </div>
+                <h3>护理险</h3>
+                <p>为老年人或需要护理的人群提供经济保障，覆盖护理费用和生活照料费用</p>
+                <div class="category-tags">
+                    <span class="tag health-tag">健康险</span>
+                    <span class="tag new-tag"><i class="fas fa-star"></i> 热门</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="nursing-list">
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.renbao.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #4CAF50;">人</span>
+                            <span class="company-name">人保健康</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'nursing-list', event)">
+                        查看全部 5 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 寿险卡片 -->
+            <div class="category-card life-card" onclick="expandCategory('life')">
+                <div class="category-image">
+                    <img src="picture/P6.png" alt="寿险">
+                    <div class="image-overlay">
+                        <span>了解详情</span>
+                    </div>
+                </div>
+                <div class="category-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>寿险</h3>
+                <p>以被保险人寿命为标的，为家庭提供身故保障，延续对家人的责任与关爱</p>
+                <div class="category-tags">
+                    <span class="tag life-tag">寿险</span>
+                    <span class="tag protection-tag">保障型</span>
+                </div>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="life-list">
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.fuwu.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #795548;">富</span>
+                            <span class="company-name">富德生命</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'life-list', event)">
+                        查看全部 6 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 底部提示 -->
+        <div class="footer-tip">
+            <i class="fas fa-info-circle"></i>
+            <span>点击卡片可查看合作保险公司详情，点击公司名称即可跳转到官网了解更多产品</span>
+        </div>
+    </div>
+
     <script>
         // =============================================
         // 完整保险产品数据库（内地 + 香港）
@@ -205,40 +558,24 @@
                 description: "适合希望优先补强基础医疗报销、且整体健康风险较低的长者用户参考。"
             },
             {
-                name: "AIA 灵活医疗保障计划",
-                company: "友邦 AIA Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "灵活计划", "医疗补充"],
-                description: "适合希望把住院及手术费用报销作为医疗主轴，并补强基础保障层的长者参考。"
-            },
-            {
                 name: "PRUHealth VHIS EasyChoice",
                 company: "保诚 Prudential Hong Kong",
                 category: "医疗险",
                 region: "香港",
-                tags: ["VHIS", "EasyChoice", "医疗补充"],
+                tags: ["VHIS", "灵活计划", "健康保障"],
                 description: "适合希望在已有基础保障之上增加住院医疗补充、且风险水平偏低到中低的长者参考。"
-            },
-            {
-                name: "Prudential 住院医疗补充计划",
-                company: "保诚 Prudential Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "医疗补充"],
-                description: "适合希望在已有基础保障上继续补充住院报销缺口，并形成中层医疗结构的长者参考。"
             },
             {
                 name: "AXA 安盛医疗保障计划",
                 company: "安盛 AXA Hong Kong",
                 category: "医疗险",
                 region: "香港",
-                tags: ["医疗保障", "住院报销", "手术保障"],
+                tags: ["医疗保障", "住院报销", "手术费用"],
                 description: "适合希望以较成熟品牌补充住院及手术报销保障的长者作基础医疗参考。"
             },
             {
                 name: "FWD 自愿医保灵活计划",
-                company: "FWD 富卫香港",
+                company: "富卫 FWD Hong Kong",
                 category: "医疗险",
                 region: "香港",
                 tags: ["VHIS", "灵活计划", "住院保障"],
@@ -249,7 +586,7 @@
                 company: "蓝十字 Blue Cross Hong Kong",
                 category: "医疗险",
                 region: "香港",
-                tags: ["住院医疗", "手术报销"],
+                tags: ["住院医疗", "高龄友好", "手术报销"],
                 description: "适合希望强化住院及手术费用报销、同时重视高龄阶段可持续性的用户参考。"
             },
             {
@@ -260,381 +597,35 @@
                 tags: ["VHIS", "标准计划", "基础医疗"],
                 description: "适合整体健康风险较低、希望先建立基础医疗报销框架的长者用户作入门参考。"
             },
-            {
-                name: "Cigna 自愿医保灵活计划",
-                company: "信诺 Cigna Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "灵活计划", "国际医疗"],
-                description: "适合希望比较不同国际化医疗服务资源、并补充住院医疗保障的用户参考。"
-            },
-            {
-                name: "Bowtie 自愿医保灵活计划",
-                company: "Bowtie 香港",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "灵活计划", "线上投保"],
-                description: "适合健康风险较低、希望先做基础医疗保障比价的用户作为线上化方案参考。"
-            },
-            {
-                name: "Allianz 安联住院医疗计划",
-                company: "安联 Allianz Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "手术报销"],
-                description: "适合希望补充住院及手术类保障、且当前风险水平处于中低到中等区间的长者参考。"
-            },
-            {
-                name: "HSBC Life 住院医疗保障计划",
-                company: "汇丰保险 HSBC Life Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "银行保险", "品牌保障"],
-                description: "适合希望补充基础住院与手术报销保障、并优先选择大型金融品牌的长者参考。"
-            },
-            {
-                name: "BOC Life 自愿医保标准计划",
-                company: "中银人寿 BOC Life",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "标准计划", "中资品牌"],
-                description: "适合健康风险较低、希望先建立一层基础医疗报销框架的长者用户参考。"
-            },
-            {
-                name: "BOC Life 自愿医保灵活计划",
-                company: "中银人寿 BOC Life",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "灵活计划", "中资品牌"],
-                description: "适合希望在标准医疗保障之外，进一步比较更灵活住院报销方案的长者参考。"
-            },
-            {
-                name: "CTF Life 自愿医保灵活计划",
-                company: "周大福人寿 CTF Life",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "灵活计划", "周大福"],
-                description: "适合希望在基础住院医疗报销之外，进一步比较灵活型医疗方案的用户参考。"
-            },
-            {
-                name: "CTF Life 标准住院医疗保障计划",
-                company: "周大福人寿 CTF Life",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "标准计划"],
-                description: "适合风险较低、希望先建立一层标准化住院医疗补充保障的长者用户参考。"
-            },
-            {
-                name: "Avo 自愿医保计划",
-                company: "Avo 保險",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "线上投保", "数码化"],
-                description: "适合风险较低且希望通过线上化渠道比较基础医疗保障的用户作补充参考。"
-            },
-            {
-                name: "YF Life 住院医疗保障计划",
-                company: "万通保险 YF Life",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "第二梯队"],
-                description: "适合希望在已有基础保障上补充住院医疗风险、并比较不同承保风格的长者参考。"
-            },
-            {
-                name: "Generali 忠意住院医疗保障",
-                company: "忠意 Generali Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "欧洲品牌"],
-                description: "适合希望把住院及手术报销作为核心缺口来比较不同品牌医疗方案的用户参考。"
-            },
-            {
-                name: "Chubb 医疗保障计划",
-                company: "安达人寿 Chubb Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["医疗保障", "中层保障"],
-                description: "适合希望补充住院报销、并将医疗险作为中层保障配置的长者用户参考。"
-            },
-            {
-                name: "Taikang Life 泰康香港住院医疗计划",
-                company: "泰康人寿香港 Taikang Life Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "内地背景"],
-                description: "适合希望将住院医疗报销与高龄阶段可持续性一起纳入比较的用户参考。"
-            },
-            {
-                name: "Sun Life 住院医疗保障计划",
-                company: "永明 Sun Life Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "品牌保障"],
-                description: "适合希望补足基础住院与手术报销保障，并优先比较大型寿险品牌医疗方案的长者参考。"
-            },
-            {
-                name: "Zurich 住院医疗保障计划",
-                company: "苏黎世 Zurich Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "欧洲品牌"],
-                description: "适合希望把住院医疗风险纳入中层保障规划，并补充现有基础保障的长者参考。"
-            },
-            {
-                name: "中国太平住院医疗保障计划",
-                company: "中国太平 China Taiping Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "中资品牌"],
-                description: "适合希望将高龄阶段住院医疗费用报销纳入比较，并搭配其他基础保障的用户参考。"
-            },
-            {
-                name: "中国人寿（海外）自愿医保计划",
-                company: "中国人寿（海外） China Life (Overseas)",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "中资品牌", "海外业务"],
-                description: "适合健康风险较低到中等、希望建立基础住院医疗报销框架的长者用户参考。"
-            },
-            {
-                name: "Fubon 富邦香港住院医疗计划",
-                company: "富邦人寿香港 Fubon Life Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "台湾背景"],
-                description: "适合希望把住院及手术费用报销作为核心比较维度，并补充基础医疗缺口的用户参考。"
-            },
-            {
-                name: "中国平安（香港）住院医疗保障计划",
-                company: "中国平安（香港） Ping An Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["住院医疗", "平安品牌"],
-                description: "适合希望比较不同华资保险品牌住院医疗方案，并补充高龄阶段医疗缺口的用户参考。"
-            },
-            {
-                name: "Bupa 自愿医保标准计划",
-                company: "保柏 Bupa Hong Kong",
-                category: "医疗险",
-                region: "香港",
-                tags: ["VHIS", "标准计划", "国际品牌"],
-                description: "适合整体健康风险较低、希望优先建立标准化基础医疗报销保障的长者用户参考。"
-            },
-
             // 防癌险
             {
                 name: "AXA 防癌保障计划",
                 company: "安盛 AXA Hong Kong",
                 category: "防癌险",
                 region: "香港",
-                tags: ["防癌", "专项保障", "癌症给付"],
+                tags: ["防癌", "癌症保障", "专项保障"],
                 description: "更适合无法完整配置传统重疾险时，用于聚焦癌症风险的补充保障参考。"
-            },
-            {
-                name: "AXA 癌症医疗补充计划",
-                company: "安盛 AXA Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症医疗", "费用报销"],
-                description: "适合希望重点补足癌症治疗费用风险，并保留一定高龄比较空间的长者参考。"
             },
             {
                 name: "Blue Cross 癌症医疗保障",
                 company: "蓝十字 Blue Cross Hong Kong",
                 category: "防癌险",
                 region: "香港",
-                tags: ["癌症医疗", "费用报销"],
+                tags: ["癌症医疗", "治疗费用", "高龄可投"],
                 description: "适合中高风险及高龄用户优先考虑癌症相关保障缺口时参考。"
-            },
-            {
-                name: "Manulife 宏利癌症保障计划",
-                company: "宏利 Manulife Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "确诊给付"],
-                description: "适合希望重点补强癌症给付或相关医疗缺口、但未必适合传统重疾方案的用户参考。"
             },
             {
                 name: "AIA 癌症保障计划",
                 company: "友邦 AIA Hong Kong",
                 category: "防癌险",
                 region: "香港",
-                tags: ["癌症保障", "专项给付"],
+                tags: ["癌症保障", "确诊即赔", "品牌保障"],
                 description: "适合希望针对癌症风险做专项准备、且当前身体风险处于中等至中高区间的长者参考。"
             },
-            {
-                name: "AIA 癌症医疗补充计划",
-                company: "友邦 AIA Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症医疗", "费用报销"],
-                description: "适合希望在住院医疗保障之外，再对癌症相关财务风险做专项补强的长者用户参考。"
-            },
-            {
-                name: "Sun Life 癌症医疗保障计划",
-                company: "永明 Sun Life Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症医疗", "治疗费用"],
-                description: "适合希望针对癌症治疗费用或确诊后财务压力做补充准备的长者用户参考。"
-            },
-            {
-                name: "Sun Life 癌症关爱保障计划",
-                company: "永明 Sun Life Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症关爱", "持续保障"],
-                description: "适合希望围绕癌症高发风险做专项补充，并兼顾治疗后财务恢复压力的长者参考。"
-            },
-            {
-                name: "Zurich 癌症保障计划",
-                company: "苏黎世 Zurich Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "欧洲品牌"],
-                description: "适合中高风险用户在传统医疗险承保空间有限时，优先评估癌症专项保障的替代方案。"
-            },
-            {
-                name: "中国太平防癌医疗保障",
-                company: "中国太平 China Taiping Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["防癌医疗", "中资品牌"],
-                description: "适合高龄或慢病用户在医疗主险选择受限时，优先考虑癌症专项缺口的补充保障。"
-            },
-            {
-                name: "YF Life 癌症保障计划",
-                company: "万通保险 YF Life",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "专项给付"],
-                description: "适合希望通过专项型产品补足癌症保障空缺、并分散传统医疗险核保压力的用户参考。"
-            },
-            {
-                name: "HSBC Life 癌症保障计划",
-                company: "汇丰保险 HSBC Life Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "银行品牌"],
-                description: "适合希望针对癌症治疗开支与确诊后财务压力做专项补充准备的长者参考。"
-            },
-            {
-                name: "BOC Life 癌症保障计划",
-                company: "中银人寿 BOC Life",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "中资品牌"],
-                description: "适合在传统重疾或全面医疗方案选择受限时，优先补足癌症专项保障缺口的用户参考。"
-            },
-            {
-                name: "BOC Life 癌症医疗补充计划",
-                company: "中银人寿 BOC Life",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症医疗", "费用报销"],
-                description: "适合在基础医疗保障之外，进一步补足癌症专项治疗费用或确诊赔付缺口的长者参考。"
-            },
-            {
-                name: "CTF Life 防癌保障计划",
-                company: "周大福人寿 CTF Life",
-                category: "防癌险",
-                region: "香港",
-                tags: ["防癌保障", "周大福品牌"],
-                description: "适合希望把癌症高发风险作为优先缺口管理、并分散全面医疗核保压力的长者参考。"
-            },
-            {
-                name: "FWD 癌症保障计划",
-                company: "FWD 富卫香港",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "灵活给付"],
-                description: "适合希望围绕癌症风险做专项补强、并保留一定高龄阶段参考空间的用户。"
-            },
-            {
-                name: "Prudential 癌症保障计划",
-                company: "保诚 Prudential Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "重大疾病"],
-                description: "适合希望在基础住院保障之外，进一步对癌症治疗与确诊财务风险做专项准备的用户参考。"
-            },
-            {
-                name: "Generali 忠意癌症保障计划",
-                company: "忠意 Generali Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "欧洲品牌"],
-                description: "适合中高风险及高龄用户在全面医疗险受限时，将癌症专项保障作为优先缺口管理方向。"
-            },
-            {
-                name: "Chubb 癌症保障计划",
-                company: "安达人寿 Chubb Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "高龄友好"],
-                description: "适合高龄或慢病用户在传统重疾险承保空间有限时，优先考虑癌症专项保障的补充方案。"
-            },
-            {
-                name: "Bupa 癌症支援保障计划",
-                company: "保柏 Bupa Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症支援", "国际品牌"],
-                description: "适合希望围绕癌症高发风险做专项补强，并减少全面重疾保障配置压力的长者参考。"
-            },
-            {
-                name: "Cigna 癌症医疗保障计划",
-                company: "信诺 Cigna Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症医疗", "国际品牌"],
-                description: "适合希望针对癌症治疗费用做专项补充，并与住院医疗险形成责任分工的长者参考。"
-            },
-            {
-                name: "Allianz 癌症保障计划",
-                company: "安联 Allianz Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "欧洲品牌"],
-                description: "适合中高风险用户在传统医疗险承保空间有限时，优先评估癌症专项保障作为替代补充。"
-            },
-            {
-                name: "Taikang Life 防癌保障计划",
-                company: "泰康人寿香港 Taikang Life Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["防癌保障", "内地背景"],
-                description: "适合希望对癌症治疗费用与确诊后经济压力做专项准备，并保留一定高龄参考空间的用户。"
-            },
-            {
-                name: "中国人寿（海外）防癌保障计划",
-                company: "中国人寿（海外） China Life (Overseas)",
-                category: "防癌险",
-                region: "香港",
-                tags: ["防癌保障", "中资品牌"],
-                description: "适合希望把癌症高发风险作为优先管理缺口，并补充传统重疾方案不足的长者参考。"
-            },
-            {
-                name: "Fubon 富邦香港癌症保障计划",
-                company: "富邦人寿香港 Fubon Life Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "台湾背景"],
-                description: "适合希望针对癌症治疗及复康阶段财务压力做专项补充安排的用户参考。"
-            },
-            {
-                name: "中国平安（香港）癌症保障计划",
-                company: "中国平安（香港） Ping An Hong Kong",
-                category: "防癌险",
-                region: "香港",
-                tags: ["癌症保障", "平安品牌"],
-                description: "适合中高风险及高龄用户在全面医疗险承保受限时，优先评估癌症专项保障缺口。"
-            },
-
             // 意外险
             {
                 name: "FWD 全方位意外保障计划",
-                company: "FWD 富卫香港",
+                company: "富卫 FWD Hong Kong",
                 category: "意外险",
                 region: "香港",
                 tags: ["意外保障", "跌倒骨折", "高龄友好"],
@@ -645,31 +636,15 @@
                 company: "蓝十字 Blue Cross Hong Kong",
                 category: "意外险",
                 region: "香港",
-                tags: ["意外保障", "跌倒骨折"],
+                tags: ["意外保障", "日常意外", "低门槛"],
                 description: "适合作为长者基础兜底型保障，重点补充跌倒、扭伤、骨折等日常意外风险。"
-            },
-            {
-                name: "AXA 安盛意外保障计划",
-                company: "安盛 AXA Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "基础兜底"],
-                description: "适合希望优先建立基础意外保障、并应对日常突发跌倒伤害风险的长者参考。"
-            },
-            {
-                name: "AXA 长者意外医疗保障计划",
-                company: "安盛 AXA Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "医疗保障"],
-                description: "适合作为高龄阶段日常意外医疗及伤残风险的基础补充方案，便于先建立保障底座。"
             },
             {
                 name: "AIA 个人意外保障计划",
                 company: "友邦 AIA Hong Kong",
                 category: "意外险",
                 region: "香港",
-                tags: ["意外保障", "品牌保障"],
+                tags: ["意外保障", "身故伤残", "医疗报销"],
                 description: "适合预算有限但仍希望补充意外身故、伤残及意外医疗责任的长者用户参考。"
             },
             {
@@ -677,192 +652,25 @@
                 company: "宏利 Manulife Hong Kong",
                 category: "意外险",
                 region: "香港",
-                tags: ["意外保障", "高龄友好"],
+                tags: ["意外保障", "高龄可投", "基础兜底"],
                 description: "适合高龄阶段优先考虑基础意外风险补偿、并作为最低门槛保障组合之一。"
             },
+            // 重疾险
             {
-                name: "Zurich 个人意外保险",
-                company: "苏黎世 Zurich Hong Kong",
-                category: "意外险",
+                name: "AIA 危疾全护保障",
+                company: "友邦 AIA Hong Kong",
+                category: "重疾险",
                 region: "香港",
-                tags: ["意外保障", "欧洲品牌"],
-                description: "适合希望就常见意外伤害先建立基础赔付保障的长者用户作比较参考。"
+                tags: ["重疾险", "危疾保障", "多次赔付"],
+                description: "适合希望获得全面重疾保障、预算充足且健康状况良好的长者参考。"
             },
             {
-                name: "Zurich 长者意外支援计划",
-                company: "苏黎世 Zurich Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "支援计划"],
-                description: "适合希望针对高龄阶段高频发生的跌伤骨折风险，先建立基础赔付保障的长者参考。"
-            },
-            {
-                name: "Chubb 个人意外保障计划",
-                company: "安达人寿 Chubb Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "高龄友好"],
-                description: "适合在其他健康险承保条件有限时，优先配置较易理解且门槛较低的意外保障。"
-            },
-            {
-                name: "Chubb 银龄意外保障计划",
-                company: "安达人寿 Chubb Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["银龄意外", "专项保障"],
-                description: "适合高龄或慢病用户优先考虑低门槛意外保障，作为整体保障组合中的基础兜底。"
-            },
-            {
-                name: "中国太平意外保障计划",
-                company: "中国太平 China Taiping Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "中资品牌"],
-                description: "适合作为长者日常意外风险的基础补偿方案，尤其适用于预算优先型用户参考。"
-            },
-            {
-                name: "中国太平长者意外支援计划",
-                company: "中国太平 China Taiping Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "支援计划"],
-                description: "适合作为长者高频意外风险的基础保障方案，尤其适合先做最低门槛兜底配置。"
-            },
-            {
-                name: "Generali 忠意个人意外保障",
-                company: "忠意 Generali Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "欧洲品牌"],
-                description: "适合希望用较简化的意外险先建立基础保障，再视预算逐步补充其他健康险的用户参考。"
-            },
-            {
-                name: "Generali 长者意外支援计划",
-                company: "忠意 Generali Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "支援计划"],
-                description: "适合希望把银龄阶段常见意外风险先做基础管理，并分阶段补充其他健康险的用户参考。"
-            },
-            {
-                name: "Bupa 个人意外保障计划",
-                company: "保柏 Bupa Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "国际品牌"],
-                description: "适合作为长者基础意外兜底方案之一，重点覆盖跌倒、扭伤及骨折等常见风险。"
-            },
-            {
-                name: "Prudential 个人意外保障计划",
+                name: "PRUHealth 危疾多重保",
                 company: "保诚 Prudential Hong Kong",
-                category: "意外险",
+                category: "重疾险",
                 region: "香港",
-                tags: ["意外保障", "品牌保障"],
-                description: "适合希望先以较低门槛建立意外身故、伤残和意外医疗基础保障的长者参考。"
-            },
-            {
-                name: "Sun Life 个人意外保障计划",
-                company: "永明 Sun Life Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "高龄友好"],
-                description: "适合预算有限但仍希望先配置常见意外风险保障的长者用户作为基础方案参考。"
-            },
-            {
-                name: "Sun Life 长者意外支援计划",
-                company: "永明 Sun Life Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "支援计划"],
-                description: "适合作为长者阶段应对跌倒、扭伤及骨折风险的基础意外保障方案参考。"
-            },
-            {
-                name: "HSBC Life 意外保障计划",
-                company: "汇丰保险 HSBC Life Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "银行品牌"],
-                description: "适合希望优先通过大型金融品牌补充基础意外风险赔付责任的长者参考。"
-            },
-            {
-                name: "BOC Insurance 个人意外保障计划",
-                company: "中银保险 BOC Insurance Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "中资品牌"],
-                description: "适合作为长者日常意外事故的基础保障方案，尤其适用于预算优先型用户参考。"
-            },
-            {
-                name: "BOC Insurance 银龄意外保障计划",
-                company: "中银保险 BOC Insurance Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["银龄意外", "专项保障"],
-                description: "适合作为银龄阶段意外事故的基础赔付保障，用于补足预算有限时的最基础风险保护。"
-            },
-            {
-                name: "BOC Life 长者意外保障计划",
-                company: "中银人寿 BOC Life",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "高龄友好"],
-                description: "适合作为高龄阶段优先考虑的基础意外保障之一，尤其适用于预算优先型长者用户参考。"
-            },
-            {
-                name: "YF Life 意外保障计划",
-                company: "万通保险 YF Life",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "灵活选择"],
-                description: "适合希望用简单直接的意外保障先搭建基础保护层，再逐步扩展其他健康险的用户参考。"
-            },
-            {
-                name: "CTF Life 个人意外保障计划",
-                company: "周大福人寿 CTF Life",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "周大福品牌"],
-                description: "适合希望优先管理跌倒、骨折等意外风险，并通过简化产品先建立保障底座的长者参考。"
-            },
-            {
-                name: "Allianz 安联个人意外保障计划",
-                company: "安联 Allianz Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "欧洲品牌"],
-                description: "适合作为常见意外事故的基础赔付保障，用于补足高龄阶段较易发生的跌伤骨折风险。"
-            },
-            {
-                name: "Cigna 个人意外保障计划",
-                company: "信诺 Cigna Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "国际品牌"],
-                description: "适合作为长者日常意外事故的基础兜底方案，用于补充跌倒、骨折等常见风险。"
-            },
-            {
-                name: "中国人寿（海外）个人意外保障计划",
-                company: "中国人寿（海外） China Life (Overseas)",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "中资品牌"],
-                description: "适合作为长者常见跌伤、骨折等意外风险的基础补偿保障，并作为先行配置方案参考。"
-            },
-            {
-                name: "Taikang Life 长者意外保障计划",
-                company: "泰康人寿香港 Taikang Life Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["长者意外", "高龄友好"],
-                description: "适合希望优先为高龄阶段常见意外风险建立基础赔付保障的长者用户参考。"
-            },
-            {
-                name: "Fubon 富邦香港个人意外保障",
-                company: "富邦人寿香港 Fubon Life Hong Kong",
-                category: "意外险",
-                region: "香港",
-                tags: ["意外保障", "台湾背景"],
-                description: "适合希望先建立意外身故、伤残及意外医疗基础责任，再逐步扩展其他保障的长者参考。"
+                tags: ["重疾险", "多重保障", "癌症心脏中风"],
+                description: "适合希望获得多次重疾赔付、重视癌症和心血管保障的长者参考。"
             },
 
             // ============ 内地保险 ============
@@ -907,15 +715,6 @@
                 tags: ["易核版2.0", "终身保障"],
                 description: "适合做65岁以内、健康较一般人群候选，保障期限为终身。"
             },
-            {
-                name: "喜乐保重大疾病保险",
-                company: "和谐健康",
-                category: "重疾险",
-                region: "内地",
-                tags: ["老人保险", "65岁封顶"],
-                description: "65岁封顶，可作为中龄过渡候选，适合中老年群体。"
-            },
-
             // 百万医疗险
             {
                 name: "e生保·百万医疗险",
@@ -941,7 +740,6 @@
                 tags: ["高性价比", "灵活选择"],
                 description: "通过设定免赔额对高额住院费用予以全额或大比例报销，是社保的有力补充。"
             },
-
             // 意外险
             {
                 name: "小蜜蜂2号超越版",
@@ -967,7 +765,6 @@
                 tags: ["老年人专属", "骨折保障"],
                 description: "专为老年人设计，覆盖跌倒骨折等常见意外，80岁前可投保。"
             },
-
             // 防癌险
             {
                 name: "孝亲宝·中老年防癌险",
@@ -985,7 +782,6 @@
                 tags: ["终身防癌", "长期保障"],
                 description: "确诊即赔付，涵盖癌症治疗全流程，终身续保，是高龄人群的最后防线。"
             },
-
             // 护理险
             {
                 name: "增多多3号护理险",
@@ -1139,7 +935,7 @@
 
             // 按地区和类别分组
             const grouped = {
-                '香港': { '医疗险': [], '意外险': [], '防癌险': [] },
+                '香港': { '医疗险': [], '意外险': [], '防癌险': [], '重疾险': [] },
                 '内地': { '医疗险': [], '意外险': [], '防癌险': [], '重疾险': [], '护理险': [], '百万医疗险': [] }
             };
 
@@ -1196,27 +992,14 @@
         }
 
         // =============================================
-        // 显示产品详情（简化版本：打开险种介绍弹窗）
+        // 显示产品详情
         // =============================================
         function showProductDetail(productName) {
-            // 根据产品类型找到对应的险种介绍
             const product = allInsuranceProducts.find(p => p.name === productName);
             if (!product) return;
 
-            // 提取险种关键词映射到模态框
-            const categoryMap = {
-                '医疗险': 'modal-million',
-                '百万医疗险': 'modal-million',
-                '意外险': 'modal-accident',
-                '护理险': 'modal-nursing',
-                '重疾险': 'modal-critical',
-                '寿险': 'modal-life',
-                '防癌险': 'modal-cancer'
-            };
-
-            const modalId = categoryMap[product.category] || 'modal-million';
             closeSearchModal();
-            setTimeout(() => openModal(modalId), 200);
+            alert(`【${product.name}】\n\n公司：${product.company}\n类型：${product.category}（${product.region}）\n\n产品简介：\n${product.description}\n\n关键词：${product.tags.join('、')}`);
         }
 
         // =============================================
@@ -1255,1297 +1038,217 @@
         }
 
         // =============================================
-        // 事件监听
+        // 搜索事件监听
         // =============================================
-        searchInput.addEventListener('input', function() {
-            const keyword = this.value.trim();
-            searchClearBtn.style.display = keyword ? 'block' : 'none';
-            
-            if (keyword.length === 0) {
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const keyword = this.value.trim();
+                searchClearBtn.style.display = keyword ? 'block' : 'none';
+                
+                if (keyword.length === 0) {
+                    searchSuggestions.style.display = 'block';
+                    searchResults.style.display = 'none';
+                    searchNoResults.style.display = 'none';
+                } else {
+                    const results = searchProducts(keyword);
+                    renderResults(results, keyword);
+                }
+            });
+        }
+
+        if (searchClearBtn) {
+            searchClearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchClearBtn.style.display = 'none';
                 searchSuggestions.style.display = 'block';
                 searchResults.style.display = 'none';
                 searchNoResults.style.display = 'none';
-            } else {
-                const results = searchProducts(keyword);
-                renderResults(results, keyword);
-            }
-        });
-
-        searchClearBtn.addEventListener('click', function() {
-            searchInput.value = '';
-            searchClearBtn.style.display = 'none';
-            searchSuggestions.style.display = 'block';
-            searchResults.style.display = 'none';
-            searchNoResults.style.display = 'none';
-            searchInput.focus();
-        });
-
-        // 点击外部关闭
-        searchModal.addEventListener('click', function(e) {
-            if (e.target === searchModal) {
-                closeSearchModal();
-            }
-        });
-
-        // ESC 关闭
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && searchModal.style.display === 'flex') {
-                closeSearchModal();
-            }
-        });
-    </script>
-
-    <!-- 产品列表 JavaScript -->
-    <script>
-        // =============================================
-        // 产品真实 URL 映射数据 - 保险公司官网主页
-        // =============================================
-        const productRealUrls = {
-            // ==================== 内地保险 - 百万医疗险 ====================
-            'e生保·百万医疗险': {
-                url: 'https://health.pingan.com',
-                platform: '平安健康保险官网'
-            },
-            '好医保·长期医疗险': {
-                url: 'https://haoyibao.alipay.com/',
-                platform: '蚂蚁保险(支付宝)'
-            },
-            '尊享e生·百万医疗险': {
-                url: 'https://www.zhongan.com/channel/zhonghe/zhuanxiangesheng',
-                platform: '众安保险官网'
-            },
-
-            // ==================== 内地保险 - 意外险 ====================
-            '小蜜蜂2号超越版': {
-                url: 'https://www.sinosig.com',
-                platform: '鼎和保险官网'
-            },
-            '大护甲5号成人意外险': {
-                url: 'https://www.cpic.com.cn',
-                platform: '太平洋保险官网'
-            },
-            '孝心安·老年人意外险': {
-                url: 'https://baoxian.pingan.com',
-                platform: '平安财险官网'
-            },
-
-            // ==================== 内地保险 - 防癌险 ====================
-            '孝亲宝·中老年防癌险': {
-                url: 'https://www.dehuafullife.com',
-                platform: '德华安顾官网'
-            },
-            '平安终身防癌险': {
-                url: 'https://health.pingan.com',
-                platform: '平安健康保险官网'
-            },
-
-            // ==================== 内地保险 - 重疾险 ====================
-            '尊享e生重疾险': {
-                url: 'https://www.zhongan.com',
-                platform: '众安保险官网'
-            },
-            '众民保·重疾险(免健告)': {
-                url: 'https://www.zhongan.com',
-                platform: '众安保险官网'
-            },
-            '易生守护': {
-                url: 'https://www.dehuafullife.com',
-                platform: '德华安顾官网'
-            },
-            'i无忧（易核版）-不含身故': {
-                url: 'https://www.picc.com',
-                platform: '人保寿险官网'
-            },
-            '康乐一生易核版2.0': {
-                url: 'https://www.fosun.com',
-                platform: '复星联合健康官网'
-            },
-            '喜乐保重大疾病保险': {
-                url: 'https://www.hexiehealth.com',
-                platform: '和谐健康官网'
-            },
-
-            // ==================== 内地保险 - 护理险 ====================
-            '增多多3号护理险': {
-                url: 'https://www.kunlunhealth.com',
-                platform: '昆仑健康官网'
-            },
-            '福瑞百岁护理险': {
-                url: 'https://www.fosun.com',
-                platform: '复星联合健康官网'
-            },
-
-            // ==================== 香港保险 - Bupa 保柏 ====================
-            'Bupa Hero VHIS 灵活计划': {
-                url: 'https://www.bupa.com.hk/zh',
-                platform: '保柏香港官网'
-            },
-            'Bupa 自愿医保标准计划': {
-                url: 'https://www.bupa.com.hk/zh',
-                platform: '保柏香港官网'
-            },
-            'Bupa 癌症支援保障计划': {
-                url: 'https://www.bupa.com.hk/zh',
-                platform: '保柏香港官网'
-            },
-            'Bupa 个人意外保障计划': {
-                url: 'https://www.bupa.com.hk/zh',
-                platform: '保柏香港官网'
-            },
-
-            // ==================== 香港保险 - AIA 友邦 ====================
-            'AIA 自愿医保标准计划': {
-                url: 'https://www.aia.com.hk/zh-hk',
-                platform: '友邦香港官网'
-            },
-            'AIA 灵活医疗保障计划': {
-                url: 'https://www.aia.com.hk/zh-hk',
-                platform: '友邦香港官网'
-            },
-            'AIA 癌症保障计划': {
-                url: 'https://www.aia.com.hk/zh-hk',
-                platform: '友邦香港官网'
-            },
-            'AIA 癌症医疗补充计划': {
-                url: 'https://www.aia.com.hk/zh-hk',
-                platform: '友邦香港官网'
-            },
-            'AIA 个人意外保障计划': {
-                url: 'https://www.aia.com.hk/zh-hk',
-                platform: '友邦香港官网'
-            },
-
-            // ==================== 香港保险 - AXA 安盛 ====================
-            'AXA 安盛医疗保障计划': {
-                url: 'https://www.axa.com.hk/cn',
-                platform: '安盛香港官网'
-            },
-            'AXA 防癌保障计划': {
-                url: 'https://www.axa.com.hk/cn',
-                platform: '安盛香港官网'
-            },
-            'AXA 癌症医疗补充计划': {
-                url: 'https://www.axa.com.hk/cn',
-                platform: '安盛香港官网'
-            },
-            'AXA 安盛意外保障计划': {
-                url: 'https://www.axa.com.hk/cn',
-                platform: '安盛香港官网'
-            },
-            'AXA 长者意外医疗保障计划': {
-                url: 'https://www.axa.com.hk/cn',
-                platform: '安盛香港官网'
-            },
-
-            // ==================== 香港保险 - Prudential 保诚 ====================
-            'PRUHealth VHIS EasyChoice': {
-                url: 'https://www.prudential.com.hk',
-                platform: '保诚香港官网'
-            },
-            'Prudential 住院医疗补充计划': {
-                url: 'https://www.prudential.com.hk',
-                platform: '保诚香港官网'
-            },
-            'Prudential 癌症保障计划': {
-                url: 'https://www.prudential.com.hk',
-                platform: '保诚香港官网'
-            },
-            'Prudential 个人意外保障计划': {
-                url: 'https://www.prudential.com.hk',
-                platform: '保诚香港官网'
-            },
-
-            // ==================== 香港保险 - FWD 富卫 ====================
-            'FWD 自愿医保灵活计划': {
-                url: 'https://www.fwd.com.hk/zh',
-                platform: '富卫香港官网'
-            },
-            'FWD 全方位意外保障计划': {
-                url: 'https://www.fwd.com.hk/zh',
-                platform: '富卫香港官网'
-            },
-            'FWD 癌症保障计划': {
-                url: 'https://www.fwd.com.hk/zh',
-                platform: '富卫香港官网'
-            },
-
-            // ==================== 香港保险 - Blue Cross 蓝十字 ====================
-            'Blue Cross 蓝十字住院医疗计划': {
-                url: 'https://www.bluecross.com.hk/zh',
-                platform: '蓝十字保险官网'
-            },
-            'Blue Cross 癌症医疗保障': {
-                url: 'https://www.bluecross.com.hk/zh',
-                platform: '蓝十字保险官网'
-            },
-            'Blue Cross 个人意外保障计划': {
-                url: 'https://www.bluecross.com.hk/zh',
-                platform: '蓝十字保险官网'
-            },
-
-            // ==================== 香港保险 - Manulife 宏利 ====================
-            'Manulife 宏利自愿医保标准计划': {
-                url: 'https://www.manulife.com.hk/zh-hk',
-                platform: '宏利香港官网'
-            },
-            'Manulife 宏利癌症保障计划': {
-                url: 'https://www.manulife.com.hk/zh-hk',
-                platform: '宏利香港官网'
-            },
-            'Manulife 宏利意外保障计划': {
-                url: 'https://www.manulife.com.hk/zh-hk',
-                platform: '宏利香港官网'
-            },
-
-            // ==================== 香港保险 - Cigna 信诺 ====================
-            'Cigna 自愿医保灵活计划': {
-                url: 'https://www.cigna.com.hk/zh',
-                platform: '信诺香港官网'
-            },
-            'Cigna 癌症医疗保障计划': {
-                url: 'https://www.cigna.com.hk/zh',
-                platform: '信诺香港官网'
-            },
-            'Cigna 个人意外保障计划': {
-                url: 'https://www.cigna.com.hk/zh',
-                platform: '信诺香港官网'
-            },
-
-            // ==================== 香港保险 - Allianz 安联 ====================
-            'Allianz 安联住院医疗计划': {
-                url: 'https://www.allianz.com.hk/zh',
-                platform: '安联香港官网'
-            },
-            'Allianz 癌症保障计划': {
-                url: 'https://www.allianz.com.hk/zh',
-                platform: '安联香港官网'
-            },
-            'Allianz 安联个人意外保障计划': {
-                url: 'https://www.allianz.com.hk/zh',
-                platform: '安联香港官网'
-            },
-
-            // ==================== 香港保险 - Bowtie ====================
-            'Bowtie 自愿医保灵活计划': {
-                url: 'https://www.bowtie.com.hk/zh',
-                platform: 'Bowtie官网'
-            },
-
-            // ==================== 香港保险 - 汇丰 HSBC Life ====================
-            'HSBC Life 住院医疗保障计划': {
-                url: 'https://www.hsbc.com.hk/zh-cn',
-                platform: '汇丰保险官网'
-            },
-            'HSBC Life 癌症保障计划': {
-                url: 'https://www.hsbc.com.hk/zh-cn',
-                platform: '汇丰保险官网'
-            },
-            'HSBC Life 意外保障计划': {
-                url: 'https://www.hsbc.com.hk/zh-cn',
-                platform: '汇丰保险官网'
-            },
-
-            // ==================== 香港保险 - 中银人寿 BOC Life ====================
-            'BOC Life 自愿医保标准计划': {
-                url: 'https://www.boclife.com.hk',
-                platform: '中银人寿官网'
-            },
-            'BOC Life 自愿医保灵活计划': {
-                url: 'https://www.boclife.com.hk',
-                platform: '中银人寿官网'
-            },
-            'BOC Life 癌症保障计划': {
-                url: 'https://www.boclife.com.hk',
-                platform: '中银人寿官网'
-            },
-            'BOC Life 癌症医疗补充计划': {
-                url: 'https://www.boclife.com.hk',
-                platform: '中银人寿官网'
-            },
-            'BOC Life 长者意外保障计划': {
-                url: 'https://www.boclife.com.hk',
-                platform: '中银人寿官网'
-            },
-
-            // ==================== 香港保险 - 周大福人寿 CTF Life ====================
-            'CTF Life 自愿医保灵活计划': {
-                url: 'https://www.ctflife.com.hk/zh',
-                platform: '周大福人寿官网'
-            },
-            'CTF Life 标准住院医疗保障计划': {
-                url: 'https://www.ctflife.com.hk/zh',
-                platform: '周大福人寿官网'
-            },
-            'CTF Life 防癌保障计划': {
-                url: 'https://www.ctflife.com.hk/zh',
-                platform: '周大福人寿官网'
-            },
-            'CTF Life 个人意外保障计划': {
-                url: 'https://www.ctflife.com.hk/zh',
-                platform: '周大福人寿官网'
-            },
-
-            // ==================== 香港保险 - Avo ====================
-            'Avo 自愿医保计划': {
-                url: 'https://www.avo.hk/zh',
-                platform: 'Avo保险官网'
-            },
-
-            // ==================== 香港保险 - 万通 YF Life ====================
-            'YF Life 住院医疗保障计划': {
-                url: 'https://www.yflife.com/sc',
-                platform: '万通保险官网'
-            },
-            'YF Life 癌症保障计划': {
-                url: 'https://www.yflife.com/sc',
-                platform: '万通保险官网'
-            },
-            'YF Life 意外保障计划': {
-                url: 'https://www.yflife.com/sc',
-                platform: '万通保险官网'
-            },
-
-            // ==================== 香港保险 - 忠意 Generali ====================
-            'Generali 忠意住院医疗保障': {
-                url: 'https://www.generali.com.hk',
-                platform: '忠意香港官网'
-            },
-            'Generali 忠意癌症保障计划': {
-                url: 'https://www.generali.com.hk',
-                platform: '忠意香港官网'
-            },
-            'Generali 忠意个人意外保障': {
-                url: 'https://www.generali.com.hk',
-                platform: '忠意香港官网'
-            },
-            'Generali 长者意外支援计划': {
-                url: 'https://www.generali.com.hk',
-                platform: '忠意香港官网'
-            },
-
-            // ==================== 香港保险 - 安达 Chubb ====================
-            'Chubb 医疗保障计划': {
-                url: 'https://www.chubb.com/hk-zh',
-                platform: '安达保险官网'
-            },
-            'Chubb 癌症保障计划': {
-                url: 'https://www.chubb.com/hk-zh',
-                platform: '安达保险官网'
-            },
-            'Chubb 个人意外保障计划': {
-                url: 'https://www.chubb.com/hk-zh',
-                platform: '安达保险官网'
-            },
-            'Chubb 银龄意外保障计划': {
-                url: 'https://www.chubb.com/hk-zh',
-                platform: '安达保险官网'
-            },
-
-            // ==================== 香港保险 - 泰康 Taikang Life ====================
-            'Taikang Life 泰康香港住院医疗计划': {
-                url: 'https://www.taikang.com.hk',
-                platform: '泰康人寿香港官网'
-            },
-            'Taikang Life 防癌保障计划': {
-                url: 'https://www.taikang.com.hk',
-                platform: '泰康人寿香港官网'
-            },
-            'Taikang Life 长者意外保障计划': {
-                url: 'https://www.taikang.com.hk',
-                platform: '泰康人寿香港官网'
-            },
-
-            // ==================== 香港保险 - 永明 Sun Life ====================
-            'Sun Life 住院医疗保障计划': {
-                url: 'https://www.sunlife.com.hk',
-                platform: '永明香港官网'
-            },
-            'Sun Life 癌症医疗保障计划': {
-                url: 'https://www.sunlife.com.hk',
-                platform: '永明香港官网'
-            },
-            'Sun Life 癌症关爱保障计划': {
-                url: 'https://www.sunlife.com.hk',
-                platform: '永明香港官网'
-            },
-            'Sun Life 个人意外保障计划': {
-                url: 'https://www.sunlife.com.hk',
-                platform: '永明香港官网'
-            },
-            'Sun Life 长者意外支援计划': {
-                url: 'https://www.sunlife.com.hk',
-                platform: '永明香港官网'
-            },
-
-            // ==================== 香港保险 - 苏黎世 Zurich ====================
-            'Zurich 住院医疗保障计划': {
-                url: 'https://www.zurich.com.hk/zh',
-                platform: '苏黎世香港官网'
-            },
-            'Zurich 癌症保障计划': {
-                url: 'https://www.zurich.com.hk/zh',
-                platform: '苏黎世香港官网'
-            },
-            'Zurich 个人意外保险': {
-                url: 'https://www.zurich.com.hk/zh',
-                platform: '苏黎世香港官网'
-            },
-            'Zurich 长者意外支援计划': {
-                url: 'https://www.zurich.com.hk/zh',
-                platform: '苏黎世香港官网'
-            },
-
-            // ==================== 香港保险 - 中国太平 ====================
-            '中国太平住院医疗保障计划': {
-                url: 'https://hk.ctp.com.hk',
-                platform: '中国太平香港官网'
-            },
-            '中国太平防癌医疗保障': {
-                url: 'https://hk.ctp.com.hk',
-                platform: '中国太平香港官网'
-            },
-            '中国太平意外保障计划': {
-                url: 'https://hk.ctp.com.hk',
-                platform: '中国太平香港官网'
-            },
-            '中国太平长者意外支援计划': {
-                url: 'https://hk.ctp.com.hk',
-                platform: '中国太平香港官网'
-            },
-
-            // ==================== 香港保险 - 中国人寿（海外）====================
-            '中国人寿（海外）自愿医保计划': {
-                url: 'https://www.chinalife.com.hk/zh',
-                platform: '中国人寿海外官网'
-            },
-            '中国人寿（海外）防癌保障计划': {
-                url: 'https://www.chinalife.com.hk/zh',
-                platform: '中国人寿海外官网'
-            },
-            '中国人寿（海外）个人意外保障计划': {
-                url: 'https://www.chinalife.com.hk/zh',
-                platform: '中国人寿海外官网'
-            },
-
-            // ==================== 香港保险 - 富邦 Fubon ====================
-            'Fubon 富邦香港住院医疗计划': {
-                url: 'https://www.fubonlife.com.hk',
-                platform: '富邦人寿香港官网'
-            },
-            'Fubon 富邦香港癌症保障计划': {
-                url: 'https://www.fubonlife.com.hk',
-                platform: '富邦人寿香港官网'
-            },
-            'Fubon 富邦香港个人意外保障': {
-                url: 'https://www.fubonlife.com.hk',
-                platform: '富邦人寿香港官网'
-            },
-
-            // ==================== 香港保险 - 平安（香港）====================
-            '中国平安（香港）住院医疗保障计划': {
-                url: 'https://www.pingan.com.hk',
-                platform: '中国平安香港官网'
-            },
-            '中国平安（香港）癌症保障计划': {
-                url: 'https://www.pingan.com.hk',
-                platform: '中国平安香港官网'
-            },
-
-            // ==================== 香港保险 - 中银保险 BOC Insurance ====================
-            'BOC Insurance 个人意外保障计划': {
-                url: 'https://www.bocinsure.com.hk',
-                platform: '中银保险官网'
-            },
-            'BOC Insurance 银龄意外保障计划': {
-                url: 'https://www.bocinsure.com.hk',
-                platform: '中银保险官网'
-            }
-        };
-
-        // =============================================
-        // 获取产品真实链接
-        // =============================================
-        function getProductUrl(productName) {
-            const product = productRealUrls[productName];
-            if (product) {
-                return {
-                    url: product.url,
-                    platform: product.platform
-                };
-            }
-            // 如果没有特定链接，返回默认搜索链接
-            return {
-                url: `https://www.baidu.com/s?wd=${encodeURIComponent(productName + ' 保险')}`,
-                platform: '百度搜索'
-            };
-        }
-
-        // =============================================
-        // 产品列表状态管理
-        // =============================================
-        let currentCategory = 'all';
-        let displayedProducts = [];
-        const productsPerPage = 9;
-        let currentPage = 1;
-
-        // 获取所有精选产品（从 allInsuranceProducts 中筛选）
-        function getFeaturedProducts() {
-            // 从数据库中筛选代表性产品
-            const featuredCategories = ['百万医疗险', '意外险', '护理险', '重疾险', '防癌险'];
-            const featured = [];
-            
-            featuredCategories.forEach(category => {
-                const products = allInsuranceProducts.filter(p => p.category === category);
-                // 每个分类最多取3个产品
-                featured.push(...products.slice(0, 3));
+                searchInput.focus();
             });
-            
-            return featured;
         }
 
-        // 根据分类筛选产品
-        function filterProducts(products, category) {
-            if (category === 'all') return products;
-            return products.filter(p => p.category === category);
-        }
-
-        // 渲染产品卡片
-        function renderProductCard(product) {
-            const linkInfo = getProductUrl(product.name);
-            const tagsHtml = product.tags.slice(0, 3).map(tag => 
-                `<span class="product-tag">${escapeHtml(tag)}</span>`
-            ).join('');
-            
-            return `
-                <div class="product-card">
-                    <div class="product-header">
-                        <div class="product-title-row">
-                            <h3 class="product-name">${escapeHtml(product.name)}</h3>
-                            <div class="product-badges">
-                                <span class="product-badge badge-region">${product.region}</span>
-                                <span class="product-badge badge-category">${escapeHtml(product.category)}</span>
-                            </div>
-                        </div>
-                        <div class="product-company">
-                            <i class="fas fa-building"></i> ${escapeHtml(product.company)}
-                        </div>
-                    </div>
-                    <div class="product-body">
-                        <p class="product-desc">${escapeHtml(product.description)}</p>
-                        <div class="product-tags">
-                            ${tagsHtml}
-                        </div>
-                    </div>
-                    <div class="product-footer">
-                        <span class="product-platform">
-                            <i class="fas fa-external-link-alt"></i> ${linkInfo.platform}
-                        </span>
-                        <a href="${linkInfo.url}" target="_blank" rel="noopener noreferrer" class="product-link-btn" onclick="event.stopPropagation()">
-                            <i class="fas fa-external-link-square-alt"></i> 查看详情
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-
-        // 渲染产品列表
-        function renderProducts(products) {
-            const container = document.getElementById('products-grid');
-            if (!container) return;
-            
-            container.innerHTML = products.map(renderProductCard).join('');
-            
-            // 更新加载更多按钮状态
-            const loadMoreContainer = document.getElementById('load-more-container');
-            const loadMoreBtn = document.getElementById('load-more-btn');
-            if (displayedProducts.length >= getFeaturedProducts().length) {
-                loadMoreContainer.style.display = 'none';
-            } else {
-                loadMoreContainer.style.display = 'block';
-                loadMoreBtn.innerHTML = '<i class="fas fa-plus-circle"></i> 加载更多产品';
-            }
-        }
-
-        // 切换分类
-        function switchCategory(category) {
-            currentCategory = category;
-            currentPage = 1;
-            
-            // 更新标签样式
-            document.querySelectorAll('.category-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.dataset.category === category) {
-                    tab.classList.add('active');
+        if (searchModal) {
+            searchModal.addEventListener('click', function(e) {
+                if (e.target === searchModal) {
+                    closeSearchModal();
                 }
             });
-            
-            // 筛选并显示产品
-            const allProducts = getFeaturedProducts();
-            displayedProducts = filterProducts(allProducts, category).slice(0, productsPerPage * currentPage);
-            renderProducts(displayedProducts);
         }
 
-        // 加载更多产品
-        function loadMoreProducts() {
-            currentPage++;
-            const allProducts = getFeaturedProducts();
-            const filteredProducts = filterProducts(allProducts, currentCategory);
-            displayedProducts = filteredProducts.slice(0, productsPerPage * currentPage);
-            renderProducts(displayedProducts);
-        }
-
-        // 页面加载时初始化产品列表
-        document.addEventListener('DOMContentLoaded', function() {
-            switchCategory('all');
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchModal && searchModal.style.display === 'flex') {
+                closeSearchModal();
+            }
         });
-    </script>
 
-    <!-- 登录/注册弹窗 -->
-    <div id="auth-modal" class="auth-modal-overlay">
-        <div class="auth-modal-content">
-            <button class="auth-close-btn" onclick="closeAuthModal()">
-                <i class="fas fa-times"></i>
-            </button>
-            
-            <!-- 登录表单 -->
-            <div id="login-form-container" class="auth-form-container">
-                <div class="auth-header">
-                    <div class="auth-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h2>欢迎回来</h2>
-                    <p>登录 SilverGuard 账户</p>
-                </div>
-                <form id="login-form" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label for="login-email">
-                            <i class="fas fa-envelope"></i> 电子邮箱
-                        </label>
-                        <input type="email" id="login-email" placeholder="请输入邮箱地址" required>
-                        <span class="error-tip" id="login-email-error"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="login-password">
-                            <i class="fas fa-lock"></i> 密码
-                        </label>
-                        <div class="password-input-wrapper">
-                            <input type="password" id="login-password" placeholder="请输入密码" required>
-                            <button type="button" class="toggle-password" onclick="togglePassword('login-password', this)">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <span class="error-tip" id="login-password-error"></span>
-                    </div>
-                    <button type="submit" class="auth-submit-btn">
-                        <i class="fas fa-sign-in-alt"></i> 登录
-                    </button>
-                </form>
-                <div class="auth-footer">
-                    <p>还没有账户？<a href="#" onclick="switchToRegister()">立即注册</a></p>
-                </div>
-            </div>
-            
-            <!-- 注册表单 -->
-            <div id="register-form-container" class="auth-form-container" style="display: none;">
-                <div class="auth-header">
-                    <div class="auth-icon">
-                        <i class="fas fa-user-plus"></i>
-                    </div>
-                    <h2>创建账户</h2>
-                    <p>注册 SilverGuard 会员</p>
-                </div>
-                <form id="register-form" onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label for="register-username">
-                            <i class="fas fa-user"></i> 用户名
-                        </label>
-                        <input type="text" id="register-username" placeholder="请输入用户名（2-20个字符）" required minlength="2" maxlength="20">
-                        <span class="error-tip" id="register-username-error"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-email">
-                            <i class="fas fa-envelope"></i> 电子邮箱
-                        </label>
-                        <input type="email" id="register-email" placeholder="请输入邮箱地址" required>
-                        <span class="error-tip" id="register-email-error"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">
-                            <i class="fas fa-lock"></i> 密码
-                        </label>
-                        <div class="password-input-wrapper">
-                            <input type="password" id="register-password" placeholder="请输入密码（6-20个字符）" required minlength="6" maxlength="20">
-                            <button type="button" class="toggle-password" onclick="togglePassword('register-password', this)">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <div class="password-strength" id="password-strength">
-                            <div class="strength-bar"></div>
-                            <span class="strength-text">密码强度：</span>
-                        </div>
-                        <span class="error-tip" id="register-password-error"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-confirm-password">
-                            <i class="fas fa-lock"></i> 确认密码
-                        </label>
-                        <div class="password-input-wrapper">
-                            <input type="password" id="register-confirm-password" placeholder="请再次输入密码" required>
-                            <button type="button" class="toggle-password" onclick="togglePassword('register-confirm-password', this)">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                        <span class="error-tip" id="register-confirm-password-error"></span>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="agree-terms" required>
-                            <span class="checkmark"></span>
-                            我已阅读并同意 <a href="#" onclick="showTerms(event)">《用户协议》</a> 和 <a href="#" onclick="showPrivacy(event)">《隐私政策》</a>
-                        </label>
-                        <span class="error-tip" id="agree-terms-error"></span>
-                    </div>
-                    <button type="submit" class="auth-submit-btn">
-                        <i class="fas fa-user-plus"></i> 注册
-                    </button>
-                </form>
-                <div class="auth-footer">
-                    <p>已有账户？<a href="#" onclick="switchToLogin()">立即登录</a></p>
-                </div>
-            </div>
-            
-            <!-- 个人信息页面 -->
-            <div id="profile-container" class="auth-form-container" style="display: none;">
-                <div class="auth-header">
-                    <div class="auth-avatar-large">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <h2 id="profile-username">用户名</h2>
-                    <p>会员中心</p>
-                </div>
-                <div class="profile-info">
-                    <div class="profile-item">
-                        <i class="fas fa-envelope"></i>
-                        <span id="profile-email">email@example.com</span>
-                    </div>
-                    <div class="profile-item">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span id="profile-regdate">注册日期</span>
-                    </div>
-                </div>
-                <div class="profile-actions">
-                    <button class="profile-btn" onclick="editProfile()">
-                        <i class="fas fa-edit"></i> 编辑资料
-                    </button>
-                    <button class="profile-btn logout-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> 退出登录
-                    </button>
-                </div>
-                <div class="auth-footer">
-                    <p><a href="#" onclick="backToHome(event)"><i class="fas fa-arrow-left"></i> 返回首页</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 提示消息 -->
-    <div id="toast" class="toast">
-        <i class="fas fa-check-circle"></i>
-        <span id="toast-message">操作成功</span>
-    </div>
+        // ========== 登录相关功能 ==========
+        let loginType = 'password';
+        let countdown = 0;
+        let timer = null;
 
-    <!-- 用户认证系统 JS -->
-    <script>
-        // =============================================
-        // 用户认证系统 - localStorage 存储
-        // =============================================
-        
-        // 存储用户数据的键名
-        const USERS_KEY = 'silverguard_users';
-        const CURRENT_USER_KEY = 'silverguard_current_user';
-
-        // 初始化用户列表（如果不存在）
-        function initUsers() {
-            const users = localStorage.getItem(USERS_KEY);
-            if (!users) {
-                localStorage.setItem(USERS_KEY, JSON.stringify([]));
-            }
-        }
-
-        // 获取所有用户
-        function getUsers() {
-            return JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-        }
-
-        // 保存用户列表
-        function saveUsers(users) {
-            localStorage.setItem(USERS_KEY, JSON.stringify(users));
-        }
-
-        // 获取当前登录用户
-        function getCurrentUser() {
-            return JSON.parse(localStorage.getItem(CURRENT_USER_KEY) || 'null');
-        }
-
-        // 设置当前登录用户
-        function setCurrentUser(user) {
-            if (user) {
-                localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-            } else {
-                localStorage.removeItem(CURRENT_USER_KEY);
-            }
-        }
-
-        // =============================================
-        // 弹窗控制
-        // =============================================
-        const authModal = document.getElementById('auth-modal');
-        const loginFormContainer = document.getElementById('login-form-container');
-        const registerFormContainer = document.getElementById('register-form-container');
-        const profileContainer = document.getElementById('profile-container');
-
-        function openAuthModal() {
-            const currentUser = getCurrentUser();
-            if (currentUser) {
-                showUserProfile();
-            } else {
-                switchToLogin();
-            }
-            authModal.style.display = 'flex';
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeAuthModal() {
-            authModal.style.display = 'none';
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
             document.body.style.overflow = '';
             // 重置表单
-            document.getElementById('login-form').reset();
-            document.getElementById('register-form').reset();
-            clearAllErrors();
+            document.getElementById('loginForm').reset();
         }
 
-        function switchToLogin() {
-            loginFormContainer.style.display = 'block';
-            registerFormContainer.style.display = 'none';
-            profileContainer.style.display = 'none';
-            clearAllErrors();
-        }
-
-        function switchToRegister() {
-            loginFormContainer.style.display = 'none';
-            registerFormContainer.style.display = 'block';
-            profileContainer.style.display = 'none';
-            clearAllErrors();
-        }
-
-        function showUserProfile() {
-            loginFormContainer.style.display = 'none';
-            registerFormContainer.style.display = 'none';
-            profileContainer.style.display = 'block';
+        function switchLoginTab(type) {
+            loginType = type;
+            document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
             
-            const user = getCurrentUser();
-            if (user) {
-                document.getElementById('profile-username').textContent = user.username;
-                document.getElementById('profile-email').textContent = user.email;
-                document.getElementById('profile-regdate').textContent = '注册于 ' + formatDate(user.regDate);
+            if (type === 'password') {
+                document.getElementById('passwordGroup').style.display = 'block';
+                document.getElementById('codeGroup').style.display = 'none';
+                document.getElementById('password').required = true;
+                document.getElementById('verifyCode').required = false;
+            } else {
+                document.getElementById('passwordGroup').style.display = 'none';
+                document.getElementById('codeGroup').style.display = 'block';
+                document.getElementById('password').required = false;
+                document.getElementById('verifyCode').required = true;
             }
         }
 
-        function backToHome(e) {
-            e.preventDefault();
-            closeAuthModal();
-        }
-
-        function editProfile() {
-            showToast('功能开发中...', 'info');
-        }
-
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日';
-        }
-
-        // =============================================
-        // 表单验证
-        // =============================================
-        function showError(fieldId, message) {
-            const errorEl = document.getElementById(fieldId + '-error');
-            if (errorEl) {
-                errorEl.textContent = message;
-                errorEl.style.display = 'block';
-            }
-        }
-
-        function clearError(fieldId) {
-            const errorEl = document.getElementById(fieldId + '-error');
-            if (errorEl) {
-                errorEl.textContent = '';
-                errorEl.style.display = 'none';
-            }
-        }
-
-        function clearAllErrors() {
-            document.querySelectorAll('.error-tip').forEach(el => {
-                el.textContent = '';
-                el.style.display = 'none';
-            });
-        }
-
-        // 邮箱格式验证
-        function isValidEmail(email) {
-            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return re.test(email);
-        }
-
-        // 密码强度检查
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            if (password.length >= 6) strength++;
-            if (password.length >= 10) strength++;
-            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
-            if (/\d/.test(password)) strength++;
-            if (/[^a-zA-Z0-9]/.test(password)) strength++;
-            return Math.min(strength, 4);
-        }
-
-        function updatePasswordStrength(password) {
-            const strengthBar = document.querySelector('.strength-bar');
-            const strengthText = document.querySelector('.strength-text');
-            const strength = checkPasswordStrength(password);
-            
-            const levels = ['非常弱', '弱', '中等', '强', '非常强'];
-            const colors = ['#ff4d4f', '#ff7a45', '#ffa940', '#52c41a', '#52c41a'];
-            
-            strengthBar.style.width = (strength * 25) + '%';
-            strengthBar.style.backgroundColor = colors[strength];
-            strengthText.textContent = '密码强度：' + levels[strength];
-            strengthText.style.color = colors[strength];
-        }
-
-        // 密码显示/隐藏切换
-        function togglePassword(inputId, btn) {
-            const input = document.getElementById(inputId);
-            const icon = btn.querySelector('i');
-            if (input.type === 'password') {
-                input.type = 'text';
+        function togglePassword() {
+            const pwdInput = document.getElementById('password');
+            const icon = document.querySelector('.toggle-password i');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
                 icon.className = 'fas fa-eye-slash';
             } else {
-                input.type = 'password';
+                pwdInput.type = 'password';
                 icon.className = 'fas fa-eye';
             }
         }
 
-        // =============================================
-        // 登录处理
-        // =============================================
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('login-email').value.trim();
-            const password = document.getElementById('login-password').value;
-            
-            clearAllErrors();
-            let hasError = false;
-
-            // 验证邮箱
-            if (!email) {
-                showError('login-email', '请输入邮箱地址');
-                hasError = true;
-            } else if (!isValidEmail(email)) {
-                showError('login-email', '邮箱格式不正确');
-                hasError = true;
-            }
-
-            // 验证密码
-            if (!password) {
-                showError('login-password', '请输入密码');
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            // 查找用户
-            const users = getUsers();
-            const user = users.find(u => u.email === email);
-
-            if (!user) {
-                showError('login-email', '该邮箱尚未注册');
+        function sendCode() {
+            const phone = document.getElementById('phone').value;
+            if (!phone || phone.length !== 11) {
+                alert('请输入正确的手机号');
                 return;
             }
+            
+            if (countdown > 0) return;
+            
+            // 模拟发送验证码
+            alert('验证码已发送到您的手机：' + phone);
+            countdown = 60;
+            const codeBtn = document.querySelector('.btn-code');
+            codeBtn.disabled = true;
+            
+            timer = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    codeBtn.textContent = `${countdown}秒后重试`;
+                } else {
+                    clearInterval(timer);
+                    codeBtn.textContent = '获取验证码';
+                    codeBtn.disabled = false;
+                }
+            }, 1000);
+        }
 
-            if (user.password !== password) {
-                showError('login-password', '密码错误');
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phone').value;
+            
+            if (!phone || phone.length !== 11) {
+                alert('请输入正确的手机号');
                 return;
             }
-
-            // 登录成功
-            setCurrentUser(user);
-            updateLoginState();
-            closeAuthModal();
-            showToast('登录成功，欢迎回来 ' + user.username + '！');
+            
+            // 模拟登录成功
+            const userBtn = document.querySelector('.btn-login');
+            userBtn.innerHTML = '<i class="fas fa-user-check"></i> 我的账户';
+            userBtn.onclick = showUserMenu;
+            
+            closeLoginModal();
+            alert('登录成功！欢迎回来。');
         }
 
-        // =============================================
-        // 注册处理
-        // =============================================
-        function handleRegister(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('register-username').value.trim();
-            const email = document.getElementById('register-email').value.trim();
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm-password').value;
-            const agreeTerms = document.getElementById('agree-terms').checked;
-            
-            clearAllErrors();
-            let hasError = false;
-
-            // 验证用户名
-            if (!username) {
-                showError('register-username', '请输入用户名');
-                hasError = true;
-            } else if (username.length < 2 || username.length > 20) {
-                showError('register-username', '用户名需要2-20个字符');
-                hasError = true;
-            }
-
-            // 验证邮箱
-            if (!email) {
-                showError('register-email', '请输入邮箱地址');
-                hasError = true;
-            } else if (!isValidEmail(email)) {
-                showError('register-email', '邮箱格式不正确');
-                hasError = true;
-            } else {
-                // 检查邮箱是否已注册
-                const users = getUsers();
-                if (users.some(u => u.email === email)) {
-                    showError('register-email', '该邮箱已被注册');
-                    hasError = true;
-                }
-            }
-
-            // 验证密码
-            if (!password) {
-                showError('register-password', '请输入密码');
-                hasError = true;
-            } else if (password.length < 6 || password.length > 20) {
-                showError('register-password', '密码需要6-20个字符');
-                hasError = true;
-            }
-
-            // 验证确认密码
-            if (!confirmPassword) {
-                showError('register-confirm-password', '请再次输入密码');
-                hasError = true;
-            } else if (password !== confirmPassword) {
-                showError('register-confirm-password', '两次输入的密码不一致');
-                hasError = true;
-            }
-
-            // 验证用户协议
-            if (!agreeTerms) {
-                showError('agree-terms', '请阅读并同意用户协议和隐私政策');
-                hasError = true;
-            }
-
-            if (hasError) return;
-
-            // 创建新用户
-            const newUser = {
-                id: Date.now().toString(),
-                username: username,
-                email: email,
-                password: password,
-                regDate: new Date().toISOString()
-            };
-
-            const users = getUsers();
-            users.push(newUser);
-            saveUsers(users);
-
-            // 自动登录
-            setCurrentUser(newUser);
-            updateLoginState();
-            closeAuthModal();
-            showToast('注册成功，欢迎加入 SilverGuard！');
+        function showRegister() {
+            alert('注册功能开发中，请稍候...');
         }
 
-        // =============================================
-        // 登出处理
-        // =============================================
-        function logout() {
-            setCurrentUser(null);
-            updateLoginState();
-            closeAuthModal();
-            showToast('已成功退出登录');
+        function showUserMenu() {
+            alert('用户菜单：\n\n1. 个人中心\n2. 我的收藏\n3. 历史记录\n4. 退出登录');
         }
 
-        // =============================================
-        // 更新登录状态显示
-        // =============================================
-        function updateLoginState() {
-            const currentUser = getCurrentUser();
-            const loginBtn = document.getElementById('loginBtn');
-            const userMenu = document.getElementById('userMenu');
-            
-            if (currentUser) {
-                // 已登录状态
-                if (loginBtn) loginBtn.style.display = 'none';
-                if (userMenu) {
-                    userMenu.style.display = 'flex';
-                    document.getElementById('userName').textContent = currentUser.username;
-                }
-            } else {
-                // 未登录状态
-                if (loginBtn) loginBtn.style.display = 'flex';
-                if (userMenu) userMenu.style.display = 'none';
-            }
-        }
-
-        // =============================================
-        // 页面加载时检查登录状态
-        // =============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            initUsers();
-            updateLoginState();
-            
-            // 密码强度监听
-            const passwordInput = document.getElementById('register-password');
-            if (passwordInput) {
-                passwordInput.addEventListener('input', function() {
-                    updatePasswordStrength(this.value);
-                });
+        // 点击弹窗外部关闭
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
             }
         });
 
-        // =============================================
-        // 点击外部关闭弹窗
-        // =============================================
-        authModal.addEventListener('click', function(e) {
-            if (e.target === authModal) {
-                closeAuthModal();
-            }
-        });
-
-        // ESC 关闭弹窗
+        // ESC 键关闭弹窗
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && authModal.style.display === 'flex') {
-                closeAuthModal();
+            if (e.key === 'Escape') {
+                closeLoginModal();
             }
         });
 
-        // =============================================
-        // Toast 提示消息
-        // =============================================
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toast-message');
-            const toastIcon = toast.querySelector('i');
+        // ========== 保险公司列表展开/收起 ==========
+        function toggleCompanies(btn, listId, event) {
+            event.stopPropagation();
+            const listContainer = document.getElementById(listId);
             
-            toastMessage.textContent = message;
-            
-            // 根据类型设置图标和颜色
-            if (type === 'success') {
-                toastIcon.className = 'fas fa-check-circle';
-                toast.style.borderLeftColor = '#52c41a';
-            } else if (type === 'error') {
-                toastIcon.className = 'fas fa-times-circle';
-                toast.style.borderLeftColor = '#ff4d4f';
-            } else if (type === 'info') {
-                toastIcon.className = 'fas fa-info-circle';
-                toast.style.borderLeftColor = '#1890ff';
-            }
-            
-            toast.classList.add('show');
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-
-        // 用户菜单下拉
-        document.addEventListener('click', function(e) {
-            const userMenu = document.querySelector('.user-menu');
-            if (!userMenu) return;
-            
-            if (userMenu.contains(e.target)) {
-                const dropdown = userMenu.querySelector('.user-dropdown');
-                if (dropdown) {
-                    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-                }
+            if (listContainer.classList.contains('expanded')) {
+                listContainer.classList.remove('expanded');
+                btn.classList.remove('expanded');
+                btn.innerHTML = `查看全部 ${listContainer.children.length} 家 <i class="fas fa-chevron-down"></i>`;
             } else {
-                const dropdown = userMenu.querySelector('.user-dropdown');
-                if (dropdown) {
-                    dropdown.style.display = 'none';
-                }
+                listContainer.classList.add('expanded');
+                btn.classList.add('expanded');
+                btn.innerHTML = `收起 <i class="fas fa-chevron-up"></i>`;
             }
+        }
+
+        // 卡片点击展开效果
+        function expandCategory(category) {
+            console.log('Expanded category:', category);
+        }
+
+        // ========== 筛选功能 ==========
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                const cards = document.querySelectorAll('.category-card');
+
+                cards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                    } else {
+                        const tags = card.querySelectorAll('.category-tags .tag');
+                        let shouldShow = false;
+                        tags.forEach(tag => {
+                            if (tag.classList.contains(filter + '-tag')) {
+                                shouldShow = true;
+                            }
+                        });
+
+                        if (shouldShow) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 300);
+                        }
+                    }
+                });
+            });
         });
-
-        // 协议提示
-        function showTerms(e) {
-            e.preventDefault();
-            showToast('用户协议：SilverGuard 致力于为您提供优质的保险推荐服务...', 'info');
-        }
-
-        function showPrivacy(e) {
-            e.preventDefault();
-            showToast('隐私政策：我们承诺保护您的个人信息安全...', 'info');
-        }
-    </script>
-
-    <!-- 控制弹窗逻辑的JS部分 -->
-    <script>
-        const modalData = {
-            'modal-million': {
-                title: '百万医疗险 - 详情',
-                desc: '百万医疗险的核心在于“杠杆高”，通过设定免赔额（一般一万到两万元）对高额住院费用（重病住院）予以全额或大比例报销。一般具备保证续保期的产品能够确保持续的医疗保护网，不限社保内外用药。'
-            },
-            'modal-accident': {
-                title: '意外险 - 详情',
-                desc: '主要理赔两类责任：1. 意外身故/伤残（依据伤残等级，给予一笔一次性的赔偿资金）。2. 意外医疗（因意外如猫抓狗咬、骨折等造成的医疗费用，按比例进行报销）。由于不带储蓄功能或投资属性，保费极为低廉，是人人必备的底座保障。'
-            },
-            'modal-nursing': {
-                title: '护理险 - 详情',
-                desc: '通常针对失能状态（如无法独立进食、洗澡、穿衣等），提供固定的护理金额津贴或者专门的护工上门服务。应对老龄化社会中子女精力不足、居家养老风险大的情况。'
-            },
-            'modal-critical': {
-                title: '重疾险 - 详情',
-                desc: '重疾险的主要作用不是“报销医疗费”，而是“收入补偿”。确诊即可获赔一笔约定保额。这笔钱可以用来寻求更好的康复治疗，也可以用来应对因重病导致的停工期间家庭生活开支、房贷车贷偿还。'
-            },
-            'modal-life': {
-                title: '寿险 - 详情',
-                desc: '寿险只判断一条标准：被保险人是否身故或全残。它是一份“留给家人的爱”，主要用于抵冲自身离世后，给整个家庭带来的债务风险（如未还清的房贷）以及赡养父母、抚养子女的财务断层。'
-            },
-            'modal-cancer': {
-                title: '防癌险/防癌医疗险 - 详情',
-                desc: '针对预算有限、或者身体由于“三高”、糖尿病等指标无法通过重疾险/百万医疗险严格健康告知的人群。只保癌症相关的花费，虽然保障范围窄，但极易核保通过，是年龄大、特定慢病人群的最后防线。'
-            }
-        };
-
-        const modalContainer = document.getElementById('modal-container');
-        const modalTitle = document.getElementById('modal-title');
-        const modalDesc = document.getElementById('modal-desc');
-
-        function openModal(modalId) {
-            const data = modalData[modalId];
-            if(data) {
-                modalTitle.textContent = data.title;
-                modalDesc.textContent = data.desc;
-                modalContainer.style.display = 'flex';
-            }
-        }
-
-        function closeModal() {
-            modalContainer.style.display = 'none';
-        }
-        
-        // 点击外部遮罩区也可关闭
-        window.onclick = function(event) {
-            if (event.target == modalContainer) {
-                closeModal();
-            }
-        }
     </script>
 </body>
 </html>
