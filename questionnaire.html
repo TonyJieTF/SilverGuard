@@ -72,14 +72,135 @@
         .disclaimer-text { font-size: 15px; line-height: 1.9; color: #5f6b7a; }
         .hk-product-note { margin: -6px 0 18px; font-size: 14px; line-height: 1.8; color: #6b7788; }
 
+        /* 顶部导航栏样式 */
+        .top-nav {
+            background: linear-gradient(135deg, #002677 0%, #001a55 100%);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-home {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .nav-home:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-2px);
+        }
+        .nav-home i {
+            font-size: 18px;
+        }
+        .nav-brand {
+            margin-left: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            padding-left: 20px;
+        }
 
+        /* 错误提示条样式 */
+        .error-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 16px 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 -4px 20px rgba(231, 76, 60, 0.4);
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+        .error-bar.show {
+            display: flex;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .error-bar i {
+            font-size: 20px;
+        }
+        .error-bar-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .error-bar-questions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .error-bar-question {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .error-bar-question:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-1px);
+        }
+        .error-bar-close {
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .error-bar-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* 问题高亮样式 */
+        .question.unanswered {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+            animation: pulse 1s ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+        }
 
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="header-bar">
-        SilverGuard 长者保险推荐系统
-    </div>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-home">
+            <i class="fas fa-home"></i>
+            <span>返回首页</span>
+        </a>
+        <span class="nav-brand">SilverGuard 长者保险推荐系统</span>
+    </nav>
 
     <div class="container">
         <form id="insuranceForm">
@@ -283,6 +404,14 @@
             </div>
 
         </form>
+    </div>
+
+    <!-- 错误提示条 -->
+    <div id="errorBar" class="error-bar">
+        <i class="fas fa-exclamation-circle"></i>
+        <span class="error-bar-text">以下题目未完成：</span>
+        <div class="error-bar-questions" id="errorBarQuestions"></div>
+        <button class="error-bar-close" onclick="hideErrorBar()">&times;</button>
     </div>
 
     <script>
@@ -1576,11 +1705,46 @@
                 checkboxes.forEach(cb => { cb.checked = false; });
                 checkbox.checked = true;
             }
+            // 清除该题目的高亮
+            const questionEl = checkbox.closest('.question');
+            if (questionEl) {
+                questionEl.classList.remove('unanswered');
+            }
+            // 检查是否所有题目都已完成，如果是则隐藏错误条
+            checkAllQuestionsAnswered();
+        }
+
+        // 为所有单选框和复选框添加change事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.step input[type="radio"], .step input[type="checkbox"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    const questionEl = this.closest('.question');
+                    if (questionEl) {
+                        questionEl.classList.remove('unanswered');
+                    }
+                    // 检查是否所有题目都已完成
+                    setTimeout(checkAllQuestionsAnswered, 100);
+                });
+            });
+        });
+
+        function checkAllQuestionsAnswered() {
+            const activeStep = document.querySelector('.step.active');
+            if (!activeStep) return;
+            
+            const unanswered = activeStep.querySelectorAll('.question.unanswered');
+            if (unanswered.length === 0) {
+                hideErrorBar();
+            }
         }
 
         function validateStep(stepNum) {
             let valid = true;
             const stepGroup = document.getElementById("step" + stepNum);
+            const unansweredQuestions = [];
+            
+            // 清除之前的高亮
+            stepGroup.querySelectorAll('.question').forEach(q => q.classList.remove('unanswered'));
             
             const groups = new Set();
             stepGroup.querySelectorAll('input[type="radio"][required]').forEach(el => groups.add(el.name));
@@ -1589,6 +1753,15 @@
                 const checked = stepGroup.querySelector(`input[name="${name}"]:checked`);
                 if (!checked) {
                     valid = false;
+                    // 找到对应的题目编号和元素
+                    const questionEl = stepGroup.querySelector(`input[name="${name}"]`).closest('.question');
+                    if (questionEl) {
+                        questionEl.classList.add('unanswered');
+                        const questionNum = getQuestionNumber(name);
+                        if (questionNum && !unansweredQuestions.find(q => q.num === questionNum)) {
+                            unansweredQuestions.push({ num: questionNum, el: questionEl });
+                        }
+                    }
                 }
             });
             
@@ -1597,21 +1770,101 @@
                 const q13None = document.querySelector('input[name="q13_none"]');
                 const q9Checked = document.querySelectorAll('input[name="q9"]:checked').length > 0 || (q9None && q9None.checked);
                 const q13Checked = document.querySelectorAll('input[name="q13"]:checked').length > 0 || (q13None && q13None.checked);
-                if (!q9Checked || !q13Checked) valid = false;
+                
+                if (!q9Checked) {
+                    valid = false;
+                    const q9El = stepGroup.querySelector('input[name="q9"]').closest('.question');
+                    if (q9El) {
+                        q9El.classList.add('unanswered');
+                        if (!unansweredQuestions.find(q => q.num === 9)) {
+                            unansweredQuestions.push({ num: 9, el: q9El });
+                        }
+                    }
+                }
+                
+                if (!q13Checked) {
+                    valid = false;
+                    const q13El = stepGroup.querySelector('input[name="q13"]').closest('.question');
+                    if (q13El) {
+                        q13El.classList.add('unanswered');
+                        if (!unansweredQuestions.find(q => q.num === 13)) {
+                            unansweredQuestions.push({ num: 13, el: q13El });
+                        }
+                    }
+                }
             }
 
-            if (!valid) alert("请完整回答当前页面的所有问题后再继续！");
+            if (!valid) {
+                showErrorBar(unansweredQuestions);
+            } else {
+                hideErrorBar();
+            }
             return valid;
+        }
+
+        function getQuestionNumber(name) {
+            const match = name.match(/q(\d+)/);
+            return match ? parseInt(match[1]) : null;
+        }
+
+        function showErrorBar(unansweredQuestions) {
+            const errorBar = document.getElementById('errorBar');
+            const errorBarQuestions = document.getElementById('errorBarQuestions');
+            
+            // 按题号排序
+            unansweredQuestions.sort((a, b) => a.num - b.num);
+            
+            // 生成提示内容
+            errorBarQuestions.innerHTML = unansweredQuestions.map(q => 
+                `<span class="error-bar-question" onclick="scrollToQuestion(${q.num})">第${q.num}题</span>`
+            ).join('');
+            
+            errorBar.classList.add('show');
+        }
+
+        function hideErrorBar() {
+            const errorBar = document.getElementById('errorBar');
+            errorBar.classList.remove('show');
+        }
+
+        function scrollToQuestion(questionNum) {
+            const stepGroup = document.querySelector('.step.active');
+            if (!stepGroup) return;
+            
+            // 查找对应的题目元素
+            let questionEl = null;
+            if (questionNum === 9) {
+                questionEl = stepGroup.querySelector('input[name="q9"]')?.closest('.question');
+            } else if (questionNum === 13) {
+                questionEl = stepGroup.querySelector('input[name="q13"]')?.closest('.question');
+            } else {
+                questionEl = stepGroup.querySelector(`input[name="q${questionNum}"]`)?.closest('.question');
+            }
+            
+            if (questionEl) {
+                // 滚动到题目位置（稍微往上偏移，避免被导航栏遮挡）
+                const offset = 100;
+                const top = questionEl.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                
+                // 高亮闪烁效果
+                questionEl.style.animation = 'none';
+                setTimeout(() => {
+                    questionEl.style.animation = '';
+                }, 10);
+            }
         }
 
         function nextStep(currentStep) {
             if (!validateStep(currentStep)) return;
+            hideErrorBar();
             document.getElementById('step' + currentStep).classList.remove('active');
             document.getElementById('step' + (currentStep + 1)).classList.add('active');
             window.scrollTo(0, 0);
         }
 
         function prevStep(currentStep) {
+            hideErrorBar();
             document.getElementById('step' + currentStep).classList.remove('active');
             document.getElementById('step' + (currentStep - 1)).classList.add('active');
             window.scrollTo(0, 0);
@@ -1860,6 +2113,7 @@
 
         function calculateResult() {
             if (!validateStep(3)) return;
+            hideErrorBar();
 
             const age = getRadioValue('q1');
             const medicalIns = getRadioValue('q2');
