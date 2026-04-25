@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SilverGuard - 保险产品分类</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>body { background: linear-gradient(135deg, #001a55 0%, #002677 50%, #003d99 100%) !important; }</style>
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>SilverGuard</span>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active">
+                    <i class="fas fa-th-large"></i> <span>保险分类</span>
+                </a>
+                <a href="questionnaire.html" class="nav-link nav-link-highlight">
+                    <i class="fas fa-clipboard-list"></i> <span>保险推荐</span>
+                </a>
+            </div>
+            <!-- 搜索栏 -->
+            <div class="search-bar" onclick="openSearchModal()" style="cursor: pointer;">
+                <input type="text" placeholder="搜索" readonly>
+                <button type="button"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="nav-actions">
+                <button class="btn-login" onclick="openLoginModal()">
+                    <i class="fas fa-user"></i> <span>登录</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 搜索弹窗 -->
+    <div id="search-modal" class="search-modal-overlay">
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="search-input" placeholder="搜索保险公司、保险种类或产品名称..." autocomplete="off">
+                    <button class="search-clear-btn" id="search-clear" style="display: none;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <button class="search-close-btn" onclick="closeSearchModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <!-- 搜索建议标签 -->
+                <div class="search-suggestions" id="search-suggestions">
+                    <div class="suggestion-title">热门搜索</div>
+                    <div class="suggestion-tags">
+                        <span class="tag" onclick="searchWithKeyword('医疗险')">医疗险</span>
+                        <span class="tag" onclick="searchWithKeyword('意外险')">意外险</span>
+                        <span class="tag" onclick="searchWithKeyword('重疾险')">重疾险</span>
+                        <span class="tag" onclick="searchWithKeyword('防癌险')">防癌险</span>
+                        <span class="tag" onclick="searchWithKeyword('护理险')">护理险</span>
+                        <span class="tag" onclick="searchWithKeyword('寿险')">寿险</span>
+                        <span class="tag" onclick="searchWithKeyword('香港')">香港保险</span>
+                        <span class="tag" onclick="searchWithKeyword('内地')">内地保险</span>
+                        <span class="tag" onclick="searchWithKeyword('友邦')">友邦</span>
+                        <span class="tag" onclick="searchWithKeyword('保诚')">保诚</span>
+                        <span class="tag" onclick="searchWithKeyword('平安')">平安</span>
+                        <span class="tag" onclick="searchWithKeyword('众安')">众安</span>
+                    </div>
+                </div>
+                <!-- 搜索结果区域 -->
+                <div class="search-results" id="search-results" style="display: none;">
+                    <div class="results-header">
+                        <span id="results-count"></span>
+                    </div>
+                    <div class="results-list" id="results-list"></div>
+                </div>
+                <!-- 无结果提示 -->
+                <div class="search-no-results" id="search-no-results" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <p>未找到匹配的保险产品</p>
+                    <span>试试其他关键词，或浏览下面的分类</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 登录弹窗 -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-circle"></i> 用户登录</h3>
+                <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="login-tabs">
+                    <button class="login-tab active" onclick="switchLoginTab('password')">密码登录</button>
+                    <button class="login-tab" onclick="switchLoginTab('code')">验证码登录</button>
+                </div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> 手机号</label>
+                        <input type="tel" id="phone" placeholder="请输入手机号" required maxlength="11">
+                    </div>
+                    <div class="form-group" id="passwordGroup">
+                        <label><i class="fas fa-lock"></i> 密码</label>
+                        <div class="password-input">
+                            <input type="password" id="password" placeholder="请输入密码" required>
+                            <button type="button" class="toggle-password" onclick="togglePassword()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="codeGroup" style="display: none;">
+                        <label><i class="fas fa-key"></i> 验证码</label>
+                        <div class="code-input">
+                            <input type="text" id="verifyCode" placeholder="请输入验证码" maxlength="6">
+                            <button type="button" class="btn-code" onclick="sendCode()">获取验证码</button>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label class="remember-me">
+                            <input type="checkbox" checked> 记住我
+                        </label>
+                        <a href="#" class="forgot-link">忘记密码？</a>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <p class="register-hint">
+                        还没有账号？<a href="#" onclick="showRegister()">立即注册</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 保险产品分类 + 平台介绍 合并模块 -->
+        <div class="hero-card">
+            <div class="hero-card-header">
+                <h1><i class="fas fa-shield-alt"></i> 保险产品分类</h1>
+                <p>为您和家人挑选最适合的保障方案</p>
+            </div>
+            <a href="questionnaire.html" class="hero-cta-btn">
+                <i class="fas fa-magic"></i> 智能保险推荐
+            </a>
+            <p class="hero-platform-desc">SilverGuard 专注甄选香港保险产品，为内地老龄人群提供高性价比的健康保障方案</p>
+        </div>
+
+        <!-- 筛选标签 -->
+        <div class="filter-section">
+            <button class="filter-btn active" data-filter="all">全部</button>
+        </div>
+
+        <!-- 保险分类网格 -->
+        <div class="category-grid">
+            
+            <!-- 医疗险卡片 -->
+            <div class="category-card medical-card" onclick="expandCategory('medical')">
+                <div class="category-image">
+                    <img src="picture/P1.png" alt="医疗险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3>医疗险</h3>
+                </div>
+                <p>覆盖住院、手术、门诊等医疗费用，商业医疗险可报销社保目录外费用</p>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="medical-list">
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'medical-list', event)">
+                        查看全部 6 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 意外险卡片 -->
+            <div class="category-card accident-card" onclick="expandCategory('accident')">
+                <div class="category-image">
+                    <img src="picture/P2.png" alt="意外险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>意外险</h3>
+                </div>
+                <p>涵盖意外身故、伤残、医疗费用，保障日常生活工作中的各类意外风险</p>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="accident-list">
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.allianz.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">安</span>
+                            <span class="company-name">安联保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.axa.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003F87;">AX</span>
+                            <span class="company-name">AXA 法国安盛</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.generali.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00AEEF;">忠</span>
+                            <span class="company-name">忠利保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aig.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #2E7D32;">A</span>
+                            <span class="company-name">AIG 美亚保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.sunshine.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FFB800;">阳</span>
+                            <span class="company-name">阳光保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'accident-list', event)">
+                        查看全部 7 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 防癌险卡片 -->
+            <div class="category-card cancer-card" onclick="expandCategory('cancer')">
+                <div class="category-image">
+                    <img src="picture/P3.png" alt="防癌险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-ribbon"></i>
+                    </div>
+                    <h3>防癌险</h3>
+                </div>
+                <p>专为癌症提供保障，确诊即赔付，涵盖治疗费用、康复费用及收入补偿</p>
+
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="cancer-list">
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.bupa.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #007AC1;">保</span>
+                            <span class="company-name">保柏 Bupa</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.msh.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E91E63;">M</span>
+                            <span class="company-name">MSH 万欣和</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.figmahealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #9C27B0;">安</span>
+                            <span class="company-name">复星联合健康</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'cancer-list', event)">
+                        查看全部 5 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 重疾险卡片 -->
+            <div class="category-card critical-card" onclick="expandCategory('critical')">
+                <div class="category-image">
+                    <img src="picture/P4.png" alt="重疾险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>重疾险</h3>
+                </div>
+                <p>确诊约定重大疾病即可获赔，保障家庭经济安全，补充治疗康复费用</p>
+                
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="critical-list">
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.huatai.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #1E88E5;">华</span>
+                            <span class="company-name">华泰保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.life.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00ACC1;">中</span>
+                            <span class="company-name">中意人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.nci.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #7CB342;">农</span>
+                            <span class="company-name">农银人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'critical-list', event)">
+                        查看全部 8 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 护理险卡片 -->
+            <div class="category-card nursing-card" onclick="expandCategory('nursing')">
+                <div class="category-image">
+                    <img src="picture/P5.png" alt="护理险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-hands-holding-child"></i>
+                    </div>
+                    <h3>护理险</h3>
+                </div>
+                <p>为老年人或需要护理的人群提供经济保障，覆盖护理费用和生活照料费用</p>
+
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="nursing-list">
+                        <a href="https://www.picchealth.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #00A79D;">太</span>
+                            <span class="company-name">太平洋保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.renbao.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #4CAF50;">人</span>
+                            <span class="company-name">人保健康</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'nursing-list', event)">
+                        查看全部 5 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 寿险卡片 -->
+            <div class="category-card life-card" onclick="expandCategory('life')">
+                <div class="category-image">
+                    <img src="picture/P6.png" alt="寿险">
+                </div>
+                <div class="category-header">
+                    <div class="category-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>寿险</h3>
+                </div>
+                <p>以被保险人寿命为标的，为家庭提供身故保障，延续对家人的责任与关爱</p>
+                <div class="category-companies">
+                    <span class="companies-label">
+                        <i class="fas fa-building"></i> 合作保险公司
+                    </span>
+                    <div class="company-list" id="life-list">
+                        <a href="https://www.cicic.com.cn" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E60012;">中</span>
+                            <span class="company-name">中国人寿</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.pingan.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #003CA8;">平</span>
+                            <span class="company-name">平安保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.newchinalife.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF6600;">新</span>
+                            <span class="company-name">新华保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.aia.com.hk/zh-hk" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #E31937;">友</span>
+                            <span class="company-name">友邦 AIA</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.fuwu.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #795548;">富</span>
+                            <span class="company-name">富德生命</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                        <a href="https://www.tal.com" target="_blank" class="company-item" onclick="event.stopPropagation()">
+                            <span class="company-logo-small" style="--logo-color: #FF4757;">泰</span>
+                            <span class="company-name">泰康保险</span>
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                    <button class="expand-btn" onclick="toggleCompanies(this, 'life-list', event)">
+                        查看全部 6 家 <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 底部提示 -->
+        <div class="footer-tip">
+            <i class="fas fa-info-circle"></i>
+            <span>点击卡片可查看合作保险公司详情，点击公司名称即可跳转到官网了解更多产品</span>
+        </div>
+    </div>
+
+    <!-- 悬浮客服入口 -->
+    <div class="floating-service">
+        <button class="service-btn" title="返回顶部" onclick="scrollToTop()">
+            <i class="fas fa-chevron-up"></i>
+            <span class="service-tooltip">返回顶部</span>
+        </button>
+        <button class="service-btn primary" title="在线咨询" onclick="openServiceChat()">
+            <i class="fas fa-headset"></i>
+            <span class="service-tooltip">在线咨询</span>
+        </button>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>SilverGuard</span>
+            </div>
+            <div class="footer-links">
+                <a href="index.html">保险分类</a>
+                <a href="questionnaire.html">保险推荐</a>
+                <a href="#">关于我们</a>
+                <a href="#">帮助中心</a>
+            </div>
+            <div class="footer-copyright">
+                © 2026 SilverGuard <span>♥</span> 为您守护每一份保障
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 返回顶部功能
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 在线咨询功能
+        function openServiceChat() {
+            alert('在线客服功能开发中，请拨打客服热线：400-888-8888');
+        }
+    </script>
+
+    <script>
+        // =============================================
+        // 完整保险产品数据库（内地 + 香港）
+        // =============================================
+        const allInsuranceProducts = [
+            // ============ 香港保险 ============
+            // 医疗险 / VHIS
+            {
+                name: "Bupa Hero VHIS 灵活计划",
+                company: "保柏 Bupa Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["VHIS", "灵活计划", "住院保障", "手术报销"],
+                description: "适合作为住院及手术报销型医疗保障的核心配置，较适合健康情况稳定、风险较低到中等的长者参考。"
+            },
+            {
+                name: "AIA 自愿医保标准计划",
+                company: "友邦 AIA Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["VHIS", "自愿医保", "标准计划"],
+                description: "适合希望优先补强基础医疗报销、且整体健康风险较低的长者用户参考。"
+            },
+            {
+                name: "PRUHealth VHIS EasyChoice",
+                company: "保诚 Prudential Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["VHIS", "灵活计划", "健康保障"],
+                description: "适合希望在已有基础保障之上增加住院医疗补充、且风险水平偏低到中低的长者参考。"
+            },
+            {
+                name: "AXA 安盛医疗保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["医疗保障", "住院报销", "手术费用"],
+                description: "适合希望以较成熟品牌补充住院及手术报销保障的长者作基础医疗参考。"
+            },
+            {
+                name: "FWD 自愿医保灵活计划",
+                company: "富卫 FWD Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["VHIS", "灵活计划", "住院保障"],
+                description: "适合希望补足住院报销保障、同时重视产品结构相对灵活性的长者参考。"
+            },
+            {
+                name: "Blue Cross 蓝十字住院医疗计划",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["住院医疗", "高龄友好", "手术报销"],
+                description: "适合希望强化住院及手术费用报销、同时重视高龄阶段可持续性的用户参考。"
+            },
+            {
+                name: "Manulife 宏利自愿医保标准计划",
+                company: "宏利 Manulife Hong Kong",
+                category: "医疗险",
+                region: "香港",
+                tags: ["VHIS", "标准计划", "基础医疗"],
+                description: "适合整体健康风险较低、希望先建立基础医疗报销框架的长者用户作入门参考。"
+            },
+            // 防癌险
+            {
+                name: "AXA 防癌保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "防癌险",
+                region: "香港",
+                tags: ["防癌", "癌症保障", "专项保障"],
+                description: "更适合无法完整配置传统重疾险时，用于聚焦癌症风险的补充保障参考。"
+            },
+            {
+                name: "Blue Cross 癌症医疗保障",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "防癌险",
+                region: "香港",
+                tags: ["癌症医疗", "治疗费用", "高龄可投"],
+                description: "适合中高风险及高龄用户优先考虑癌症相关保障缺口时参考。"
+            },
+            {
+                name: "AIA 癌症保障计划",
+                company: "友邦 AIA Hong Kong",
+                category: "防癌险",
+                region: "香港",
+                tags: ["癌症保障", "确诊即赔", "品牌保障"],
+                description: "适合希望针对癌症风险做专项准备、且当前身体风险处于中等至中高区间的长者参考。"
+            },
+            // 意外险
+            {
+                name: "FWD 全方位意外保障计划",
+                company: "富卫 FWD Hong Kong",
+                category: "意外险",
+                region: "香港",
+                tags: ["意外保障", "跌倒骨折", "高龄友好"],
+                description: "意外险通常是高龄或慢病人群更容易配置的低门槛保障之一，适合作为长者基础补充。"
+            },
+            {
+                name: "Blue Cross 个人意外保障计划",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "意外险",
+                region: "香港",
+                tags: ["意外保障", "日常意外", "低门槛"],
+                description: "适合作为长者基础兜底型保障，重点补充跌倒、扭伤、骨折等日常意外风险。"
+            },
+            {
+                name: "AIA 个人意外保障计划",
+                company: "友邦 AIA Hong Kong",
+                category: "意外险",
+                region: "香港",
+                tags: ["意外保障", "身故伤残", "医疗报销"],
+                description: "适合预算有限但仍希望补充意外身故、伤残及意外医疗责任的长者用户参考。"
+            },
+            {
+                name: "Manulife 宏利意外保障计划",
+                company: "宏利 Manulife Hong Kong",
+                category: "意外险",
+                region: "香港",
+                tags: ["意外保障", "高龄可投", "基础兜底"],
+                description: "适合高龄阶段优先考虑基础意外风险补偿、并作为最低门槛保障组合之一。"
+            },
+            // 重疾险
+            {
+                name: "AIA 危疾全护保障",
+                company: "友邦 AIA Hong Kong",
+                category: "重疾险",
+                region: "香港",
+                tags: ["重疾险", "危疾保障", "多次赔付"],
+                description: "适合希望获得全面重疾保障、预算充足且健康状况良好的长者参考。"
+            },
+            {
+                name: "PRUHealth 危疾多重保",
+                company: "保诚 Prudential Hong Kong",
+                category: "重疾险",
+                region: "香港",
+                tags: ["重疾险", "多重保障", "癌症心脏中风"],
+                description: "适合希望获得多次重疾赔付、重视癌症和心血管保障的长者参考。"
+            },
+
+            // ============ 内地保险 ============
+            // 重疾险
+            {
+                name: "尊享e生重疾险",
+                company: "众安在线财险",
+                category: "重疾险",
+                region: "内地",
+                tags: ["一年期重疾", "可选轻中症", "高龄友好"],
+                description: "0-70岁可投保，高龄上限较高，可作为中老年重疾候选产品。"
+            },
+            {
+                name: "众民保·重疾险(免健告)",
+                company: "众安在线财险",
+                category: "重疾险",
+                region: "内地",
+                tags: ["免健告", "宽松核保"],
+                description: "免健康告知，适合做宽松核保候选，对带病体友好。"
+            },
+            {
+                name: "易生守护",
+                company: "德华安顾人寿",
+                category: "重疾险",
+                region: "内地",
+                tags: ["至80岁", "易核类", "高龄可投"],
+                description: "高龄可投到70岁，偏中高龄过渡型重疾，适合60-70岁人群。"
+            },
+            {
+                name: "i无忧（易核版）-不含身故",
+                company: "人保寿险",
+                category: "重疾险",
+                region: "内地",
+                tags: ["易核版", "不含身故"],
+                description: "核保相对友好，但年龄上限更低（65岁封顶），适合健康状况一般的人群。"
+            },
+            {
+                name: "康乐一生易核版2.0",
+                company: "复星联合健康",
+                category: "重疾险",
+                region: "内地",
+                tags: ["易核版2.0", "终身保障"],
+                description: "适合做65岁以内、健康较一般人群候选，保障期限为终身。"
+            },
+            // 百万医疗险
+            {
+                name: "e生保·百万医疗险",
+                company: "平安健康险",
+                category: "百万医疗险",
+                region: "内地",
+                tags: ["高保额", "住院报销", "大病房"],
+                description: "高保额、高免赔额的商业医疗保险，用于报销大病住院、手术等高额医疗费用。"
+            },
+            {
+                name: "好医保·长期医疗险",
+                company: "人保健康险",
+                category: "百万医疗险",
+                region: "内地",
+                tags: ["保证续保", "长期医疗"],
+                description: "保证续保期的产品能够确保持续的医疗保护网，不限社保内外用药。"
+            },
+            {
+                name: "尊享e生·百万医疗险",
+                company: "众安在线财险",
+                category: "百万医疗险",
+                region: "内地",
+                tags: ["高性价比", "灵活选择"],
+                description: "通过设定免赔额对高额住院费用予以全额或大比例报销，是社保的有力补充。"
+            },
+            // 意外险
+            {
+                name: "小蜜蜂2号超越版",
+                company: "鼎和保险",
+                category: "意外险",
+                region: "内地",
+                tags: ["综合意外", "交通意外", "高性价比"],
+                description: "保费低、杠杆高，覆盖日常突发意外风险（跌倒、车祸等），包含意外身故/伤残和意外医疗。"
+            },
+            {
+                name: "大护甲5号成人意外险",
+                company: "太平洋保险",
+                category: "意外险",
+                region: "内地",
+                tags: ["成人意外", "猝死保障"],
+                description: "适合18-60岁成人，覆盖意外身故/伤残和意外医疗，猝死也在保障范围内。"
+            },
+            {
+                name: "孝心安·老年人意外险",
+                company: "平安财险",
+                category: "意外险",
+                region: "内地",
+                tags: ["老年人专属", "骨折保障"],
+                description: "专为老年人设计，覆盖跌倒骨折等常见意外，80岁前可投保。"
+            },
+            // 防癌险
+            {
+                name: "孝亲宝·中老年防癌险",
+                company: "德华安顾人寿",
+                category: "防癌险",
+                region: "内地",
+                tags: ["中老年防癌", "确诊即赔"],
+                description: "专门针对恶性肿瘤提供保障的健康告知宽松产品，适合带病体投保。"
+            },
+            {
+                name: "平安终身防癌险",
+                company: "平安健康险",
+                category: "防癌险",
+                region: "内地",
+                tags: ["终身防癌", "长期保障"],
+                description: "确诊即赔付，涵盖癌症治疗全流程，终身续保，是高龄人群的最后防线。"
+            },
+            // 护理险
+            {
+                name: "增多多3号护理险",
+                company: "昆仑健康保险",
+                category: "护理险",
+                region: "内地",
+                tags: ["长期护理", "护理津贴"],
+                description: "针对失能状态提供护理金额津贴或护工上门服务，缓解家庭护理负担。"
+            },
+            {
+                name: "福瑞百岁护理险",
+                company: "复星联合健康",
+                category: "护理险",
+                region: "内地",
+                tags: ["百岁护理", "重度护理"],
+                description: "适合老龄化社会中子女精力不足、居家养老风险大的情况。"
+            }
+        ];
+
+        // =============================================
+        // 搜索功能相关变量
+        // =============================================
+        const searchModal = document.getElementById('search-modal');
+        const searchInput = document.getElementById('search-input');
+        const searchClearBtn = document.getElementById('search-clear');
+        const searchSuggestions = document.getElementById('search-suggestions');
+        const searchResults = document.getElementById('search-results');
+        const searchNoResults = document.getElementById('search-no-results');
+        const resultsList = document.getElementById('results-list');
+        const resultsCount = document.getElementById('results-count');
+
+        // =============================================
+        // 搜索匹配函数
+        // =============================================
+        function searchProducts(keyword) {
+            if (!keyword || keyword.trim() === '') {
+                return [];
+            }
+            
+            const lowerKeyword = keyword.toLowerCase().trim();
+            
+            // 关键词分类映射
+            const categoryKeywords = {
+                '医疗险': ['医疗', 'vh', 'hospital', '住院', '手术', '报销'],
+                '意外险': ['意外', 'accident', '跌倒', '骨折', '扭伤'],
+                '重疾险': ['重疾', 'critical', '重大疾病', '癌症给付'],
+                '防癌险': ['防癌', 'cancer', '癌症', '恶性肿瘤'],
+                '护理险': ['护理', 'nursing', '长期护理', '失能'],
+                '寿险': ['寿险', 'life', '人寿', '身故', '定期寿'],
+                '百万医疗险': ['百万', '高保额', '大额医疗']
+            };
+
+            const regionKeywords = {
+                '香港': ['香港', 'hk', 'hong kong'],
+                '内地': ['内地', 'mainland', '大陆', '中国']
+            };
+
+            const companyKeywords = {
+                '友邦': ['友邦', 'aia'],
+                '保诚': ['保诚', 'prudential', 'pruhealth'],
+                '安盛': ['安盛', 'axa'],
+                '保柏': ['保柏', 'bupa'],
+                '宏利': ['宏利', 'manulife'],
+                '万通': ['万通', 'yf life'],
+                '平安': ['平安', 'ping an'],
+                '众安': ['众安'],
+                '太平': ['太平', 'taiping'],
+                '人寿': ['人寿', 'life'],
+                '汇丰': ['汇丰', 'hsbc'],
+                '中银': ['中银', 'boc'],
+                '蓝十字': ['蓝十字', 'blue cross'],
+                '信诺': ['信诺', 'cigna'],
+                '永明': ['永明', 'sun life'],
+                '苏黎世': ['苏黎世', 'zurich'],
+                '安联': ['安联', 'allianz'],
+                '富卫': ['富卫', 'fwd'],
+                '忠意': ['忠意', 'generali'],
+                '周大福': ['周大福', 'ctf'],
+                '泰康': ['泰康', 'taikang'],
+                '富邦': ['富邦', 'fubon'],
+                '德华': ['德华', 'dehua'],
+                '中国人寿': ['中国人寿', 'chinalife'],
+                '人保': ['人保', 'picc'],
+                '太平洋': ['太平洋', 'cpic'],
+                '昆仑': ['昆仑'],
+                '复星': ['复星', 'fosun'],
+                '鼎和': ['鼎和'],
+                '和谐': ['和谐']
+            };
+
+            return allInsuranceProducts.filter(product => {
+                const name = product.name.toLowerCase();
+                const company = product.company.toLowerCase();
+                const category = product.category.toLowerCase();
+                const tags = product.tags.join(' ').toLowerCase();
+                const desc = product.description.toLowerCase();
+                const region = product.region.toLowerCase();
+
+                // 精确匹配产品名称
+                if (name.includes(lowerKeyword)) return true;
+                
+                // 匹配公司名
+                if (company.includes(lowerKeyword)) return true;
+                
+                // 匹配描述
+                if (desc.includes(lowerKeyword)) return true;
+                
+                // 匹配标签
+                if (tags.includes(lowerKeyword)) return true;
+                
+                // 匹配地区
+                for (const [regionName, keywords] of Object.entries(regionKeywords)) {
+                    if (keywords.some(k => k.includes(lowerKeyword) || lowerKeyword.includes(k))) {
+                        if (region.includes(regionName.toLowerCase())) return true;
+                    }
+                }
+                
+                // 匹配保险公司
+                for (const [companyName, keywords] of Object.entries(companyKeywords)) {
+                    if (keywords.some(k => k.includes(lowerKeyword) || lowerKeyword.includes(k))) {
+                        if (company.includes(companyName.toLowerCase())) return true;
+                    }
+                }
+                
+                // 匹配保险种类
+                for (const [catName, keywords] of Object.entries(categoryKeywords)) {
+                    if (keywords.some(k => k.includes(lowerKeyword) || lowerKeyword.includes(k))) {
+                        if (category.includes(catName.toLowerCase())) return true;
+                    }
+                }
+                
+                return false;
+            });
+        }
+
+        // =============================================
+        // 渲染搜索结果
+        // =============================================
+        function renderResults(products, keyword) {
+            if (products.length === 0) {
+                searchSuggestions.style.display = 'none';
+                searchResults.style.display = 'none';
+                searchNoResults.style.display = 'block';
+                return;
+            }
+
+            searchSuggestions.style.display = 'none';
+            searchNoResults.style.display = 'none';
+            searchResults.style.display = 'block';
+            resultsCount.textContent = `找到 ${products.length} 个相关保险产品`;
+
+            // 按地区和类别分组
+            const grouped = {
+                '香港': { '医疗险': [], '意外险': [], '防癌险': [], '重疾险': [] },
+                '内地': { '医疗险': [], '意外险': [], '防癌险': [], '重疾险': [], '护理险': [], '百万医疗险': [] }
+            };
+
+            products.forEach(product => {
+                if (!grouped[product.region]) {
+                    grouped[product.region] = {};
+                }
+                if (!grouped[product.region][product.category]) {
+                    grouped[product.region][product.category] = [];
+                }
+                grouped[product.region][product.category].push(product);
+            });
+
+            let html = '';
+            const regionOrder = ['香港', '内地'];
+            const categoryOrder = ['医疗险', '百万医疗险', '意外险', '防癌险', '重疾险', '护理险', '寿险'];
+
+            regionOrder.forEach(region => {
+                if (!grouped[region]) return;
+                
+                const hasProducts = categoryOrder.some(cat => grouped[region][cat] && grouped[region][cat].length > 0);
+                if (!hasProducts) return;
+
+                html += `<div class="results-category-title">${region}保险</div>`;
+
+                categoryOrder.forEach(category => {
+                    const items = grouped[region][category];
+                    if (!items || items.length === 0) return;
+
+                    items.forEach(product => {
+                        const tagsHtml = product.tags.slice(0, 3).map(tag => 
+                            `<span class="result-tag">${tag}</span>`
+                        ).join('');
+
+                        html += `
+                            <div class="result-item" onclick="showProductDetail('${escapeHtml(product.name)}')">
+                                <div class="result-item-header">
+                                    <span class="result-item-title">${escapeHtml(product.name)}</span>
+                                    <div class="result-item-badge">
+                                        <span class="badge badge-region">${product.region}</span>
+                                        <span class="badge badge-category">${product.category}</span>
+                                    </div>
+                                </div>
+                                <div class="result-item-company">${escapeHtml(product.company)}</div>
+                                <div class="result-item-desc">${escapeHtml(product.description)}</div>
+                                <div class="result-item-tags">${tagsHtml}</div>
+                            </div>
+                        `;
+                    });
+                });
+            });
+
+            resultsList.innerHTML = html;
+        }
+
+        // =============================================
+        // 显示产品详情
+        // =============================================
+        function showProductDetail(productName) {
+            const product = allInsuranceProducts.find(p => p.name === productName);
+            if (!product) return;
+
+            closeSearchModal();
+            alert(`【${product.name}】\n\n公司：${product.company}\n类型：${product.category}（${product.region}）\n\n产品简介：\n${product.description}\n\n关键词：${product.tags.join('、')}`);
+        }
+
+        // =============================================
+        // 工具函数
+        // =============================================
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // =============================================
+        // 搜索弹窗控制
+        // =============================================
+        function openSearchModal() {
+            searchModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => searchInput.focus(), 100);
+        }
+
+        function closeSearchModal() {
+            searchModal.style.display = 'none';
+            document.body.style.overflow = '';
+            searchInput.value = '';
+            searchClearBtn.style.display = 'none';
+            searchSuggestions.style.display = 'block';
+            searchResults.style.display = 'none';
+            searchNoResults.style.display = 'none';
+        }
+
+        function searchWithKeyword(keyword) {
+            searchInput.value = keyword;
+            searchClearBtn.style.display = keyword ? 'block' : 'none';
+            const results = searchProducts(keyword);
+            renderResults(results, keyword);
+        }
+
+        // =============================================
+        // 搜索事件监听
+        // =============================================
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                const keyword = this.value.trim();
+                searchClearBtn.style.display = keyword ? 'block' : 'none';
+                
+                if (keyword.length === 0) {
+                    searchSuggestions.style.display = 'block';
+                    searchResults.style.display = 'none';
+                    searchNoResults.style.display = 'none';
+                } else {
+                    const results = searchProducts(keyword);
+                    renderResults(results, keyword);
+                }
+            });
+        }
+
+        if (searchClearBtn) {
+            searchClearBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                searchClearBtn.style.display = 'none';
+                searchSuggestions.style.display = 'block';
+                searchResults.style.display = 'none';
+                searchNoResults.style.display = 'none';
+                searchInput.focus();
+            });
+        }
+
+        if (searchModal) {
+            searchModal.addEventListener('click', function(e) {
+                if (e.target === searchModal) {
+                    closeSearchModal();
+                }
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && searchModal && searchModal.style.display === 'flex') {
+                closeSearchModal();
+            }
+        });
+
+        // ========== 登录相关功能 ==========
+        let loginType = 'password';
+        let countdown = 0;
+        let timer = null;
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // 重置表单
+            document.getElementById('loginForm').reset();
+        }
+
+        function switchLoginTab(type) {
+            loginType = type;
+            document.querySelectorAll('.login-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (type === 'password') {
+                document.getElementById('passwordGroup').style.display = 'block';
+                document.getElementById('codeGroup').style.display = 'none';
+                document.getElementById('password').required = true;
+                document.getElementById('verifyCode').required = false;
+            } else {
+                document.getElementById('passwordGroup').style.display = 'none';
+                document.getElementById('codeGroup').style.display = 'block';
+                document.getElementById('password').required = false;
+                document.getElementById('verifyCode').required = true;
+            }
+        }
+
+        function togglePassword() {
+            const pwdInput = document.getElementById('password');
+            const icon = document.querySelector('.toggle-password i');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                pwdInput.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function sendCode() {
+            const phone = document.getElementById('phone').value;
+            if (!phone || phone.length !== 11) {
+                alert('请输入正确的手机号');
+                return;
+            }
+            
+            if (countdown > 0) return;
+            
+            // 模拟发送验证码
+            alert('验证码已发送到您的手机：' + phone);
+            countdown = 60;
+            const codeBtn = document.querySelector('.btn-code');
+            codeBtn.disabled = true;
+            
+            timer = setInterval(() => {
+                countdown--;
+                if (countdown > 0) {
+                    codeBtn.textContent = `${countdown}秒后重试`;
+                } else {
+                    clearInterval(timer);
+                    codeBtn.textContent = '获取验证码';
+                    codeBtn.disabled = false;
+                }
+            }, 1000);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const phone = document.getElementById('phone').value;
+            
+            if (!phone || phone.length !== 11) {
+                alert('请输入正确的手机号');
+                return;
+            }
+            
+            // 模拟登录成功
+            const userBtn = document.querySelector('.btn-login');
+            userBtn.innerHTML = '<i class="fas fa-user-check"></i> 我的账户';
+            userBtn.onclick = showUserMenu;
+            
+            closeLoginModal();
+            alert('登录成功！欢迎回来。');
+        }
+
+        function showRegister() {
+            alert('注册功能开发中，请稍候...');
+        }
+
+        function showUserMenu() {
+            alert('用户菜单：\n\n1. 个人中心\n2. 我的收藏\n3. 历史记录\n4. 退出登录');
+        }
+
+        // 点击弹窗外部关闭
+        document.getElementById('loginModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLoginModal();
+            }
+        });
+
+        // ESC 键关闭弹窗
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLoginModal();
+            }
+        });
+
+        // ========== 保险公司列表展开/收起 ==========
+        function toggleCompanies(btn, listId, event) {
+            event.stopPropagation();
+            const listContainer = document.getElementById(listId);
+            
+            if (listContainer.classList.contains('expanded')) {
+                listContainer.classList.remove('expanded');
+                btn.classList.remove('expanded');
+                btn.innerHTML = `查看全部 ${listContainer.children.length} 家 <i class="fas fa-chevron-down"></i>`;
+            } else {
+                listContainer.classList.add('expanded');
+                btn.classList.add('expanded');
+                btn.innerHTML = `收起 <i class="fas fa-chevron-up"></i>`;
+            }
+        }
+
+        // 卡片点击展开效果
+        function expandCategory(category) {
+            console.log('Expanded category:', category);
+        }
+
+        // ========== 筛选功能 ==========
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.dataset.filter;
+                const cards = document.querySelectorAll('.category-card');
+
+                cards.forEach(card => {
+                    if (filter === 'all') {
+                        card.style.display = 'block';
+                        setTimeout(() => card.style.opacity = '1', 10);
+                    } else {
+                        const tags = card.querySelectorAll('.category-tags .tag');
+                        let shouldShow = false;
+                        tags.forEach(tag => {
+                            if (tag.classList.contains(filter + '-tag')) {
+                                shouldShow = true;
+                            }
+                        });
+
+                        if (shouldShow) {
+                            card.style.display = 'block';
+                            setTimeout(() => card.style.opacity = '1', 10);
+                        } else {
+                            card.style.opacity = '0';
+                            setTimeout(() => card.style.display = 'none', 300);
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
