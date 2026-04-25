@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SilverGuard - 长者保险推荐问卷</title>
+
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 0; color: #333; }
+        .header-bar { background-color: #002677; color: white; padding: 20px; text-align: center; font-size: 24px; font-weight: bold; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
+        .step { display: none; }
+        .step.active { display: block; }
+        h2 { color: #002677; border-bottom: 2px solid #e1e4e8; padding-bottom: 15px; margin-bottom: 30px; }
+        .question { margin-bottom: 25px; background: #fbfbfb; padding: 20px; border-radius: 8px; border-left: 4px solid #002677; }
+        .question label.title { display: block; margin-bottom: 12px; font-weight: bold; font-size: 16px; color: #2c3e50; }
+        .options { margin-left: 10px; }
+        .options label { display: block; margin-bottom: 10px; font-size: 15px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s; }
+        .options label:hover { background: #eef2fb; }
+        .options input[type="radio"], .options input[type="checkbox"] { margin-right: 10px; transform: scale(1.2); }
+        .btn-group { display: flex; justify-content: space-between; margin-top: 40px; border-top: 1px solid #e1e4e8; padding-top: 20px; }
+        button { padding: 12px 30px; border: none; background-color: #002677; color: white; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; transition: background 0.3s; }
+        button:hover { background-color: #001a55; }
+        button:disabled { background-color: #b0b8c6; cursor: not-allowed; }
+        button.btn-prev { background-color: #6c757d; }
+        button.btn-prev:hover { background-color: #5a6268; }
+        .result-box { background: linear-gradient(180deg, #f4f7ff 0%, #eef3fb 100%); padding: 36px; border-radius: 20px; border: 1px solid #d7e0f0; margin-top: 20px; box-shadow: 0 14px 30px rgba(0, 38, 119, 0.08); }
+        .result-title { font-size: 30px; line-height: 1.35; color: #002677; font-weight: 700; margin-bottom: 24px; letter-spacing: 0.5px; }
+        .result-content p { font-size: 18px; line-height: 1.8; margin-bottom: 0; }
+        .highlight { color: #e74c3c; font-weight: bold; }
+        .score-info { margin-bottom: 22px; }
+        .recommendation { font-size: 18px; margin: 0; }
+        .result-section { background: #fff; border: 1px solid #dbe4f2; border-radius: 18px; padding: 24px; margin-bottom: 20px; box-shadow: 0 8px 18px rgba(15, 39, 84, 0.05); }
+        .section-title { margin: 0 0 16px; font-size: 22px; line-height: 1.5; color: #002677; font-weight: 700; }
+        .section-subtitle { margin: -6px 0 16px; font-size: 15px; line-height: 1.7; color: #5f6b7a; }
+        .risk-summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+        .risk-summary-card { background: #f8fbff; border: 1px solid #d9e6f5; border-radius: 16px; padding: 18px 20px; }
+        .risk-summary-label { display: block; font-size: 15px; color: #5f6b7a; margin-bottom: 10px; }
+        .risk-summary-value { display: block; font-size: 30px; line-height: 1.3; font-weight: 700; color: #002677; }
+        .risk-summary-value.risk-low { color: #1e874b; }
+        .risk-summary-value.risk-high { color: #d64545; }
+        .excluded-box { background: #fff7f7; border: 1px solid #f2cccc; border-left: 5px solid #e74c3c; }
+        .excluded-list { margin: 0; padding-left: 22px; }
+        .excluded-list li { margin-bottom: 10px; font-size: 18px; line-height: 1.7; }
+        .empty-note { font-size: 17px; line-height: 1.8; color: #5f6b7a; }
+        .combo-main { padding: 18px 20px; background: #fffaf0; border: 1px solid #f2dfae; border-left: 5px solid #f0b429; border-radius: 14px; font-size: 20px; line-height: 1.8; font-weight: 700; color: #2c3e50; }
+        .combo-reason { margin-top: 16px; padding: 18px 20px; background: #f8fbff; border: 1px solid #dfe9f7; border-radius: 14px; color: #2c3e50; font-size: 17px; line-height: 1.9; }
+        .hk-product-section { margin-top: 0; }
+        .hk-product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .hk-product-card { background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%); border: 1px solid #d9e2f1; border-radius: 18px; padding: 22px; box-shadow: 0 12px 24px rgba(0, 38, 119, 0.06); display: flex; flex-direction: column; gap: 12px; }
+        .hk-product-rank { display: inline-flex; align-items: center; align-self: flex-start; background: #002677; color: #fff; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; letter-spacing: 0.3px; }
+        .hk-product-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; }
+        .hk-product-head h3 { margin: 0; font-size: 22px; line-height: 1.5; color: #002677; }
+        .hk-product-category { flex-shrink: 0; background: #eef2fb; color: #002677; border-radius: 999px; padding: 6px 12px; font-size: 13px; font-weight: 700; }
+        .hk-product-company { margin: 0; color: #5f6b7a; font-size: 16px; font-weight: 700; }
+        .hk-product-summary { margin: 0; font-size: 17px; line-height: 1.9; color: #2c3e50; }
+        .hk-product-match { margin: 0; padding: 14px 16px; background: #f4f7ff; border-left: 4px solid #002677; border-radius: 12px; color: #2c3e50; font-size: 16px; line-height: 1.8; }
+        .hk-product-meta { margin: 0; font-size: 15px; line-height: 1.8; color: #5f6b7a; }
+        .hk-product-highlights { margin: 0; padding-left: 22px; }
+        .hk-product-highlights li { margin-bottom: 8px; font-size: 16px; line-height: 1.7; }
+        .hk-product-caution { margin-top: auto; padding: 14px 16px; background: #fff7f7; border-left: 4px solid #e74c3c; border-radius: 12px; color: #a94442; font-size: 15px; line-height: 1.8; }
+        .hk-product-link { display: inline-flex; align-items: center; justify-content: center; margin-top: 4px; padding: 12px 16px; background: #002677; color: #fff; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 12px; }
+        .hk-product-link:hover { background: #001a55; text-decoration: none; }
+        .hk-product-group + .hk-product-group { margin-top: 28px; padding-top: 24px; border-top: 1px solid #e1e8f3; }
+        .hk-product-group-title { margin: 0 0 8px; font-size: 20px; line-height: 1.5; color: #002677; font-weight: 700; }
+        .hk-product-group-desc { margin: 0 0 16px; font-size: 14px; line-height: 1.8; color: #5f6b7a; }
+        .hk-product-card-compact { gap: 10px; }
+        .hk-product-card-compact .hk-product-summary { font-size: 16px; line-height: 1.8; }
+        .hk-product-card-compact .hk-product-match { padding: 12px 14px; font-size: 15px; }
+        .disclaimer-section { background: #f8fafc; border: 1px solid #d9e2ec; }
+
+        .disclaimer-text { font-size: 15px; line-height: 1.9; color: #5f6b7a; }
+        .hk-product-note { margin: -6px 0 18px; font-size: 14px; line-height: 1.8; color: #6b7788; }
+
+        /* 险种点击链接样式 */
+        .insurance-link {
+            color: #002677;
+            text-decoration: none;
+            border-bottom: 2px solid #002677;
+            padding-bottom: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .insurance-link:hover {
+            color: #e74c3c;
+            border-bottom-color: #e74c3c;
+            background: #fff5f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        /* 险种详情模态框样式 */
+        .product-detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease-out;
+        }
+        .product-detail-modal.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .product-detail-content {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .product-detail-header {
+            background: linear-gradient(135deg, #002677 0%, #001a55 100%);
+            color: white;
+            padding: 24px 30px;
+            border-radius: 16px 16px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .product-detail-header h2 {
+            margin: 0;
+            font-size: 24px;
+            color: white;
+            border: none;
+            padding: 0;
+        }
+        .product-detail-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-detail-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        .product-detail-body {
+            padding: 30px;
+            max-height: calc(100vh - 150px);
+            overflow-y: auto;
+        }
+        .product-detail-subtitle {
+            font-size: 15px;
+            color: #5f6b7a;
+            margin: -10px 0 20px 0;
+            line-height: 1.7;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #002677;
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            background: #f4f7ff;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .back-link:hover {
+            background: #eef2fb;
+        }
+
+        /* 顶部导航栏样式 */
+        .top-nav {
+            background: linear-gradient(135deg, #002677 0%, #001a55 100%);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            height: 60px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-home {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .nav-home:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-2px);
+        }
+        .nav-home i {
+            font-size: 18px;
+        }
+        .nav-brand {
+            margin-left: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 14px;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            padding-left: 20px;
+        }
+
+        /* 错误提示条样式 */
+        .error-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 16px 20px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            box-shadow: 0 -4px 20px rgba(231, 76, 60, 0.4);
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+        .error-bar.show {
+            display: flex;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .error-bar i {
+            font-size: 20px;
+        }
+        .error-bar-text {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        .error-bar-questions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .error-bar-question {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .error-bar-question:hover {
+            background: rgba(255,255,255,0.35);
+            transform: translateY(-1px);
+        }
+        .error-bar-close {
+            position: absolute;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        .error-bar-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* 问题高亮样式 */
+        .question.unanswered {
+            border-left-color: #e74c3c;
+            background: #fff5f5;
+            animation: pulse 1s ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="top-nav">
+        <a href="index.html" class="nav-home">
+            <i class="fas fa-home"></i>
+            <span>返回首页</span>
+        </a>
+        <span class="nav-brand">SilverGuard 长者保险推荐系统</span>
+    </nav>
+
+    <div class="container">
+        <form id="insuranceForm">
+            <!-- Part 1: Basic Info -->
+            <div class="step active" id="step1">
+                <h2>第一部分：长者基础信息评估 (1/3)</h2>
+
+                
+                <div class="question">
+                    <label class="title">1. 您的年龄</label>
+                    <div class="options">
+                        <label><input type="radio" name="q1" value="0" required> 45岁及以下</label>
+                        <label><input type="radio" name="q1" value="1"> 46–50岁</label>
+                        <label><input type="radio" name="q1" value="2"> 51–59岁</label>
+                        <label><input type="radio" name="q1" value="3"> 60–69岁</label>
+                        <label><input type="radio" name="q1" value="4"> 70–74岁</label>
+                        <label><input type="radio" name="q1" value="5"> 75岁及以上</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">2. 是否有社保/医保</label>
+                    <div class="options">
+                        <label><input type="radio" name="q2" value="0" required> 有职工医保</label>
+                        <label><input type="radio" name="q2" value="1"> 有城乡居民医保（新农合）</label>
+                        <label><input type="radio" name="q2" value="5"> 无任何医保</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">3. 所在地区医疗资源水平</label>
+                    <div class="options">
+                        <label><input type="radio" name="q3" value="0" required> 一线城市（北上广深）</label>
+                        <label><input type="radio" name="q3" value="1"> 新一线城市 / 省会城市</label>
+                        <label><input type="radio" name="q3" value="2"> 普通地级市</label>
+                        <label><input type="radio" name="q3" value="3"> 县城 / 乡镇</label>
+                        <label><input type="radio" name="q3" value="4"> 偏远地区（如西藏、青海、新疆部分县域）</label>
+                    </div>
+                </div>
+
+<div class="btn-group">
+                    <button type="button" class="btn-prev" style="visibility: hidden;">上一步</button>
+                    <button type="button" onclick="nextStep(1)">下一步 <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- Part 2: Financial Info -->
+            <div class="step" id="step2">
+                <h2>第二部分：家庭与财务承受能力 (2/3)</h2>
+
+                
+                <div class="question">
+                    <label class="title">5. 综合财务状况（可支配资产、家庭年收入、负债）</label>
+                    <div class="options">
+                        <label><input type="radio" name="q5" value="0" required> A. 优秀 (资产30万+，收入10万+，无负债)</label>
+                        <label><input type="radio" name="q5" value="1"> B. 良好 (资产15-30万，收入5-10万，少负债)</label>
+                        <label><input type="radio" name="q5" value="3"> C. 一般 (资产5-15万，收入3-5万，中负债)</label>
+                        <label><input type="radio" name="q5" value="4"> D. 较弱 (资产1-5万，收入1-3万，重负债)</label>
+                        <label><input type="radio" name="q5" value="5"> E. 较差 (资产<1万，收入<1万，高额负债)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">6. 婚姻/家庭支持情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q6" value="0" required> A. 已婚/有长期伴侣，共同承担家庭支出</label>
+                        <label><input type="radio" name="q6" value="1"> B. 已婚/有长期伴侣，对方承担能力一般</label>
+                        <label><input type="radio" name="q6" value="2"> C. 独居，有稳定子女/家属经济支持</label>
+                        <label><input type="radio" name="q6" value="4"> D. 丧偶/离异/独居，家属支持不稳定</label>
+                        <label><input type="radio" name="q6" value="5"> E. 丧偶/离异/独居，基本无家属支持</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">7. 抚养压力情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q7" value="0" required> A. 无需要抚养的家人，无抚养支出</label>
+                        <label><input type="radio" name="q7" value="1"> B. 1人需要抚养，支出占收入≤20%</label>
+                        <label><input type="radio" name="q7" value="3"> C. 2人需要抚养，或支出占收入20%-30%</label>
+                        <label><input type="radio" name="q7" value="4"> D. 3人需要抚养，或支出占收入30%-50%</label>
+                        <label><input type="radio" name="q7" value="5"> E. 4人及以上需要抚养，或支出占收入＞50%</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">8. 家庭风险兜底与分摊能力</label>
+                    <div class="options">
+                        <label><input type="radio" name="q8" value="0" required> A. 非家庭主要收入来源，有稳定分摊者</label>
+                        <label><input type="radio" name="q8" value="1"> B. 非主要收入来源，有基本分摊者</label>
+                        <label><input type="radio" name="q8" value="3"> C. 家庭重要收入来源，分摊能力一般</label>
+                        <label><input type="radio" name="q8" value="4"> D. 家庭主要收入来源，基本靠自己承担</label>
+                        <label><input type="radio" name="q8" value="5"> E. 家庭唯一收入来源，完全靠自己</label>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep(2)">上一步</button>
+                    <button type="button" onclick="nextStep(2)">下一步</button>
+                </div>
+            </div>
+
+            <!-- Part 3: Health Info -->
+            <div class="step" id="step3">
+                <h2>第三部分：健康与照护情况评估 (3/3)</h2>
+                
+                <div class="question">
+
+                    <label class="title">9. 疾病情况 (可多选)</label>
+                    <div class="options">
+                        <label><input type="checkbox" name="q9" value="1"> A. 高血压</label>
+                        <label><input type="checkbox" name="q9" value="1"> B. 糖尿病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> C. 心脏病 (严重)</label>
+                        <label><input type="checkbox" name="q9" value="severe"> D. 中风/脑血管病</label>
+                        <label><input type="checkbox" name="q9" value="1"> E. 慢性肺病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> F. 肾病</label>
+                        <label><input type="checkbox" name="q9" value="severe"> G. 癌症</label>
+                        <label><input type="checkbox" name="q9_none" value="0" onchange="handleNoneCheckbox('q9', this)"> H. 没有以上疾病 (或不清楚)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">10. 过去一年医疗情况 (住院)</label>
+                    <div class="options">
+                        <label><input type="radio" name="q10" value="0" required> A. 没有</label>
+                        <label><input type="radio" name="q10" value="3"> B. 住院过一次</label>
+                        <label><input type="radio" name="q10" value="5"> C. 住院过两次及以上</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">11. 用药情况</label>
+                    <div class="options">
+                        <label><input type="radio" name="q11" value="0" required> A. 不需要长期吃药</label>
+                        <label><input type="radio" name="q11" value="2"> B. 每天需吃 1-2 种药</label>
+                        <label><input type="radio" name="q11" value="4"> C. 每天需吃 3 种及以上药</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">12. 行动能力</label>
+                    <div class="options">
+                        <label><input type="radio" name="q12" value="0" required> A. 完全可以自己活动</label>
+                        <label><input type="radio" name="q12" value="2"> B. 需要拐杖或助行器</label>
+                        <label><input type="radio" name="q12" value="4"> C. 需要别人帮助</label>
+                        <label><input type="radio" name="q12" value="5"> D. 主要坐轮椅</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">13. 自理能力 (是否需要别人帮助 - 可多选)</label>
+                    <div class="options">
+                        <label><input type="checkbox" name="q13_none" value="0" onchange="handleNoneCheckbox('q13', this)"> A. 几乎不需要帮助</label>
+                        <label><input type="checkbox" name="q13" value="light"> B. 买菜/购物 (轻度)</label>
+                        <label><input type="checkbox" name="q13" value="light"> C. 做饭 (轻度)</label>
+                        <label><input type="checkbox" name="q13" value="medium"> D. 穿衣 (中度)</label>
+                        <label><input type="checkbox" name="q13" value="heavy"> E. 洗澡 (重度)</label>
+                        <label><input type="checkbox" name="q13" value="heavy"> F. 管理/提醒按时吃药 (重度)</label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="title">14. 记忆问题</label>
+                    <div class="options">
+                        <label><input type="radio" name="q14" value="0" required> A. 没有明显下降</label>
+                        <label><input type="radio" name="q14" value="1"> B. 偶尔下降</label>
+                        <label><input type="radio" name="q14" value="3"> C. 经常下降</label>
+                        <label><input type="radio" name="q14" value="5"> D. 医生诊断过记忆问题 / 痴呆</label>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="btn-prev" onclick="prevStep(3)">上一步</button>
+                    <button type="button" onclick="calculateResult()">生成保障建议</button>
+                </div>
+            </div>
+            
+            <!-- Result Step -->
+            <div class="step" id="resultStep">
+                <div class="result-box">
+                    <div class="result-title">SilverGuard 长者保险保障评估报告</div>
+
+                    <div class="score-info" id="scoreInfo">
+                        <!-- Score and Risk Level render here -->
+                    </div>
+                    <div class="result-content" id="resultContent">
+                        <!-- Exclusions and recommendations render here -->
+                    </div>
+                </div>
+
+                <!-- 险种详情模态框 -->
+                <div class="product-detail-modal" id="productDetailModal">
+                    <div class="product-detail-content">
+                        <div class="product-detail-header">
+                            <h2 id="modalTitle">推荐的香港保险产品</h2>
+                            <button class="product-detail-close" onclick="closeProductDetail(event)">&times;</button>
+                        </div>
+                        <div class="product-detail-body" id="modalBody">
+                            <!-- 动态加载产品内容 -->
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <button type="button" onclick="location.reload()" style="margin-top: 30px;">重新填写问卷</button>
+                    <a href="index.html" style="display:inline-block; margin-left:15px; text-decoration:none;"><button type="button" class="btn-prev">返回 SilverGuard 首页</button></a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- 错误提示条 -->
+    <div id="errorBar" class="error-bar">
+        <i class="fas fa-exclamation-circle"></i>
+        <span class="error-bar-text">以下题目未完成：</span>
+        <div class="error-bar-questions" id="errorBarQuestions"></div>
+        <button class="error-bar-close" onclick="hideErrorBar()">&times;</button>
+    </div>
+
+
+    <script>
+        // 抑制浏览器扩展相关的消息端口错误
+        window.addEventListener('message', function(event) {
+            if (event.data === 'silk' || (event.ports && event.ports.length > 0)) {
+                event.stopPropagation();
+            }
+        });
+        
+        // 忽略消息端口关闭错误
+        window.onerror = function(msg, url, line, col, error) {
+            if (msg.indexOf('message channel') !== -1 || msg.indexOf('port') !== -1) {
+                return true;
+            }
+        };
+        
+        const hkInsuranceProducts = [
+            // 医疗险 / VHIS
+            {
+                name: "Bupa Hero VHIS 灵活计划",
+                company: "保柏 Bupa Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合作为住院及手术报销型医疗保障的核心配置，较适合健康情况稳定、风险较低到中等的长者参考。",
+                highlights: ["住院及手术保障相对完整", "适合作为医疗主险思路", "品牌与医疗服务网络较成熟"],
+                caution: "需如实申报既往病史，慢病或复杂病史可能被加费、除外或延期承保。",
+                url: "https://www.bupa.com.hk/zh/individual/health-and-medical-insurance"
+            },
+            {
+                name: "AIA 自愿医保标准计划",
+                company: "友邦 AIA Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望优先补强基础医疗报销、且整体健康风险较低的长者用户参考。",
+                highlights: ["标准化医疗保障结构清晰", "适合做基础医疗补充", "对低风险用户更友好"],
+                caution: "如存在较多慢病、住院史或高龄情况，核保结果可能受影响。",
+                url: "https://www.aia.com.hk/zh-cn/our-products/medical-protection.html"
+            },
+            {
+                name: "PRUHealth VHIS EasyChoice",
+                company: "保诚 Prudential Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合希望在已有基础保障之上增加住院医疗补充、且风险水平偏低到中低的长者参考。",
+                highlights: ["医疗方向明确", "适合作为中间层医疗补充", "适合已有基础保障后升级"],
+                caution: "高风险健康状况、近年住院记录或年龄偏高时，需重点关注核保限制。",
+                url: "https://www.prudential.com.hk/scws/pages/products/medical-protection/"
+            },
+            {
+                name: "AXA 安盛医疗保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望以较成熟品牌补充住院及手术报销保障的长者作基础医疗参考。",
+                highlights: ["医疗保障方向明确", "适合作为基础住院报销补充", "可与意外或癌症保障搭配参考"],
+                caution: "高龄、慢病或既往治疗记录较多时，核保结果及保费水平需额外确认。",
+                url: "https://www.axa.com.hk/zh/medical-insurance"
+            },
+            {
+                name: "FWD 自愿医保灵活计划",
+                company: "FWD 富卫香港",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望补足住院报销保障、同时重视产品结构相对灵活性的长者参考。",
+                highlights: ["适合作为医疗主险候选", "产品方向较灵活", "适合低至中风险用户补强基础保障"],
+                caution: "如有复杂病史或近期住院记录，需重点关注不保事项、加费及等待期。",
+                url: "https://www.fwd.com.hk/zh/medical-insurance/"
+            },
+            {
+                name: "Blue Cross 蓝十字住院医疗计划",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 2,
+                summary: "适合希望强化住院及手术费用报销、同时重视高龄阶段可持续性的用户参考。",
+                highlights: ["医疗网络与品牌认知度较高", "适合中低到中风险用户", "高龄阶段仍具一定参考价值"],
+                caution: "投保前仍需确认既往病史申报要求，避免误以为高龄即可无条件承保。",
+                url: "https://www.bluecross.com.hk/zh/individual/health-insurance"
+            },
+            {
+                name: "Manulife 宏利自愿医保标准计划",
+                company: "宏利 Manulife Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合整体健康风险较低、希望先建立基础医疗报销框架的长者用户作入门参考。",
+                highlights: ["结构偏基础型", "适合作为第一层医疗补充", "对低风险用户更容易比较方案"],
+                caution: "若已有多项慢病或过往检查异常，需预期核保条件可能趋严。",
+                url: "https://www.manulife.com.hk/zh-hk/individual/products/health-and-critical-illness.html"
+            },
+            {
+                name: "Cigna 自愿医保灵活计划",
+                company: "信诺 Cigna Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望比较不同国际化医疗服务资源、并补充住院医疗保障的用户参考。",
+                highlights: ["适合作为医疗补充比较选项", "适合低至中风险用户", "便于与其他医疗方案横向比较"],
+                caution: "具体保障细节、医院网络与高龄承保条件仍需以正式计划书及核保结果为准。",
+                url: "https://www.cigna.com.hk/zh-hk"
+            },
+            {
+                name: "Bowtie 自愿医保灵活计划",
+                company: "Bowtie 香港",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合健康风险较低、希望先做基础医疗保障比价的用户作为线上化方案参考。",
+                highlights: ["线上投保体验较直观", "适合作为基础医疗比价样本", "对低风险用户更具参考性"],
+                caution: "若身体状况较复杂或年龄偏高，需留意核保限制及是否适合线上的投保流程。",
+                url: "https://www.bowtie.com.hk/"
+            },
+            {
+                name: "Allianz 安联住院医疗计划",
+                company: "安联 Allianz Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合希望补充住院及手术类保障、且当前风险水平处于中低到中等区间的长者参考。",
+                highlights: ["适合作为医疗补充候选", "住院报销方向清晰", "可与癌症或意外保障组合考虑"],
+                caution: "75岁以上承保空间有限，且复杂病史情形下需重点确认承保条件。",
+                url: "https://www.allianz.com.hk/zh_HK/personal-insurance/health-insurance.html"
+            },
+
+            // 癌症保障
+            {
+                name: "AXA 防癌保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "更适合无法完整配置传统重疾险时，用于聚焦癌症风险的补充保障参考。",
+                highlights: ["聚焦高发癌症风险", "适合替代部分重疾配置思路", "对中高风险用户更有参考价值"],
+                caution: "不等同于全面重疾险，保障范围更集中，需留意等待期、除外责任和续保条款。",
+                url: "https://www.axa.com.hk/zh/medical-insurance"
+            },
+            {
+                name: "Blue Cross 癌症医疗保障",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 4,
+                summary: "适合中高风险及高龄用户优先考虑癌症相关保障缺口时参考。",
+                highlights: ["聚焦癌症医疗费用", "适合作为高龄阶段补充方案之一", "可与基础医疗或意外保障组合参考"],
+                caution: "属于专项型产品，保障面相对集中，需结合已有保障避免重复或缺口。",
+                url: "https://www.bluecross.com.hk/zh/individual/health-insurance"
+            },
+            {
+                name: "Manulife 宏利癌症保障计划",
+                company: "宏利 Manulife Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望重点补强癌症给付或相关医疗缺口、但未必适合传统重疾方案的用户参考。",
+                highlights: ["适合作为癌症专项补充", "中高风险阶段更具比较价值", "可补足重大疾病保障缺口"],
+                caution: "癌症类保障不覆盖所有重大疾病，投保前仍需结合其他保障缺口综合评估。",
+                url: "https://www.manulife.com.hk/zh-hk/individual/products/health-and-critical-illness.html"
+            },
+            {
+                name: "AIA 癌症保障计划",
+                company: "友邦 AIA Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 3,
+                summary: "适合希望针对癌症风险做专项准备、且当前身体风险处于中等至中高区间的长者参考。",
+                highlights: ["癌症方向明确", "适合补足重疾方案不足", "品牌认知度较高"],
+                caution: "高龄或既往病史较多时，需格外关注等待期、除外责任及是否附带续保安排。",
+                url: "https://www.aia.com.hk/zh-cn/our-products/health-protection.html"
+            },
+            {
+                name: "Sun Life 癌症医疗保障计划",
+                company: "永明 Sun Life Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望针对癌症治疗费用或确诊后财务压力做补充准备的长者用户参考。",
+                highlights: ["可补充癌症治疗费用风险", "适合中高风险用户比较", "可与医疗险形成分工"],
+                caution: "专项保障覆盖面有限，需明确其与医疗险、重疾险的边界，避免理解偏差。",
+                url: "https://www.sunlife.com.hk/zh-hans/insurance/health-and-wellness/"
+            },
+            {
+                name: "Zurich 癌症保障计划",
+                company: "苏黎世 Zurich Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合中高风险用户在传统医疗险承保空间有限时，优先评估癌症专项保障的替代方案。",
+                highlights: ["适合高风险阶段聚焦癌症缺口", "可作为重疾补充思路", "专项保障逻辑较清晰"],
+                caution: "并非全面健康保障，需注意承保年龄上限及是否适合当前健康状况。",
+                url: "https://www.zurich.com.hk/zh-hk/insurance/personal"
+            },
+            {
+                name: "中国太平防癌医疗保障",
+                company: "中国太平 China Taiping Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 4,
+                summary: "适合高龄或慢病用户在医疗主险选择受限时，优先考虑癌症专项缺口的补充保障。",
+                highlights: ["高龄阶段仍具一定参考性", "适合作为癌症专项替代", "可与意外保障形成基础组合"],
+                caution: "需留意产品是否偏向给付型或报销型，以及对既往病症的承保限制。",
+                url: "https://www.tplhk.com/sc/product-services/insurance/health-insurance"
+            },
+            {
+                name: "YF Life 癌症保障计划",
+                company: "万通保险 YF Life",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望通过专项型产品补足癌症保障空缺、并分散传统医疗险核保压力的用户参考。",
+                highlights: ["专项癌症保障定位清晰", "适合中高风险用户", "便于与其他产品组合考虑"],
+                caution: "需核对等待期、续保、既往病史披露要求及保障责任细节。",
+                url: "https://www.yflife.com/sc/Individual/Products/Health-and-Accident"
+            },
+
+            // 意外险
+            {
+                name: "FWD 全方位意外保障计划",
+                company: "FWD 富卫香港",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "意外险通常是高龄或慢病人群更容易配置的低门槛保障之一，适合作为长者基础补充。",
+                highlights: ["投保门槛通常相对较低", "适合补充跌倒、骨折等常见风险", "适合大多数风险等级作基础兜底"],
+                caution: "意外险主要保障意外事故，不覆盖一般疾病医疗支出，不能替代医疗险。",
+                url: "https://www.fwd.com.hk/zh/"
+            },
+            {
+                name: "Blue Cross 个人意外保障计划",
+                company: "蓝十字 Blue Cross Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者基础兜底型保障，重点补充跌倒、扭伤、骨折等日常意外风险。",
+                highlights: ["高龄阶段仍较值得参考", "适合作为低门槛补充", "可与癌症或基础医疗保障搭配"],
+                caution: "意外医疗报销范围、伤残等级给付及高龄续保条件仍需逐项核对。",
+                url: "https://www.bluecross.com.hk/zh/individual/general-insurance"
+            },
+            {
+                name: "AXA 安盛意外保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望优先建立基础意外保障、并应对日常突发跌倒伤害风险的长者参考。",
+                highlights: ["意外责任方向清晰", "适合作为基础兜底", "投保逻辑相对简单"],
+                caution: "不能覆盖一般疾病引发的住院或治疗费用，需与医疗险分开理解。",
+                url: "https://www.axa.com.hk/zh/general-insurance"
+            },
+            {
+                name: "AIA 个人意外保障计划",
+                company: "友邦 AIA Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合预算有限但仍希望补充意外身故、伤残及意外医疗责任的长者用户参考。",
+                highlights: ["预算友好的基础补充方向", "适合高风险用户先做兜底", "可与社区医保或基础医疗搭配"],
+                caution: "需留意保额是否足够、意外医疗限额是否偏低，以及高龄续保安排。",
+                url: "https://www.aia.com.hk/zh-cn/our-products/accident-and-health.html"
+            },
+            {
+                name: "Manulife 宏利意外保障计划",
+                company: "宏利 Manulife Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合高龄阶段优先考虑基础意外风险补偿、并作为最低门槛保障组合之一。",
+                highlights: ["高龄用户仍有一定参考价值", "适合作为先行配置的基础险种", "对多数风险等级都可作为兜底"],
+                caution: "意外险给付与报销责任需分别理解，不能将其视为疾病医疗险。",
+                url: "https://www.manulife.com.hk/zh-hk/individual/products/health-and-critical-illness.html"
+            },
+            {
+                name: "Zurich 个人意外保险",
+                company: "苏黎世 Zurich Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望就常见意外伤害先建立基础赔付保障的长者用户作比较参考。",
+                highlights: ["保障目标直观", "适合作为基础意外补充", "便于与其他意外方案比较"],
+                caution: "需留意不同伤残等级赔付比例、门急诊意外医疗额度及不保事项。",
+                url: "https://www.zurich.com.hk/zh-hk/insurance/personal"
+            },
+            {
+                name: "Chubb 个人意外保障计划",
+                company: "安达人寿 Chubb Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合在其他健康险承保条件有限时，优先配置较易理解且门槛较低的意外保障。",
+                highlights: ["适合高龄或慢病用户先做基础保障", "意外责任相对聚焦", "便于作为组合中的兜底部分"],
+                caution: "保障范围主要限于意外事件，若希望覆盖疾病住院仍需另配医疗类产品。",
+                url: "https://www.chubb.com/hk-zh/individuals-families.html"
+            },
+            {
+                name: "中国太平意外保障计划",
+                company: "中国太平 China Taiping Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者日常意外风险的基础补偿方案，尤其适用于预算有限时优先兜底。",
+                highlights: ["高龄用户可优先比较的基础险种", "适合应对跌倒骨折等风险", "可与癌症保障搭配形成简化组合"],
+                caution: "需留意是否包含意外门诊、骨折津贴等责任，以及续保与年龄上限。",
+                url: "https://www.tplhk.com/sc/product-services/insurance/general-insurance"
+            },
+            {
+                name: "Generali 忠意个人意外保障",
+                company: "忠意 Generali Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望用较简化的意外险先建立基础保障，再视预算逐步补充其他健康险的用户参考。",
+                highlights: ["适合作为分阶段投保起点", "预算压力相对可控", "可先补意外再补医疗或癌症保障"],
+                caution: "高龄阶段应额外确认续保安排、年龄上限及是否包含常见意外医疗责任。",
+                url: "https://www.generali.com.hk/ZH_HK/personal"
+            },
+
+            // 进一步扩充的医疗险 / VHIS
+            {
+                name: "HSBC Life 住院医疗保障计划",
+                company: "汇丰保险 HSBC Life Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望补充基础住院与手术报销保障、并优先选择大型金融品牌的长者参考。",
+                highlights: ["品牌认知度较高", "适合作为医疗补充比较项", "低至中风险用户更易理解方案定位"],
+                caution: "具体保障责任与高龄承保条件需以正式产品资料及核保结果为准。",
+                url: "https://www.hsbc.com.hk/insurance/products/"
+            },
+            {
+                name: "BOC Life 自愿医保标准计划",
+                company: "中银人寿 BOC Life",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合健康风险较低、希望先建立一层基础医疗报销框架的长者用户参考。",
+                highlights: ["结构偏基础型", "适合作为入门医疗补充", "便于与其他标准计划横向比较"],
+                caution: "如存在既往病史或年龄偏高情况，需留意承保限制与保费变化。",
+                url: "https://www.boclife.com.hk/"
+            },
+            {
+                name: "CTF Life 自愿医保灵活计划",
+                company: "周大福人寿 CTF Life",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望在基础住院医疗报销之外，进一步比较灵活型医疗方案的用户参考。",
+                highlights: ["适合作为医疗比价补充", "中低到中风险用户可纳入比较", "便于与癌症或意外保障组合规划"],
+                caution: "高龄阶段及复杂病史用户仍需重点确认核保、续保与除外条件。",
+                url: "https://www.ctflife.com.hk/"
+            },
+            {
+                name: "Avo 自愿医保计划",
+                company: "Avo 保險",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合风险较低且希望通过线上化渠道比较基础医疗保障的用户作补充参考。",
+                highlights: ["线上化投保体验较强", "适合作为低风险用户比价样本", "基础医疗定位较清晰"],
+                caution: "年龄偏高或健康状况较复杂时，需确认是否适合其投保与核保流程。",
+                url: "https://www.avoinsurance.com/"
+            },
+            {
+                name: "YF Life 住院医疗保障计划",
+                company: "万通保险 YF Life",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 2,
+                summary: "适合希望在已有基础保障上补充住院医疗风险、并比较不同承保风格的长者参考。",
+                highlights: ["适合作为第二梯队医疗补充", "住院报销方向明确", "可与专项癌症保障搭配参考"],
+                caution: "75岁以上空间有限，且存在既往治疗记录时需重点关注承保限制。",
+                url: "https://www.yflife.com/sc/Individual/Products/Health-and-Accident"
+            },
+            {
+                name: "Generali 忠意住院医疗保障",
+                company: "忠意 Generali Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望把住院及手术报销作为核心缺口来比较不同品牌医疗方案的用户参考。",
+                highlights: ["适合作为医疗候选补充", "可与意外或癌症产品组合参考", "高龄阶段仍有一定比较价值"],
+                caution: "投保前需特别留意医院网络、赔付细则及高龄核保结果。",
+                url: "https://www.generali.com.hk/ZH_HK/personal"
+            },
+            {
+                name: "Chubb 医疗保障计划",
+                company: "安达人寿 Chubb Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合希望补充住院报销、并将医疗险作为中层保障配置的长者用户参考。",
+                highlights: ["住院医疗方向清晰", "适合作为中层保障比较选项", "便于与基础医疗计划做区分"],
+                caution: "承保年龄上限与既往病史申报要求需重点核对，避免误解保障范围。",
+                url: "https://www.chubb.com/hk-zh/individuals-families.html"
+            },
+            {
+                name: "Taikang Life 泰康香港住院医疗计划",
+                company: "泰康人寿香港 Taikang Life Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望将住院医疗报销与高龄阶段可持续性一起纳入比较的用户参考。",
+                highlights: ["高龄阶段仍具一定参考性", "适合作为医疗补充候选", "可与意外险搭配形成基础组合"],
+                caution: "实际承保结果、续保安排及除外责任仍需以正式核保结论为准。",
+                url: "https://www.tkww.hk/"
+            },
+
+            // 进一步扩充的癌症保障
+            {
+                name: "HSBC Life 癌症保障计划",
+                company: "汇丰保险 HSBC Life Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望针对癌症治疗开支与确诊后财务压力做专项补充准备的长者参考。",
+                highlights: ["品牌认知度较高", "适合中高风险用户比较", "可与基础医疗保障形成分工"],
+                caution: "癌症保障不等于全面重疾保障，需确认等待期、赔付方式及不保事项。",
+                url: "https://www.hsbc.com.hk/insurance/products/"
+            },
+            {
+                name: "BOC Life 癌症保障计划",
+                company: "中银人寿 BOC Life",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合在传统重疾或全面医疗方案选择受限时，优先补足癌症专项保障缺口的用户参考。",
+                highlights: ["适合作为专项替代方案", "中高风险阶段更具比较价值", "便于与意外险组成简化保障组合"],
+                caution: "需留意给付型或报销型责任差异，并确认既往病史对核保的影响。",
+                url: "https://www.boclife.com.hk/"
+            },
+            {
+                name: "CTF Life 防癌保障计划",
+                company: "周大福人寿 CTF Life",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望把癌症高发风险作为优先缺口管理、并分散全面医疗核保压力的长者参考。",
+                highlights: ["专项方向清晰", "适合作为传统重疾替代补充", "可与基础意外保障搭配参考"],
+                caution: "需特别留意保障边界、等待期及高龄阶段是否附带续保安排。",
+                url: "https://www.ctflife.com.hk/"
+            },
+            {
+                name: "FWD 癌症保障计划",
+                company: "FWD 富卫香港",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望围绕癌症风险做专项补强、并保留一定高龄阶段参考空间的用户。",
+                highlights: ["高龄阶段仍可纳入比较", "专项保障定位明确", "可作为中高风险用户的补充选择"],
+                caution: "需核对正式保单责任、除外事项及是否适合当前身体状况。",
+                url: "https://www.fwd.com.hk/zh/critical-illness-insurance/"
+            },
+            {
+                name: "Prudential 癌症保障计划",
+                company: "保诚 Prudential Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 3,
+                summary: "适合希望在基础住院保障之外，进一步对癌症治疗与确诊财务风险做专项准备的用户参考。",
+                highlights: ["适合中高风险用户比较", "可弥补部分重大疾病缺口", "便于与医疗险形成分工"],
+                caution: "高龄与既往病史较多时，需重点确认承保条件、等待期及续保安排。",
+                url: "https://www.prudential.com.hk/scws/pages/products/health-protection/"
+            },
+            {
+                name: "Generali 忠意癌症保障计划",
+                company: "忠意 Generali Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合中高风险及高龄用户在全面医疗险受限时，将癌症专项保障作为优先缺口管理方向。",
+                highlights: ["高龄阶段仍具一定参考价值", "可作为专项替代思路", "适合与意外险组合形成基础保护层"],
+                caution: "属于专项保障，仍需确认是否覆盖所关注的癌症治疗责任与给付场景。",
+                url: "https://www.generali.com.hk/ZH_HK/personal"
+            },
+            {
+                name: "Chubb 癌症保障计划",
+                company: "安达人寿 Chubb Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合高龄或慢病用户在传统重疾险承保空间有限时，优先考虑癌症专项保障的补充方案。",
+                highlights: ["适合作为高风险阶段补充", "专项责任较聚焦", "便于与基础医疗或意外险搭配"],
+                caution: "需特别留意既往病症披露要求以及等待期与赔付触发条件。",
+                url: "https://www.chubb.com/hk-zh/individuals-families.html"
+            },
+
+            // 进一步扩充的意外险
+            {
+                name: "Bupa 个人意外保障计划",
+                company: "保柏 Bupa Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者基础意外兜底方案之一，重点覆盖跌倒、扭伤及骨折等常见风险。",
+                highlights: ["高龄阶段仍值得比较", "适合作为基础意外补充", "可与医疗险或癌症险形成简单组合"],
+                caution: "需留意意外医疗报销限额、伤残等级给付比例及高龄续保条件。",
+                url: "https://www.bupa.com.hk/zh/individual/general-insurance"
+            },
+            {
+                name: "Prudential 个人意外保障计划",
+                company: "保诚 Prudential Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望先以较低门槛建立意外身故、伤残和意外医疗基础保障的长者参考。",
+                highlights: ["适合作为先行兜底险种", "投保逻辑相对直观", "可与社区医保或基础医疗方案搭配"],
+                caution: "不能替代疾病医疗险，需分开理解疾病住院与意外事故责任。",
+                url: "https://www.prudential.com.hk/scws/pages/products/general-insurance/"
+            },
+            {
+                name: "Sun Life 个人意外保障计划",
+                company: "永明 Sun Life Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合预算有限但仍希望先配置常见意外风险保障的长者用户作为基础方案参考。",
+                highlights: ["高龄阶段仍有比较价值", "适合作为基础补充", "便于与癌症或医疗方案搭配"],
+                caution: "需核对是否包含门急诊意外医疗、骨折津贴及续保限制。",
+                url: "https://www.sunlife.com.hk/zh-hans/insurance/health-and-wellness/"
+            },
+            {
+                name: "HSBC Life 意外保障计划",
+                company: "汇丰保险 HSBC Life Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望优先通过大型金融品牌补充基础意外风险赔付责任的长者参考。",
+                highlights: ["品牌认知度较高", "适合作为基础意外保障候选", "可先做兜底再补其他健康险"],
+                caution: "具体保障项目、意外医疗限额及续保安排需以正式产品资料为准。",
+                url: "https://www.hsbc.com.hk/insurance/products/"
+            },
+            {
+                name: "BOC Insurance 个人意外保障计划",
+                company: "中银保险 BOC Insurance Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者日常意外事故的基础保障方案，尤其适用于预算优先型用户参考。",
+                highlights: ["适合作为低门槛兜底", "高龄阶段仍具参考价值", "可与癌症保障组合形成简化方案"],
+                caution: "意外险责任范围有限，仍需结合疾病医疗保障缺口综合评估。",
+                url: "https://www.bocgins.com/"
+            },
+            {
+                name: "YF Life 意外保障计划",
+                company: "万通保险 YF Life",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望用简单直接的意外保障先搭建基础保护层，再逐步扩展其他健康险的用户参考。",
+                highlights: ["可作为分阶段投保起点", "预算压力相对较易控制", "适合多数风险等级先做兜底"],
+                caution: "需特别留意高龄续保条件、保额是否足够以及不保事项。",
+                url: "https://www.yflife.com/sc/Individual/Products/Health-and-Accident"
+            },
+            {
+                name: "CTF Life 个人意外保障计划",
+                company: "周大福人寿 CTF Life",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望优先管理跌倒、骨折等意外风险，并通过简化产品先建立保障底座的长者参考。",
+                highlights: ["适合作为基础意外险比较项", "保障目标清晰", "可与基础医疗或癌症保障搭配"],
+                caution: "不同责任给付比例与医疗报销限额需逐项确认，避免高估保障范围。",
+                url: "https://www.ctflife.com.hk/"
+            },
+            {
+                name: "Allianz 安联个人意外保障计划",
+                company: "安联 Allianz Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合作为常见意外事故的基础赔付保障，用于补足高龄阶段较易发生的跌伤骨折风险。",
+                highlights: ["适合作为基础意外补充", "投保目标较直观", "便于与其他意外方案横向比较"],
+                caution: "需核对伤残赔付、门急诊意外医疗及年龄上限等具体条款。",
+                url: "https://www.allianz.com.hk/zh_HK/personal-insurance.html"
+            },
+
+            // 第三阶段扩充的医疗险 / VHIS
+            {
+                name: "Sun Life 住院医疗保障计划",
+                company: "永明 Sun Life Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望补足基础住院与手术报销保障，并优先比较大型寿险品牌医疗方案的长者参考。",
+                highlights: ["适合作为基础医疗补充", "品牌认知度较高", "低至中风险用户较易纳入比较"],
+                caution: "具体赔付责任、医院网络及高龄核保条件仍需以正式产品资料为准。",
+                url: "https://www.sunlife.com.hk/zh-hans/insurance/health-and-wellness/"
+            },
+            {
+                name: "Zurich 住院医疗保障计划",
+                company: "苏黎世 Zurich Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 2,
+                summary: "适合希望把住院医疗风险纳入中层保障规划，并补充现有基础保障的长者参考。",
+                highlights: ["住院医疗定位清晰", "适合作为中层医疗补充", "便于与其他医疗计划横向比较"],
+                caution: "75岁以上承保空间及既往病史申报要求需重点核对。",
+                url: "https://www.zurich.com.hk/zh-hk/insurance/personal"
+            },
+            {
+                name: "中国太平住院医疗保障计划",
+                company: "中国太平 China Taiping Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望将高龄阶段住院医疗费用报销纳入比较，并搭配其他基础保障的用户参考。",
+                highlights: ["高龄阶段仍具参考价值", "适合作为医疗补充候选", "可与意外险形成基础组合"],
+                caution: "实际承保结果、续保安排及不保事项仍需以正式核保结论为准。",
+                url: "https://www.tplhk.com/sc/product-services/insurance/health-insurance"
+            },
+            {
+                name: "中国人寿（海外）自愿医保计划",
+                company: "中国人寿（海外） China Life (Overseas)",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合健康风险较低到中等、希望建立基础住院医疗报销框架的长者用户参考。",
+                highlights: ["适合作为基础医疗方案比较项", "住院报销方向明确", "可与意外或癌症保障搭配"],
+                caution: "高龄阶段与复杂病史情形下，需重点确认核保限制与保费变动。",
+                url: "https://www.chinalife.com.hk/"
+            },
+            {
+                name: "Fubon 富邦香港住院医疗计划",
+                company: "富邦人寿香港 Fubon Life Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望把住院及手术费用报销作为核心比较维度，并补充基础医疗缺口的用户参考。",
+                highlights: ["适合作为医疗补充候选", "中低到中风险用户可纳入比较", "可与专项癌症保障组合规划"],
+                caution: "投保前需确认医院网络、理赔流程及高龄承保条件。",
+                url: "https://www.fubonlife.com.hk/"
+            },
+            {
+                name: "BOC Life 自愿医保灵活计划",
+                company: "中银人寿 BOC Life",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望在标准医疗保障之外，进一步比较更灵活住院报销方案的长者参考。",
+                highlights: ["适合作为灵活型医疗比较项", "便于与标准计划对照", "低至中风险用户较适合纳入考虑"],
+                caution: "具体保额结构、续保安排及既往病史影响需以正式资料为准。",
+                url: "https://www.boclife.com.hk/"
+            },
+            {
+                name: "CTF Life 标准住院医疗保障计划",
+                company: "周大福人寿 CTF Life",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合风险较低、希望先建立一层标准化住院医疗补充保障的长者用户参考。",
+                highlights: ["结构较基础清晰", "适合作为入门医疗补充", "便于与灵活型方案横向比较"],
+                caution: "如有慢病、既往治疗或高龄情形，需留意核保条件及责任除外。",
+                url: "https://www.ctflife.com.hk/"
+            },
+            {
+                name: "AIA 灵活医疗保障计划",
+                company: "友邦 AIA Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望把住院及手术费用报销作为医疗主轴，并补强基础保障层的长者参考。",
+                highlights: ["适合作为医疗主险比较项", "可与专项癌症保障分工", "品牌认知度较高"],
+                caution: "高龄、慢病或既往住院记录较多时，需重点确认核保结论与保费水平。",
+                url: "https://www.aia.com.hk/zh-cn/our-products/medical-protection.html"
+            },
+            {
+                name: "Prudential 住院医疗补充计划",
+                company: "保诚 Prudential Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 2,
+                underwritingFlexibility: 1,
+                summary: "适合希望在已有基础保障上继续补充住院报销缺口，并形成中层医疗结构的长者参考。",
+                highlights: ["适合作为中层医疗补充", "住院风险方向清晰", "可与意外险及癌症险搭配"],
+                caution: "75岁以上空间有限，且复杂病史用户需特别关注核保限制。",
+                url: "https://www.prudential.com.hk/scws/pages/products/medical-protection/"
+            },
+            {
+                name: "Bupa 自愿医保标准计划",
+                company: "保柏 Bupa Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [0, 1, 2],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合整体健康风险较低、希望优先建立标准化基础医疗报销保障的长者用户参考。",
+                highlights: ["适合作为基础医疗入门方案", "结构较清晰", "品牌医疗服务资源较成熟"],
+                caution: "既往病症、慢病及高龄情况仍可能影响核保、加费与除外结果。",
+                url: "https://www.bupa.com.hk/zh/individual/health-and-medical-insurance"
+            },
+            {
+                name: "中国平安（香港）住院医疗保障计划",
+                company: "中国平安（香港） Ping An Hong Kong",
+                category: "medical",
+                suitableRiskLevels: [1, 2, 3],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 2,
+                summary: "适合希望比较不同华资保险品牌住院医疗方案，并补充高龄阶段医疗缺口的用户参考。",
+                highlights: ["可作为医疗补充比较项", "高龄阶段仍可纳入参考", "便于与意外及癌症保障组合规划"],
+                caution: "实际承保范围、续保安排及不保事项仍需以正式核保与计划书为准。",
+                url: "https://www.pingan.com.hk/"
+            },
+
+            // 第三阶段扩充的癌症保障
+            {
+                name: "Bupa 癌症支援保障计划",
+                company: "保柏 Bupa Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望围绕癌症高发风险做专项补强，并减少全面重疾保障配置压力的长者参考。",
+                highlights: ["专项方向明确", "适合作为癌症缺口补充", "可与基础医疗保障形成分工"],
+                caution: "需确认是否为给付型或报销型安排，以及等待期与除外责任。",
+                url: "https://www.bupa.com.hk/zh/individual/health-and-medical-insurance"
+            },
+            {
+                name: "Cigna 癌症医疗保障计划",
+                company: "信诺 Cigna Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望针对癌症治疗费用做专项补充，并与住院医疗险形成责任分工的长者参考。",
+                highlights: ["适合作为专项癌症比较项", "中高风险用户更具参考价值", "可与基础医疗组合参考"],
+                caution: "具体赔付触发条件、治疗责任范围及续保安排需以正式资料为准。",
+                url: "https://www.cigna.com.hk/zh-hk"
+            },
+            {
+                name: "Allianz 癌症保障计划",
+                company: "安联 Allianz Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合中高风险用户在传统医疗险承保空间有限时，优先评估癌症专项保障作为替代补充。",
+                highlights: ["适合高风险阶段比较", "专项责任较集中", "可与意外险形成简化保障组合"],
+                caution: "并非全面重疾保障，需关注承保年龄上限、等待期及不保事项。",
+                url: "https://www.allianz.com.hk/zh_HK/personal-insurance/health-insurance.html"
+            },
+            {
+                name: "Taikang Life 防癌保障计划",
+                company: "泰康人寿香港 Taikang Life Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望对癌症治疗费用与确诊后经济压力做专项准备，并保留一定高龄参考空间的用户。",
+                highlights: ["高龄阶段仍具参考性", "适合作为癌症专项补充", "可与意外险及基础医疗搭配"],
+                caution: "需核对等待期、给付条件及既往病症申报要求。",
+                url: "https://www.tkww.hk/"
+            },
+            {
+                name: "中国人寿（海外）防癌保障计划",
+                company: "中国人寿（海外） China Life (Overseas)",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望把癌症高发风险作为优先管理缺口，并补充传统重疾方案不足的长者参考。",
+                highlights: ["适合作为专项癌症方案比较项", "中高风险用户较适合纳入考虑", "可与基础意外保障组合规划"],
+                caution: "需关注给付范围、等待期及高龄核保限制，避免将其视作全面重疾险。",
+                url: "https://www.chinalife.com.hk/"
+            },
+            {
+                name: "Fubon 富邦香港癌症保障计划",
+                company: "富邦人寿香港 Fubon Life Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望针对癌症治疗及复康阶段财务压力做专项补充安排的用户参考。",
+                highlights: ["适合作为专项癌症保障补充", "可与住院医疗险形成分工", "便于中高风险用户比较"],
+                caution: "高龄承保空间有限，且既往病史对核保影响仍需重点确认。",
+                url: "https://www.fubonlife.com.hk/"
+            },
+            {
+                name: "BOC Life 癌症医疗补充计划",
+                company: "中银人寿 BOC Life",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合在基础医疗保障之外，进一步补足癌症专项治疗费用或确诊赔付缺口的长者参考。",
+                highlights: ["可作为专项癌症补充", "高龄阶段仍具一定参考性", "便于与标准医疗计划搭配"],
+                caution: "具体责任范围、续保与等待期安排需以正式计划书及核保结果为准。",
+                url: "https://www.boclife.com.hk/"
+            },
+            {
+                name: "AIA 癌症医疗补充计划",
+                company: "友邦 AIA Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 3,
+                underwritingFlexibility: 3,
+                summary: "适合希望在住院医疗保障之外，再对癌症相关财务风险做专项补强的长者用户参考。",
+                highlights: ["专项方向明确", "品牌认知度较高", "适合中高风险用户比较"],
+                caution: "需留意等待期、赔付条件及高龄阶段的承保限制。",
+                url: "https://www.aia.com.hk/zh-cn/our-products/health-protection.html"
+            },
+            {
+                name: "AXA 癌症医疗补充计划",
+                company: "安盛 AXA Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望重点补足癌症治疗费用风险，并保留一定高龄比较空间的长者参考。",
+                highlights: ["高龄阶段仍可纳入参考", "适合作为癌症专项比较项", "可与基础医疗保障分工"],
+                caution: "需确认具体癌症责任、赔付方式及是否存在除外承保安排。",
+                url: "https://www.axa.com.hk/zh/medical-insurance"
+            },
+            {
+                name: "中国平安（香港）癌症保障计划",
+                company: "中国平安（香港） Ping An Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合中高风险及高龄用户在全面医疗险承保受限时，优先评估癌症专项保障缺口。",
+                highlights: ["适合高风险阶段补充", "可与意外险形成基础组合", "高龄阶段仍具一定参考性"],
+                caution: "需留意给付边界、等待期及既往病史对承保结果的影响。",
+                url: "https://www.pingan.com.hk/"
+            },
+            {
+                name: "Sun Life 癌症关爱保障计划",
+                company: "永明 Sun Life Hong Kong",
+                category: "cancer",
+                suitableRiskLevels: [2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 3,
+                summary: "适合希望围绕癌症高发风险做专项补充，并兼顾治疗后财务恢复压力的长者参考。",
+                highlights: ["专项癌症定位清晰", "适合中高风险用户比较", "可与住院医疗险形成分工"],
+                caution: "需核对保障责任、续保安排及是否包含所关注的癌症治疗项目。",
+                url: "https://www.sunlife.com.hk/zh-hans/insurance/health-and-wellness/"
+            },
+
+            // 第三阶段扩充的意外险
+            {
+                name: "Cigna 个人意外保障计划",
+                company: "信诺 Cigna Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者日常意外事故的基础兜底方案，用于补充跌倒、骨折等常见风险。",
+                highlights: ["高龄阶段仍具参考价值", "适合作为低门槛补充", "可与医疗或癌症保障形成简化组合"],
+                caution: "需确认意外医疗报销限额、伤残等级赔付比例及续保条件。",
+                url: "https://www.cigna.com.hk/zh-hk"
+            },
+            {
+                name: "BOC Life 长者意外保障计划",
+                company: "中银人寿 BOC Life",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为高龄阶段优先考虑的基础意外保障之一，尤其适用于预算优先型长者用户参考。",
+                highlights: ["适合作为银龄阶段基础兜底", "投保目标直观", "便于与其他意外险横向比较"],
+                caution: "意外险主要保障意外事故，仍不能替代疾病住院医疗保障。",
+                url: "https://www.boclife.com.hk/"
+            },
+            {
+                name: "中国人寿（海外）个人意外保障计划",
+                company: "中国人寿（海外） China Life (Overseas)",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者常见跌伤、骨折等意外风险的基础补偿保障，并作为先行配置方案参考。",
+                highlights: ["高龄阶段仍可纳入比较", "适合作为先行基础保障", "可与癌症或医疗险搭配"],
+                caution: "需关注意外医疗责任、伤残赔付比例及高龄续保安排。",
+                url: "https://www.chinalife.com.hk/"
+            },
+            {
+                name: "Taikang Life 长者意外保障计划",
+                company: "泰康人寿香港 Taikang Life Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合希望优先为高龄阶段常见意外风险建立基础赔付保障的长者用户参考。",
+                highlights: ["适合作为低门槛兜底方案", "高龄阶段仍具比较价值", "可与基础医疗保障形成组合"],
+                caution: "需留意是否包含骨折津贴、门诊意外医疗及续保限制。",
+                url: "https://www.tkww.hk/"
+            },
+            {
+                name: "Fubon 富邦香港个人意外保障",
+                company: "富邦人寿香港 Fubon Life Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望先建立意外身故、伤残及意外医疗基础责任，再逐步扩展其他保障的长者参考。",
+                highlights: ["适合作为分阶段投保起点", "预算压力相对可控", "便于与其他意外方案比较"],
+                caution: "高龄续保条件、保额充足性及不保事项需逐项确认。",
+                url: "https://www.fubonlife.com.hk/"
+            },
+            {
+                name: "Sun Life 长者意外支援计划",
+                company: "永明 Sun Life Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者阶段应对跌倒、扭伤及骨折风险的基础意外保障方案参考。",
+                highlights: ["高龄阶段仍可优先比较", "适合作为基础补充", "可与癌症或医疗险形成简化组合"],
+                caution: "需核对意外医疗限额、伤残赔付比例及是否附带续保安排。",
+                url: "https://www.sunlife.com.hk/zh-hans/insurance/health-and-wellness/"
+            },
+            {
+                name: "Zurich 长者意外支援计划",
+                company: "苏黎世 Zurich Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望针对高龄阶段高频发生的跌伤骨折风险，先建立基础赔付保障的长者参考。",
+                highlights: ["保障目标较直观", "适合作为基础意外补充", "便于与其他银龄意外方案对照"],
+                caution: "需关注意外医疗责任、伤残等级赔付及年龄上限限制。",
+                url: "https://www.zurich.com.hk/zh-hk/insurance/personal"
+            },
+            {
+                name: "Chubb 银龄意外保障计划",
+                company: "安达人寿 Chubb Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合高龄或慢病用户优先考虑低门槛意外保障，作为整体保障组合中的基础兜底。",
+                highlights: ["适合作为银龄阶段基础险种", "高龄用户仍具参考价值", "可与癌症或医疗险搭配"],
+                caution: "保障范围仍主要限于意外事故，不应视作疾病医疗保障的替代。",
+                url: "https://www.chubb.com/hk-zh/individuals-families.html"
+            },
+            {
+                name: "Generali 长者意外支援计划",
+                company: "忠意 Generali Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 75,
+                hkPresenceRequired: true,
+                elderlyPriority: 4,
+                underwritingFlexibility: 4,
+                summary: "适合希望把银龄阶段常见意外风险先做基础管理，并分阶段补充其他健康险的用户参考。",
+                highlights: ["适合作为银龄意外比较项", "预算压力相对可控", "可先做兜底再补其他保障"],
+                caution: "需特别关注意外医疗限额、骨折津贴及高龄续保安排。",
+                url: "https://www.generali.com.hk/ZH_HK/personal"
+            },
+            {
+                name: "AXA 长者意外医疗保障计划",
+                company: "安盛 AXA Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为高龄阶段日常意外医疗及伤残风险的基础补充方案，便于先建立保障底座。",
+                highlights: ["高龄阶段仍具参考价值", "适合作为基础兜底", "可与住院医疗险形成互补"],
+                caution: "需逐项核对意外医疗报销细节、赔付比例及不保事项。",
+                url: "https://www.axa.com.hk/zh/general-insurance"
+            },
+            {
+                name: "BOC Insurance 银龄意外保障计划",
+                company: "中银保险 BOC Insurance Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为银龄阶段意外事故的基础赔付保障，用于补足预算有限时的最基础风险保护。",
+                highlights: ["适合作为低门槛兜底方案", "高龄阶段仍可优先比较", "可与癌症保障形成简化组合"],
+                caution: "意外险责任范围有限，仍需结合疾病医疗保障缺口综合评估。",
+                url: "https://www.bocgins.com/"
+            },
+            {
+                name: "中国太平长者意外支援计划",
+                company: "中国太平 China Taiping Hong Kong",
+                category: "accident",
+                suitableRiskLevels: [0, 1, 2, 3, 4, 5],
+                minAge: 18,
+                maxAge: 80,
+                hkPresenceRequired: true,
+                elderlyPriority: 5,
+                underwritingFlexibility: 5,
+                summary: "适合作为长者高频意外风险的基础保障方案，尤其适合先做最低门槛兜底配置。",
+                highlights: ["高龄阶段仍具参考价值", "适合作为基础意外险候选", "可与基础医疗或癌症保障组合"],
+                caution: "需留意门诊意外医疗、骨折津贴及续保年龄上限等条款细节。",
+                url: "https://www.tplhk.com/sc/product-services/insurance/general-insurance"
+            }
+        ];
+
+
+
+
+
+        function handleNoneCheckbox(groupName, checkbox) {
+            const checkboxes = document.querySelectorAll(`input[type="checkbox"][name="${groupName}"]`);
+            if (checkbox.checked) {
+                checkboxes.forEach(cb => { cb.checked = false; });
+                checkbox.checked = true;
+            }
+            // 清除该题目的高亮
+            const questionEl = checkbox.closest('.question');
+            if (questionEl) {
+                questionEl.classList.remove('unanswered');
+            }
+            // 检查是否所有题目都已完成，如果是则隐藏错误条
+            checkAllQuestionsAnswered();
+        }
+
+        // 为所有单选框和复选框添加change事件监听
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.step input[type="radio"], .step input[type="checkbox"]').forEach(input => {
+                input.addEventListener('change', function() {
+                    const questionEl = this.closest('.question');
+                    if (questionEl) {
+                        questionEl.classList.remove('unanswered');
+                    }
+                    // 检查是否所有题目都已完成
+                    setTimeout(checkAllQuestionsAnswered, 100);
+                });
+            });
+        });
+
+        function checkAllQuestionsAnswered() {
+            const activeStep = document.querySelector('.step.active');
+            if (!activeStep) return;
+            
+            const unanswered = activeStep.querySelectorAll('.question.unanswered');
+            if (unanswered.length === 0) {
+                hideErrorBar();
+            }
+        }
+
+        function validateStep(stepNum) {
+            let valid = true;
+            const stepGroup = document.getElementById("step" + stepNum);
+            const unansweredQuestions = [];
+            
+            // 清除之前的高亮
+            stepGroup.querySelectorAll('.question').forEach(q => q.classList.remove('unanswered'));
+            
+            const groups = new Set();
+            stepGroup.querySelectorAll('input[type="radio"][required]').forEach(el => groups.add(el.name));
+            
+            groups.forEach(name => {
+                const checked = stepGroup.querySelector(`input[name="${name}"]:checked`);
+                if (!checked) {
+                    valid = false;
+                    // 找到对应的题目编号和元素
+                    const questionEl = stepGroup.querySelector(`input[name="${name}"]`).closest('.question');
+                    if (questionEl) {
+                        questionEl.classList.add('unanswered');
+                        const questionNum = getQuestionNumber(name);
+                        if (questionNum && !unansweredQuestions.find(q => q.num === questionNum)) {
+                            unansweredQuestions.push({ num: questionNum, el: questionEl });
+                        }
+                    }
+                }
+            });
+            
+            if (stepNum === 3) {
+                const q9None = document.querySelector('input[name="q9_none"]');
+                const q13None = document.querySelector('input[name="q13_none"]');
+                const q9Checked = document.querySelectorAll('input[name="q9"]:checked').length > 0 || (q9None && q9None.checked);
+                const q13Checked = document.querySelectorAll('input[name="q13"]:checked').length > 0 || (q13None && q13None.checked);
+                
+                if (!q9Checked) {
+                    valid = false;
+                    const q9El = stepGroup.querySelector('input[name="q9"]').closest('.question');
+                    if (q9El) {
+                        q9El.classList.add('unanswered');
+                        if (!unansweredQuestions.find(q => q.num === 9)) {
+                            unansweredQuestions.push({ num: 9, el: q9El });
+                        }
+                    }
+                }
+                
+                if (!q13Checked) {
+                    valid = false;
+                    const q13El = stepGroup.querySelector('input[name="q13"]').closest('.question');
+                    if (q13El) {
+                        q13El.classList.add('unanswered');
+                        if (!unansweredQuestions.find(q => q.num === 13)) {
+                            unansweredQuestions.push({ num: 13, el: q13El });
+                        }
+                    }
+                }
+            }
+
+            if (!valid) {
+                showErrorBar(unansweredQuestions);
+            } else {
+                hideErrorBar();
+            }
+            return valid;
+        }
+
+        function getQuestionNumber(name) {
+            const match = name.match(/q(\d+)/);
+            return match ? parseInt(match[1]) : null;
+        }
+
+        function showErrorBar(unansweredQuestions) {
+            const errorBar = document.getElementById('errorBar');
+            const errorBarQuestions = document.getElementById('errorBarQuestions');
+            
+            // 按题号排序
+            unansweredQuestions.sort((a, b) => a.num - b.num);
+            
+            // 生成提示内容
+            errorBarQuestions.innerHTML = unansweredQuestions.map(q => 
+                `<span class="error-bar-question" onclick="scrollToQuestion(${q.num})">第${q.num}题</span>`
+            ).join('');
+            
+            errorBar.classList.add('show');
+        }
+
+        function hideErrorBar() {
+            const errorBar = document.getElementById('errorBar');
+            errorBar.classList.remove('show');
+        }
+
+        function scrollToQuestion(questionNum) {
+            const stepGroup = document.querySelector('.step.active');
+            if (!stepGroup) return;
+            
+            // 查找对应的题目元素
+            let questionEl = null;
+            if (questionNum === 9) {
+                questionEl = stepGroup.querySelector('input[name="q9"]')?.closest('.question');
+            } else if (questionNum === 13) {
+                questionEl = stepGroup.querySelector('input[name="q13"]')?.closest('.question');
+            } else {
+                questionEl = stepGroup.querySelector(`input[name="q${questionNum}"]`)?.closest('.question');
+            }
+            
+            if (questionEl) {
+                // 滚动到题目位置（稍微往上偏移，避免被导航栏遮挡）
+                const offset = 100;
+                const top = questionEl.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top: top, behavior: 'smooth' });
+                
+                // 高亮闪烁效果
+                questionEl.style.animation = 'none';
+                setTimeout(() => {
+                    questionEl.style.animation = '';
+                }, 10);
+            }
+        }
+
+function nextStep(currentStep) {
+            if (!validateStep(currentStep)) return;
+            hideErrorBar();
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep + 1)).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function prevStep(currentStep) {
+            hideErrorBar();
+            document.getElementById('step' + currentStep).classList.remove('active');
+            document.getElementById('step' + (currentStep - 1)).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function getRadioValue(name) {
+            const el = document.querySelector(`input[name="${name}"]:checked`);
+            return el ? parseInt(el.value, 10) : 0;
+        }
+
+        function getAgeRangeFromScore(ageScore) {
+            const ageRangeMap = {
+                0: { minAge: 18, maxAge: 45 },
+                1: { minAge: 46, maxAge: 50 },
+                2: { minAge: 51, maxAge: 59 },
+                3: { minAge: 60, maxAge: 69 },
+                4: { minAge: 70, maxAge: 74 },
+                5: { minAge: 75, maxAge: 85 }
+            };
+            return ageRangeMap[ageScore] || { minAge: 18, maxAge: 85 };
+        }
+
+        function escapeHTML(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        }
+
+        function getCategoryLabel(category) {
+            const categoryMap = {
+                medical: "医疗",
+                accident: "意外",
+                cancer: "防癌"
+            };
+            return categoryMap[category] || category;
+        }
+
+        function hasExclusionKeyword(exclusions, keywords) {
+            return exclusions.some(item => {
+                const text = String(item);
+                return keywords.some(keyword => text.includes(keyword));
+            });
+        }
+
+        function getHKProductRankScore(product, age, riskLevel, exclusions) {
+            const userAgeRange = getAgeRangeFromScore(age);
+            let score = 0;
+
+            if (riskLevel >= 4) {
+                if (product.category === 'accident') score += 60;
+                if (product.category === 'cancer') score += 45;
+                if (product.category === 'medical') score -= 20;
+            } else if (riskLevel <= 2) {
+                if (product.category === 'medical') score += 60;
+                if (product.category === 'accident') score += 35;
+                if (product.category === 'cancer') score += 15;
+            } else {
+                if (product.category === 'medical') score += 35;
+                if (product.category === 'cancer') score += 35;
+                if (product.category === 'accident') score += 30;
+            }
+
+            score += (product.elderlyPriority || 0) * (age >= 5 ? 5 : 3);
+            score += (product.underwritingFlexibility || 0) * (riskLevel >= 4 ? 6 : 3);
+
+            if (age >= 5) {
+                if (product.maxAge >= 80) score += 18;
+                else if (product.maxAge >= 75) score += 10;
+            } else if (userAgeRange.minAge >= 60) {
+                if (product.maxAge >= 75) score += 8;
+            }
+
+            if (product.category === 'medical' && hasExclusionKeyword(exclusions, ["常规百万医疗险", "百万医疗险", "部分医疗险", "普通医疗险", "高端医疗险"])) {
+                score -= 80;
+            }
+
+            if (product.category === 'accident' && riskLevel >= 4) score += 15;
+            if (product.category === 'cancer' && riskLevel >= 4) score += 12;
+            if (product.category === 'medical' && riskLevel <= 2) score += 12;
+            if (product.category === 'accident' && riskLevel <= 2) score += 8;
+
+            return score;
+        }
+
+        function getRecommendedHKProducts(age, hk, riskLevel, exclusions) {
+            const normalizedExclusions = Array.isArray(exclusions) ? exclusions : [];
+            const blockedByAllHKInsurance = normalizedExclusions.some(item => String(item).includes("所有香港保险"));
+
+            if (hk !== 0 || blockedByAllHKInsurance) {
+                return [];
+            }
+
+            const userAgeRange = getAgeRangeFromScore(age);
+
+            return hkInsuranceProducts
+                .filter(product => {
+                    const matchesAge = userAgeRange.maxAge >= product.minAge && userAgeRange.minAge <= product.maxAge;
+                    const matchesRisk = product.suitableRiskLevels.includes(riskLevel);
+                    const matchesHKRequirement = !product.hkPresenceRequired || hk === 0;
+                    const matches75PlusRule = age < 5 || product.maxAge >= 75;
+                    const blockedMedicalByExclusion = product.category === 'medical' && hasExclusionKeyword(normalizedExclusions, ["常规百万医疗险", "大部分百万医疗险"]);
+
+                    return matchesAge && matchesRisk && matchesHKRequirement && matches75PlusRule && !blockedMedicalByExclusion;
+                })
+                .map(product => ({
+                    ...product,
+                    rankScore: getHKProductRankScore(product, age, riskLevel, normalizedExclusions)
+                }))
+                .sort((a, b) => {
+                    if (b.rankScore !== a.rankScore) return b.rankScore - a.rankScore;
+                    if (b.maxAge !== a.maxAge) return b.maxAge - a.maxAge;
+                    return a.name.localeCompare(b.name, 'zh-Hans-CN');
+                })
+                .map(({ rankScore, ...product }) => product);
+        }
+
+        function getHKProductMatchReason(product, age, riskLevel) {
+            const agePrefix = age >= 5 ? "结合您目前75岁以上的年龄阶段，" : age >= 3 ? "结合您当前年龄阶段，" : "结合您目前情况，";
+
+            if (riskLevel >= 4) {
+                if (product.category === 'accident') {
+                    return `${agePrefix}这类意外保障通常更容易配置，可先补足基础保护。`;
+                }
+                if (product.category === 'cancer') {
+                    return `${agePrefix}当前风险较高，优先补充更聚焦的癌症保障更有针对性。`;
+                }
+                return `${agePrefix}该产品可作为补充参考，但优先级低于意外和防癌保障。`;
+            }
+
+            if (riskLevel === 3) {
+                if (product.category === 'cancer') {
+                    return `${agePrefix}可重点补充癌症风险保障，方向更集中、更易理解。`;
+                }
+                if (product.category === 'accident') {
+                    return `${agePrefix}可补充跌倒骨折等常见意外风险，作为基础兜底。`;
+                }
+                return `${agePrefix}可补充住院报销保障，适合作为当前阶段的基础配置。`;
+            }
+
+            if (product.category === 'medical') {
+                return `${agePrefix}当前风险较低，住院报销类医疗保障通常更全面、更优先。`;
+            }
+            if (product.category === 'accident') {
+                return `${agePrefix}可作为医疗保障之外的意外补充，提升日常基础保护。`;
+            }
+            return `${agePrefix}可作为补充性的专项保障，用于加强癌症风险防护。`;
+        }
+
+        function renderHKProductCards(products, age, riskLevel) {
+            if (!products.length) {
+                return `
+                    <section class="result-section hk-product-section">
+                        <h3 class="section-title">推荐的香港保险产品</h3>
+                        <p class="section-subtitle">以下为根据您的年龄阶段、风险等级与赴港投保条件筛选出的产品参考。</p>
+                        <p class="hk-product-note">产品链接仅供官方信息参考，实际条款请以保险公司最新正式披露为准。</p>
+                        <div class="hk-product-card">
+                            <p class="empty-note">当前条件下暂无合适的香港长者保险产品建议，或您当前条件暂不满足赴港投保要求。</p>
+                        </div>
+                    </section>
+                `;
+            }
+
+            const priorityProducts = products.slice(0, 3);
+            const additionalProducts = products.slice(3, 8);
+
+            const renderPriorityCard = (product, index) => `
+                <div class="hk-product-card">
+                    <span class="hk-product-rank">优先推荐 ${index + 1}</span>
+                    <div class="hk-product-head">
+                        <h3>${escapeHTML(product.name)}</h3>
+                        <span class="hk-product-category">${escapeHTML(getCategoryLabel(product.category))}</span>
+                    </div>
+                    <p class="hk-product-company">${escapeHTML(product.company)}</p>
+                    <p class="hk-product-summary">${escapeHTML(product.summary)}</p>
+                    <p class="hk-product-match">
+                        <strong>为什么适合您：</strong>${escapeHTML(getHKProductMatchReason(product, age, riskLevel))}
+                    </p>
+                    <p class="hk-product-meta">
+                        适配风险等级：${product.suitableRiskLevels.join("、")}<br>
+                        适用年龄：${product.minAge}-${product.maxAge} 岁
+                    </p>
+                    <ul class="hk-product-highlights">
+                        ${product.highlights.map(item => `<li>${escapeHTML(item)}</li>`).join("")}
+                    </ul>
+                    <p class="hk-product-caution">
+                        <strong>注意：</strong>${escapeHTML(product.caution)}
+                    </p>
+                    <a class="hk-product-link" href="${escapeHTML(product.url)}" target="_blank" rel="noopener noreferrer">
+                        查看产品信息
+                    </a>
+                </div>
+            `;
+
+            const renderAdditionalCard = (product, index) => `
+                <div class="hk-product-card hk-product-card-compact">
+                    <span class="hk-product-rank">参考顺位 ${index + 4}</span>
+                    <div class="hk-product-head">
+                        <h3>${escapeHTML(product.name)}</h3>
+                        <span class="hk-product-category">${escapeHTML(getCategoryLabel(product.category))}</span>
+                    </div>
+                    <p class="hk-product-company">${escapeHTML(product.company)}</p>
+                    <p class="hk-product-summary">${escapeHTML(product.summary)}</p>
+                    <p class="hk-product-match">
+                        <strong>为什么适合您：</strong>${escapeHTML(getHKProductMatchReason(product, age, riskLevel))}
+                    </p>
+                    <p class="hk-product-meta">适用年龄：${product.minAge}-${product.maxAge} 岁</p>
+                    <a class="hk-product-link" href="${escapeHTML(product.url)}" target="_blank" rel="noopener noreferrer">
+                        查看产品信息
+                    </a>
+                </div>
+            `;
+
+            return `
+                <section class="result-section hk-product-section">
+                    <h3 class="section-title">推荐的香港保险产品</h3>
+                    <p class="section-subtitle">以下结果已按匹配度排序。为避免信息过载，仅展示 3 款优先推荐方案，以及 5 款以内的更多可参考方案。</p>
+                    <p class="hk-product-note">产品链接仅供官方信息参考，实际条款请以保险公司最新正式披露为准。</p>
+
+                    <div class="hk-product-group">
+                        <h4 class="hk-product-group-title">优先推荐</h4>
+                        <p class="hk-product-group-desc">优先查看这 3 款与您当前情况匹配度更高的方案。</p>
+                        <div class="hk-product-grid">
+                            ${priorityProducts.map((product, index) => renderPriorityCard(product, index)).join("")}
+                        </div>
+                    </div>
+
+                    ${additionalProducts.length ? `
+                        <div class="hk-product-group">
+                            <h4 class="hk-product-group-title">更多可参考方案</h4>
+                            <p class="hk-product-group-desc">以下再展示 5 款以内的备选方案，方便继续比较，但不会一次性展开全部产品池。</p>
+                            <div class="hk-product-grid">
+                                ${additionalProducts.map((product, index) => renderAdditionalCard(product, index)).join("")}
+                            </div>
+                        </div>
+                    ` : ""}
+                </section>
+            `;
+        }
+
+
+
+
+
+
+
+
+        // =============================================
+        // 险种详情页交互逻辑
+        // =============================================
+
+        // 险种类别映射（用于点击跳转）
+        const insuranceTypeMap = {
+            '意外险': 'accident',
+            '医疗险': 'medical',
+            '百万医疗险': 'medical',
+            '防癌险': 'cancer',
+            '护理险': 'nursing',
+            '重疾险': 'critical',
+            '寿险': 'life',
+            '惠民保': 'huimin'
+        };
+
+        // 险种中文名称映射
+        const categoryChineseNames = {
+            'medical': '医疗险',
+            'accident': '意外险',
+            'cancer': '防癌险',
+            'nursing': '护理险',
+            'critical': '重疾险',
+            'life': '寿险',
+            'huimin': '惠民保'
+        };
+
+        // 全局变量：存储当前用户信息
+        let currentUserAge = 0;
+        let currentUserRiskLevel = 0;
+        let currentUserExclusions = [];
+
+        // 打开险种详情模态框
+        function openProductDetail(category) {
+            const modal = document.getElementById('productDetailModal');
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('modalTitle');
+
+            const categoryName = categoryChineseNames[category] || category;
+            modalTitle.textContent = '推荐的香港' + categoryName + '产品';
+
+            // 根据险种类别筛选产品
+            const products = getProductsByCategory(category);
+
+            // 渲染产品列表
+            modalBody.innerHTML = renderDetailProducts(products, category);
+
+            // 显示模态框
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭险种详情模态框
+        function closeProductDetail(e) {
+            if (e) e.preventDefault();
+            const modal = document.getElementById('productDetailModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ESC 键关闭模态框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeProductDetail();
+            }
+        });
+
+        // 点击模态框外部关闭
+        document.getElementById('productDetailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProductDetail();
+            }
+        });
+
+        // 根据险种类别获取产品
+        function getProductsByCategory(category) {
+            // 如果是惠民保，返回空（惠民保是内地产品，不在香港保险范围内）
+            if (category === 'huimin') {
+                return [];
+            }
+
+            return hkInsuranceProducts.filter(product => {
+                return product.category === category;
+            }).filter(product => {
+                // 根据用户年龄和风险等级筛选
+                const userAgeRange = getAgeRangeFromScore(currentUserAge);
+
+                const matchesAge = userAgeRange.maxAge >= product.minAge && userAgeRange.minAge <= product.maxAge;
+                const matchesRisk = product.suitableRiskLevels.includes(currentUserRiskLevel);
+
+                // 排除被规则排除的产品
+                let excluded = false;
+                if (category === 'medical' && currentUserExclusions.some(item =>
+                    ["常规百万医疗险", "百万医疗险", "部分医疗险", "普通医疗险", "高端医疗险"].includes(item)
+                )) {
+                    // 如果有百万医疗险的排除规则，检查是否匹配
+                    const medicalExclusions = ["常规百万医疗险", "大部分百万医疗险"];
+                    if (currentUserExclusions.some(item => medicalExclusions.includes(item))) {
+                        excluded = true;
+                    }
+                }
+
+                return matchesAge && matchesRisk && !excluded;
+            });
+        }
+
+        // 渲染详情页产品列表
+        function renderDetailProducts(products, category) {
+            if (!products || products.length === 0) {
+                return '<div class="hk-product-card"><p class="empty-note">根据您当前的条件，暂无合适的香港' + (categoryChineseNames[category] || category) + '产品推荐。<br><br>建议：您可以先考虑配置意外险作为基础保障，或咨询专业保险顾问获取更多方案。</p></div>';
+            }
+
+            // 按匹配度排序
+            const sortedProducts = products
+                .map(product => ({
+                    ...product,
+                    rankScore: getHKProductRankScore(product, currentUserAge, currentUserRiskLevel, currentUserExclusions)
+                }))
+                .sort((a, b) => {
+                    if (b.rankScore !== a.rankScore) return b.rankScore - a.rankScore;
+                    if (b.maxAge !== a.maxAge) return b.maxAge - a.maxAge;
+                    return a.name.localeCompare(b.name, 'zh-Hans-CN');
+                })
+                .map(({ rankScore, ...product }) => product);
+
+            const categoryName = categoryChineseNames[category] || category;
+            const priorityProducts = sortedProducts.slice(0, 3);
+            const additionalProducts = sortedProducts.slice(3, 8);
+
+            let html = '<p class="product-detail-subtitle">以下为根据您的年龄阶段（' + getAgeRangeText(currentUserAge) + '）、风险等级与赴港投保条件筛选出的' + categoryName + '产品推荐。</p><p class="hk-product-note">产品链接仅供官方信息参考，实际条款请以保险公司最新正式披露为准。</p>';
+
+            if (priorityProducts.length > 0) {
+                html += '<div class="hk-product-group"><h4 class="hk-product-group-title">优先推荐</h4><p class="hk-product-group-desc">优先查看这 ' + priorityProducts.length + ' 款与您当前情况匹配度更高的方案。</p><div class="hk-product-grid">' + priorityProducts.map((product, index) => renderDetailCard(product, index + 1, '优先推荐')).join('') + '</div></div>';
+            }
+
+            if (additionalProducts.length > 0) {
+                html += '<div class="hk-product-group"><h4 class="hk-product-group-title">更多可参考方案</h4><p class="hk-product-group-desc">以下再展示 ' + additionalProducts.length + ' 款备选方案，方便继续比较。</p><div class="hk-product-grid">' + additionalProducts.map((product, index) => renderDetailCard(product, index + 4, '参考顺位')).join('') + '</div></div>';
+            }
+
+            return html;
+        }
+
+        // 获取年龄范围文本
+        function getAgeRangeText(ageScore) {
+            const ageRangeMap = {
+                0: "45岁及以下",
+                1: "46-50岁",
+                2: "51-59岁",
+                3: "60-69岁",
+                4: "70-74岁",
+                5: "75岁以上"
+            };
+            return ageRangeMap[ageScore] || "未知";
+        }
+
+        // 渲染详情卡片
+        function renderDetailCard(product, rank, rankLabel) {
+            const categoryName = getCategoryLabel(product.category);
+            return '<div class="hk-product-card"><span class="hk-product-rank">' + rankLabel + ' ' + (rank > 3 ? rank : '') + '</span><div class="hk-product-head"><h3>' + escapeHTML(product.name) + '</h3><span class="hk-product-category">' + categoryName + '</span></div><p class="hk-product-company">' + escapeHTML(product.company) + '</p><p class="hk-product-summary">' + escapeHTML(product.summary) + '</p><p class="hk-product-match"><strong>为什么适合您：</strong>' + escapeHTML(getHKProductMatchReason(product, currentUserAge, currentUserRiskLevel)) + '</p><p class="hk-product-meta">适配风险等级：' + product.suitableRiskLevels.join("、") + '<br>适用年龄：' + product.minAge + '-' + product.maxAge + ' 岁</p><ul class="hk-product-highlights">' + product.highlights.map(item => '<li>' + escapeHTML(item) + '</li>').join('') + '</ul><p class="hk-product-caution"><strong>注意：</strong>' + escapeHTML(product.caution) + '</p><a class="hk-product-link" href="' + escapeHTML(product.url) + '" target="_blank" rel="noopener noreferrer">查看产品信息</a></div>';
+        }
+
+        // 将险种文本转换为可点击链接
+        function makeInsuranceLinks(text) {
+            // 按优先级替换险种名称为链接
+            const insuranceTypes = ['百万医疗险', '护理险', '防癌险', '重疾险', '医疗险', '意外险', '寿险', '惠民保'];
+
+            let result = text;
+            insuranceTypes.forEach(type => {
+                const category = insuranceTypeMap[type];
+                // 使用正则表达式匹配险种名称
+                const regex = new RegExp('(' + type.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'g');
+                result = result.replace(regex, '<a class="insurance-link" onclick="openProductDetail(\'' + category + '\')" href="javascript:void(0);">$1</a>');
+            });
+
+            return result;
+        }
+
+        function calculateResult() {
+            if (!validateStep(3)) return;
+            hideErrorBar();
+
+            const age = getRadioValue('q1');
+            const medicalIns = getRadioValue('q2');
+            const region = getRadioValue('q3');
+            const hk = getRadioValue('q4');
+
+            // 存储用户信息供险种详情页使用
+            currentUserAge = age;
+            currentUserRiskLevel = 0;
+            currentUserExclusions = [];
+            const q5 = getRadioValue('q5');
+            const q6 = getRadioValue('q6');
+            const q7 = getRadioValue('q7');
+            const q8 = getRadioValue('q8');
+            const q10 = getRadioValue('q10');
+            const q11 = getRadioValue('q11');
+            const q12 = getRadioValue('q12');
+            const q14 = getRadioValue('q14');
+
+            let q9Score = 0;
+            let severeCount = 0;
+            let lightCount = 0;
+            const q9Els = document.querySelectorAll('input[name="q9"]:checked');
+            q9Els.forEach(el => {
+                if (el.value === 'severe') severeCount++;
+                if (el.value === '1') lightCount++;
+            });
+            if (severeCount > 0) q9Score = 4;
+            else if (lightCount === 1) q9Score = 2;
+            else if (lightCount === 2) q9Score = 3;
+            else if (lightCount >= 3) q9Score = 4;
+            if (severeCount + lightCount > 1 && severeCount > 0) q9Score = 5;
+
+            let q13Score = 0;
+            let hCount = 0, mCount = 0, lCount = 0;
+            const q13Els = document.querySelectorAll('input[name="q13"]:checked');
+            q13Els.forEach(el => {
+                if (el.value === 'heavy') hCount++;
+                if (el.value === 'medium') mCount++;
+                if (el.value === 'light') lCount++;
+            });
+            if (lCount === 1 && mCount === 0 && hCount === 0) q13Score = 1;
+            else if ((lCount >= 2 && hCount === 0) || (mCount === 1 && hCount === 0)) q13Score = 2;
+            else if (hCount === 1) q13Score = 3;
+            else if (hCount >= 2) q13Score = 5;
+            else if (lCount + mCount + hCount >= 3) q13Score = 4;
+
+            let totalScore = age + medicalIns + region + hk + q5 + q6 + q7 + q8 + q9Score + q10 + q11 + q12 + q13Score + q14;
+            let riskLevel = 0;
+            if (totalScore >= 25) riskLevel = 5;
+            else if (totalScore >= 20) riskLevel = 4;
+            else if (totalScore >= 15) riskLevel = 3;
+            else if (totalScore >= 10) riskLevel = 2;
+            else if (totalScore >= 5) riskLevel = 1;
+
+            const riskDesc = ["极低风险", "低风险", "中低风险", "中风险", "中高风险", "高风险"][riskLevel];
+
+            let exclusions = [];
+            if (age >= 4) exclusions.push("重疾险", "定期寿险");
+            if (age >= 5) exclusions.push("长期护理险", "常规百万医疗险");
+            if (medicalIns === 5) exclusions.push("要求社保身份的百万医疗险");
+            if (hk === 2) exclusions.push("所有香港保险");
+            if (severeCount > 0 || (severeCount + lightCount >= 3)) exclusions.push("重疾险", "定期寿险(大概率)", "部分百万医疗险");
+            if (q12 >= 4) exclusions.push("重疾险", "定期寿险", "大部分百万医疗险");
+            if (hCount >= 2 || q13Score === 5) exclusions.push("重疾险", "定期寿险", "百万医疗险");
+            if (q14 === 5) exclusions.push("重疾险", "定期寿险", "百万医疗险");
+            if (q10 >= 5) exclusions.push("百万医疗险(大概率拒保)", "重疾险(大概率拒保)");
+            if (q11 >= 4 || (lightCount + severeCount) >= 2) exclusions.push("部分医疗险", "部分重疾");
+            if (q5 === 5) exclusions.push("长期护理险", "分红型/储蓄型保险", "高端医疗险");
+            if (q6 === 5 && q13Score > 0) exclusions.push("普通医疗险");
+            if (q7 === 5) exclusions.push("长期缴费类保险(寿险、储蓄险)");
+            
+            exclusions = [...new Set(exclusions)];
+
+            // 更新全局变量供险种详情页使用
+            currentUserRiskLevel = riskLevel;
+            currentUserExclusions = exclusions;
+
+            let recommendationStr = "";
+            let reasonStr = "";
+            
+            if (riskLevel <= 1) {
+                recommendationStr = "百万医疗险 + 意外险 + 护理险 + 可选重疾险/寿险";
+                reasonStr = "年龄、医保、地区约束较少，可做相对完整配置；医疗险打底，意外险覆盖高频跌倒骨折风险。";
+            } else if (riskLevel === 2) {
+                recommendationStr = "医疗险 + 意外险 + 防癌险/护理险 (择优)";
+                reasonStr = "以「医疗报销 + 意外」作为核心，防癌/护理作为补充；预算等允许时再考虑重疾险或寿险。";
+            } else if (riskLevel === 3) {
+                recommendationStr = "老年医疗险/防癌医疗险 + 意外险 + 惠民保 + 可选防癌险";
+                reasonStr = "进入高龄/慢病阶段后，常规长期险性价比下降，改用更容易投保的老年医疗、防癌医疗和惠民保兜底。";
+            } else if (riskLevel === 4) {
+                recommendationStr = "意外险 + 惠民保 + 防癌医疗险";
+                reasonStr = "核心目标变成「保得上、买得起、能理赔」；主推低门槛的险种。";
+            } else if (riskLevel === 5) {
+                recommendationStr = "仅意外险（能投则投） + 当地惠民保";
+                reasonStr = "高龄、慢病重、预算紧时，仅保留最低门槛保障。";
+            }
+
+            // 将险种关键词转为可点击链接（隐藏直接产品展示）
+            const recommendationStrWithLinks = makeInsuranceLinks(recommendationStr);
+
+            // 移除直接展示香港保险产品（按用户需求，初始页不展示具体产品）
+            // const recommendedHKProducts = getRecommendedHKProducts(age, hk, riskLevel, exclusions);
+            // const hkProductHTML = renderHKProductCards(recommendedHKProducts, age, riskLevel);
+
+
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('resultStep').classList.add('active');
+            window.scrollTo(0, 0);
+
+            document.getElementById('scoreInfo').innerHTML = `
+                <section class="result-section">
+                    <h3 class="section-title">风险概览</h3>
+                    <p class="section-subtitle">以下结果基于问卷填写内容自动生成，可作为长者及家人进行保险选择时的参考。</p>
+                    <div class="risk-summary-grid">
+                        <div class="risk-summary-card">
+                            <span class="risk-summary-label">综合评分</span>
+                            <span class="risk-summary-value">${totalScore}</span>
+                        </div>
+                        <div class="risk-summary-card">
+                            <span class="risk-summary-label">健康风险等级</span>
+                            <span class="risk-summary-value ${riskLevel >= 3 ? 'risk-high' : 'risk-low'}">${riskDesc}</span>
+                        </div>
+                    </div>
+                </section>
+            `;
+
+            let exclusionHTML = "";
+            if (exclusions.length > 0) {
+                exclusionHTML = `
+                    <section class="result-section excluded-box">
+                        <h3 class="section-title">不建议优先考虑的险种</h3>
+                        <p class="section-subtitle">根据当前年龄、健康与家庭情况，以下险种暂不适合作为优先选择。</p>
+                        <ul class="excluded-list">
+                            ${exclusions.map(item => `<li>${item}</li>`).join("")}
+                        </ul>
+                    </section>
+                `;
+            } else {
+                exclusionHTML = `
+                    <section class="result-section">
+                        <h3 class="section-title">不建议优先考虑的险种</h3>
+                        <p class="empty-note">根据当前填写结果，系统暂未识别出需要明确排除的险种类型。</p>
+                    </section>
+                `;
+            }
+
+            document.getElementById('resultContent').innerHTML = `
+                ${exclusionHTML}
+                <section class="result-section recommendation">
+                    <h3 class="section-title">推荐保险组合</h3>
+                    <p class="combo-main">${recommendationStrWithLinks}</p>
+                    <div class="combo-reason">
+                        <strong>建议说明：</strong>${reasonStr}
+                    </div>
+                </section>
+                <section class="result-section disclaimer-section">
+                    <h3 class="section-title">说明与免责声明</h3>
+                    <p class="disclaimer-text">
+                        本系统仅用于课程展示、教育与演示用途，不构成正式投保建议或保险销售意见。实际核保结论、承保资格、保费水平及保单条款，均以保险公司最终官方审核与披露文件为准。涉及香港保险产品时，通常还需进一步确认投保资格、赴港申请条件及相关合规要求。
+                    </p>
+                </section>
+            `;
+
+
+
+        }
+    </script>
+</body>
+</html>
